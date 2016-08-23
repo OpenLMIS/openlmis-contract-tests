@@ -9,8 +9,8 @@ Contract tests should be sending real http requests to and verifying real http r
 ## Example
 
 Say that a certain business scenario, let's call it A, requires:
-1. a post end point of service X
-2. a get end point of service Y
+  1. a post end point of service X
+  2. a get end point of service Y
 
 to work together.
 
@@ -25,8 +25,8 @@ And in service Y's CI pipeline we could have:
 run Y [individual job](https://docs.google.com/document/d/1TZ55h0F1fHr901bNN76-A5cc_7PeiD02rla5F9eyPEk/edit#heading=h.opoz13632el) -> run contract tests that involves Y(including A) -> other steps
 
 The example above is simple, it involves only 2 services and 2 end points. However, the principle applies for more complex situations as well:
-1. organize contract tests by business scenarios
-2. if a certain scenario involves a certain service, run it as a part of that service's pipeline
+  1. organize contract tests by business scenarios
+  2. if a certain scenario involves a certain service, run it as a part of that service's pipeline
 
 The intension to organize contract tests in suites is to enable us to run them separately in different pipelines.
 
