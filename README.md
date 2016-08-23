@@ -22,7 +22,7 @@ run X [individual job](https://docs.google.com/document/d/1TZ55h0F1fHr901bNN76-A
 
 And in service Y's CI pipeline we could have:
 
-run Y [individual job](https://docs.google.com/document/d/1TZ55h0F1fHr901bNN76-A5cc_7PeiD02rla5F9eyPEk/edit#heading=h.opoz13632el) -> run contract tests that involves Y(including A) -> other steps
+run Y [individual job](https://docs.google.com/document/d/1TZ55h0F1fHr901bNN76-A5cc_7PeiD02rla5F9eyPEk/edit#heading=h.opoz13632el) -> run contract tests that involves Y(including scenario A) -> other steps
 
 The example above is simple, it involves only 2 services and 2 end points. However, the principle applies for more complex situations as well:
   1. organize contract tests by business scenarios
