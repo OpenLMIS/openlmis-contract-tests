@@ -4,13 +4,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import io.restassured.response.Response;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.post;
 import static io.restassured.http.ContentType.JSON;
-import static io.restassured.path.json.JsonPath.from;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.jglue.fluentjson.JsonBuilderFactory.buildObject;
 
 public class SanityStepdefs {
 
@@ -20,14 +17,15 @@ public class SanityStepdefs {
     public void IHaveCreatedAPostTitledAs(String title) throws Throwable {
         response = given()
                 .contentType(JSON)
-                .body("{ \"title\": \"" + title +
-                        "\",\"body\": \"bar\",\"userId\": 1}")
+                .body(buildObject()
+                        .add("title", title)
+                        .getJson().toString())
                 .when()
                 .post("http://jsonplaceholder.typicode.com/posts");
     }
 
     @Then("^I should get back a response with title (.*)$")
     public void IShouldGetBackAResponseWithTitle(String title) {
-        assertThat(from(response.asString()).get("title"), is(title));
+        response.then().body("title", equalTo(title));
     }
 }
