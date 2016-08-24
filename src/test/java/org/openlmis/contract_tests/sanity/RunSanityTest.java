@@ -5,7 +5,7 @@ import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = {"pretty"})
+@CucumberOptions(plugin = {"html:build/cucumber"})
 //this is just a sanity check test to make sure the project is set up correctly
 public class RunSanityTest {
 }
