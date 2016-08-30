@@ -9,7 +9,7 @@ import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.jglue.fluentjson.JsonBuilderFactory.buildObject;
 
-public class SanityStepdefs {
+public class SanityStepDefs {
 
     private Response response;
 
