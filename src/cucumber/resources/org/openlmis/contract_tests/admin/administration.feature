@@ -1,3 +1,4 @@
+@admin
 Feature: Admin
 
   Scenario: Admin user should be able to create programs

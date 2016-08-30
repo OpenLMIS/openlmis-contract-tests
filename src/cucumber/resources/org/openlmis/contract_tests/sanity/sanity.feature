@@ -1,3 +1,4 @@
+@sanity
 Feature: Sanity
 
   Scenario: sanity check for project setup

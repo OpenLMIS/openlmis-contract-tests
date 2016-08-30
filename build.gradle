@@ -16,14 +16,17 @@ dependencies {
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
     testCompile 'junit:junit:' + junitVersion
     testCompile 'org.jglue.fluent-json:fluent-json:2.0.0'
-
 }
 
 repositories {
     mavenCentral()
 }
 
-test {
-    testLogging.showStandardStreams = true
-    systemProperties System.getProperties()
+cucumber {
+    formats = ['html:build/cucumber']
+    glueDirs = ['src/cucumber/']
+    featureDirs = ['src/cucumber/resources/']
+    if (project.hasProperty('tags')) {
+        tags = project.getProperty('tags').split(',')
+    }
 }
