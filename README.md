@@ -6,7 +6,7 @@ Contract tests should be organized around business scenarios that requires multi
 
 Contract tests should be sending real http requests to and verifying real http response from running services. Mocking and stubbing techniques should reside within component tests of each single service.
 
-## Example
+## Hypocritical Example
 
 For a certain business scenario named A, it requires:
 
@@ -16,7 +16,7 @@ For a certain business scenario named A, it requires:
 to work together.
 
 In that case, we should create a number of contract tests in this repository, which of course would call those two end points.
-All of them organized in the same [suite](https://github.com/junit-team/junit4/wiki/aggregating-tests-in-suites) under business scenario A's name.
+All of them organized in the same [suite](https://github.com/cucumber/cucumber/wiki/Tags) under business scenario A's name.
 
 Then in service **X's CI pipeline** we could have:
 
@@ -30,7 +30,9 @@ run Y [individual job](https://docs.google.com/document/d/1TZ55h0F1fHr901bNN76-A
 The example above is simple, it involves only 2 services and 2 end points.
 
 However, the 
-##principle
+
+## Principle
+
 applies for more complex situations as well:
 
   1. organize contract tests by business scenarios
@@ -40,3 +42,37 @@ The intention to organize contract tests in suites is to enable us to run them s
 So that the contract test is ran whenever **any service that is involved** in this scenario has any code change.
 
 Then intention to put all contract tests in this one repository is to avoid explosion of docker compose files in service repositories, as interaction between services increase. And it also provides convenience to run all contract test as a part of full regression.
+
+## Concrete example
+
+For of scenario of "admin user should be able set up the system". 
+It needs both auth and requisition services. 
+
+The following things should be done:
+
+#### Create cucumber feature file
+This file describes a list of steps that the test should take, in a human readability friendly manner.
+Look at administration.feature for example.
+
+#### Create step definitions
+The step definition file provides the feature file with runnable code.
+Both need to be present for cucumber to run.
+Look at AdminStepDefs.java for example.
+
+#### Assign cucumber feature appropriate tag 
+Tags allow us to run different test cases in pipelines of different services.
+Look at the first line of administration.feature for example.
+
+When tag is defined, it allows us to run:
+`gradle clean cucumber -Ptags=@admin,@otherTag,@yetAnotherTag`
+This will only run test cases that match the tags, nothing else.
+
+#### Define docker compose file (if not already present)
+This docker compose file will be used by CI to link required containers together and run the tests.
+Look at [TBD] for example.
+
+#### Configure Jenkins job (if not already present)
+Create a new job in both auth service and requisition service's pipelines, which uses the compose file defined in the previous step to run tests.
+
+By doing this step, we can ensure that when either service's code changes, the test is ran.
+Look at [Jenkins link TBS] for example.
