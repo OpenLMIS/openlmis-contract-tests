@@ -69,10 +69,10 @@ This will only run test cases that match the tags, nothing else.
 
 #### Define docker compose file (if not already present)
 This docker compose file will be used by CI to link required containers together and run the tests.
-Look at [TBD] for example.
+Look at [docker-compose.requisition-service.yml](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/docker-compose.requisition-service.yml) for example.
 
 #### Configure Jenkins job (if not already present)
 Create a new job in both auth service and requisition service's pipelines, which uses the compose file defined in the previous step to run tests.
 
 By doing this step, we can ensure that when either service's code changes, the test is ran.
-Look at [Jenkins link TBS] for example.
+Look at [this job](http://build.openlmis.org/view/Requisitoin/job/OpenLMIS-requisition-contract-test/configure) for example.
