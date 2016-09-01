@@ -26,7 +26,9 @@ cucumber {
     formats = ['html:build/cucumber']
     glueDirs = ['src/cucumber/']
     featureDirs = ['src/cucumber/resources/']
-    if (project.hasProperty('tags')) {
-        tags = project.getProperty('tags').split(',')
+
+    def tagsArgs = project.getProperty('tags')
+    if (tagsArgs != null) {
+        tags = tagsArgs.split(',')
     }
 }
