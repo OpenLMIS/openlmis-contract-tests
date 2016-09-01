@@ -1,0 +1,35 @@
+version: "2"
+services:
+  contract_tests:
+    image: openlmis/dev
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+      - 'db:db'
+      - log
+      - "auth:auth"
+      - "requisition:requisition"
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'cucumber'
+      - '-Ptags=@admin'
+  requisition:
+    image: openlmis/requisition
+    env_file: .env
+  db:
+    image: openlmis/postgres
+    env_file: .env
+    ports:
+      - "5432"
+  log:
+    image: openlmis/rsyslog
+    volumes:
+      - './logs/requisition_contract_test:/var/log'
+  auth:
+    image: openlmis/auth
+    env_file: .env
+volumes:
+  gradlecache:
+    external: false
