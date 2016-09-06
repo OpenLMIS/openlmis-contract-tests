@@ -6,7 +6,7 @@ Contract tests should be organized around business scenarios that requires multi
 
 Contract tests should be sending real http requests to and verifying real http response from running services. Mocking and stubbing techniques should reside within component tests of each single service.
 
-## Hypocritical Example
+## Hypothetical Example
 
 For a certain business scenario named A, it requires:
 
