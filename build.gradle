@@ -32,3 +32,39 @@ cucumber {
         tags = tagsArgs.split(',')
     }
 }
+
+task waitFor {
+    def containers = project.getProperty('containers').split(',')
+    println "waiting for " + containers + "to be started up and serving"
+
+    for (container in containers) {
+        if (!isReachable(container)) {
+            throw new GradleException('timed out waiting for ' + container)
+        }
+    }
+}
+
+private boolean isReachable(container) {
+    boolean isRequestSuccessFul = false
+
+    for (def i = 0; i < 10; i++) {
+        println("trying " + container)
+
+        def response = ""
+        try {
+            response = new URL(container).text
+            println response
+        } catch (Exception e) {
+            println "request failed"
+        }
+
+        if (response != "") {
+            isRequestSuccessFul = true;
+            break
+        } else {
+            sleep(3000)
+        }
+    }
+
+    return isRequestSuccessFul
+}
