@@ -35,7 +35,7 @@ cucumber {
 
 task waitFor {
     def containers = project.getProperty('containers').split(',')
-    println "waiting for " + containers + "to be started up and serving"
+    println "waiting for " + containers + " to be started up and serving"
 
     for (container in containers) {
         if (!isReachable(container)) {

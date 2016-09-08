@@ -13,6 +13,8 @@ services:
     entrypoint:
       - 'gradle'
       - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=http://auth:8080,http://requisition:8080'
       - 'cucumber'
       - '-Ptags=@admin'
   requisition:
