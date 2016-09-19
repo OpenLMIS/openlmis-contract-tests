@@ -47,7 +47,7 @@ task waitFor {
 private boolean isReachable(container) {
     boolean isRequestSuccessFul = false
 
-    for (def i = 0; i < 10; i++) {
+    for (def i = 0; i < 12; i++) {
         println("trying " + container)
 
         def response = ""
@@ -62,7 +62,7 @@ private boolean isReachable(container) {
             isRequestSuccessFul = true;
             break
         } else {
-            sleep(3000)
+            sleep(5000)
         }
     }
 
