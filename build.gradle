@@ -47,8 +47,8 @@ task waitFor {
 private boolean isReachable(container) {
     boolean isRequestSuccessFul = false
 
-    for (def i = 0; i < 12; i++) {
-        println("trying " + container)
+    for (def i = 0; i < 24; i++) {
+        println("trying " + container + " " + i)
 
         def response = ""
         try {
