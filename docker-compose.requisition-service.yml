@@ -16,7 +16,10 @@ services:
       - 'waitFor'
       - '-Pcontainers=http://auth:8080,http://requisition:8080'
       - 'cucumber'
-      - '-Ptags=@admin'
+#      - '-Ptags=@admin'
+#the programs end point has been removed from requisition service
+#please replace the @admin with new test cases
+      - '-Ptags=@notImplementedYet'
   requisition:
     image: openlmis/requisition
     env_file: .env
