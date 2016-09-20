@@ -4,6 +4,7 @@ import cucumber.api.java.en.Given;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.is;
@@ -17,6 +18,10 @@ public class AdminStepDefs {
     private Response createProgramResponse;
     private String createdProgramId;
     private Response getProgramResponse;
+
+    static {
+        enableLoggingOfRequestAndResponseIfValidationFails();
+    }
 
     @Given("^I try to create a program with name: (.*), code: (.*)$")
     public void ITryToCreateAProgramWith(String name, String code) throws Throwable {
