@@ -78,4 +78,3 @@ Create a new job in both auth service and requisition service's pipelines, which
 
 By doing this step, we can ensure that when either service's code changes, the test is ran.
 Look at [this job](http://build.openlmis.org/view/Requisitoin/job/OpenLMIS-requisition-contract-test/configure) for example.
-
