@@ -34,12 +34,14 @@ cucumber {
 }
 
 task waitFor {
-    def containers = project.getProperty('containers').split(',')
-    println "waiting for " + containers + " to be started up and serving"
+    if(project.hasProperty('containers')) {
+        def containers = project.getProperty('containers').split(',')
+        println "waiting for " + containers + " to be started up and serving"
 
-    for (container in containers) {
-        if (!isReachable(container)) {
-            throw new GradleException('timed out waiting for ' + container)
+        for (container in containers) {
+            if (!isReachable(container)) {
+                throw new GradleException('timed out waiting for ' + container)
+            }
         }
     }
 }

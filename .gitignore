@@ -1,4 +1,8 @@
 .idea
 .gradle
+gradlew*
+.gradle/
+gradle/
 build/
+logs/
 .env
