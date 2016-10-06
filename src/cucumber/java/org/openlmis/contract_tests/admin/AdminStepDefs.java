@@ -1,9 +1,5 @@
 package org.openlmis.contract_tests.admin;
 
-import cucumber.api.java.en.Given;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
@@ -12,6 +8,10 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.jglue.fluentjson.JsonBuilderFactory.buildObject;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
+
+import cucumber.api.java.en.Given;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 
 public class AdminStepDefs {
 
@@ -34,7 +34,7 @@ public class AdminStepDefs {
                         .add("showNonFullSupplyTab", false)
                         .getJson().toString())
                 .when()
-                .post(baseUrlOfService("requisition") + "programs");
+                .post(baseUrlOfService("referencedata") + "programs");
 
     }
 
@@ -51,7 +51,7 @@ public class AdminStepDefs {
         getProgramResponse = given()
                 .param("access_token", ACCESS_TOKEN)
                 .when()
-                .get(baseUrlOfService("requisition") + "programs/" + createdProgramId);
+                .get(baseUrlOfService("referencedata") + "programs/" + createdProgramId);
     }
 
     @Given("^I should get program with name: (.*), code: (.*)$")

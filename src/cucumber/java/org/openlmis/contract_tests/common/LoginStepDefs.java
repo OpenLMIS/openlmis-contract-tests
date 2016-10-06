@@ -1,20 +1,26 @@
 package org.openlmis.contract_tests.common;
 
-import cucumber.api.java.en.Given;
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 import static org.openlmis.contract_tests.common.TestVariableReader.passwordOf;
 
+import cucumber.api.java.en.Given;
+import org.apache.commons.codec.binary.Base64;
+
 public class LoginStepDefs {
+
     public static String ACCESS_TOKEN;
 
     @Given("^I have logged in as (.*)$")
     public void IHaveLoggedInAs(String userName) throws Throwable {
+        String plainCreds = "trusted-client:secret";
+        byte[] plainCredsBytes = plainCreds.getBytes();
+        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+        String base64Creds = new String(base64CredsBytes);
 
         String tokenResponseString = given()
-                .header("Authorization", "Basic dHJ1c3RlZC1jbGllbnQ6c2VjcmV0")
+                .header("Authorization", "Basic " + base64Creds)
                 .param("grant_type", "password")
                 .param("username", userName)
                 .param("password", passwordOf(userName))

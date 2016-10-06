@@ -1,0 +1,35 @@
+version: "2"
+services:
+  contract_tests:
+    image: openlmis/dev
+    env_file: .env
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+    - db
+    - log
+    - registrator
+    - nginx-proxy
+    - auth
+    - requisition
+    - requisition-refui
+    - referencedata
+    - notification
+
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=
+        http://${VIRTUAL_HOST}/auth
+        ,http://${VIRTUAL_HOST}/requisition
+        ,http://${VIRTUAL_HOST}/referencedata'
+      - 'cucumber'
+      - '-Ptags=@admin'
+#the programs end point has been removed from requisition service
+#please replace the @admin with new test cases
+#      - '-Ptags=@notImplementedYet'
+volumes:
+  gradlecache:
+    external: false
