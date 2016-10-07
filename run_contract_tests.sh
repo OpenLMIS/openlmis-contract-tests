@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
 docker-compose pull
-#curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
+curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
 
-ip="VIRTUAL_HOST=$2"
+ip="VIRTUAL_HOST=nginx-proxy"
 sed -e "s/VIRTUAL_HOST=localhost/$ip/g" -i .env
-
-nginx_port="NGINX_PORT=$3"
-sed -e "s/NGINX_PORT=80/$nginx_port/g" -i .env
 
 /usr/local/bin/docker-compose run contract_tests
 

@@ -77,8 +77,6 @@ services:
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
-    ports:
-      - "${NGINX_PORT}:${NGINX_PORT}"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/app/nginx.tmpl:ro

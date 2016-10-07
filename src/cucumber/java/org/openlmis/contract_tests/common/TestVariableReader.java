@@ -8,7 +8,8 @@ public class TestVariableReader {
     private static final String PASSWORD_SUFFIX = ".password";
     private static final String SERVICE_BASE_URL_SUFFIX = ".service.base.url";
 
-    private static final String VIRTUAL_HOST_SUFFIX = "http://" + System.getenv("VIRTUAL_HOST");
+    private static final String VIRTUAL_HOST_SUFFIX = "http://"
+        + System.getenv("VIRTUAL_HOST");
     public static final Properties properties = new Properties();
 
     static {
