@@ -11,6 +11,8 @@ project.ext {
 }
 
 dependencies {
+    compile 'org.postgresql:postgresql:9.4.1211'
+    compile 'com.ibatis:ibatis2-common:2.1.7.597'
     testCompile 'io.rest-assured:rest-assured:' + restAssuredVersion
     testCompile 'info.cukes:cucumber-java:' + cucumberVersion
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
@@ -23,9 +25,10 @@ repositories {
 }
 
 cucumber {
-    formats = ['html:build/cucumber']
+    formats = ['pretty', 'html:build/cucumber']
     glueDirs = ['src/cucumber/']
     featureDirs = ['src/cucumber/resources/']
+
 
     def tagsArgs = project.getProperty('tags')
     if (tagsArgs != null) {

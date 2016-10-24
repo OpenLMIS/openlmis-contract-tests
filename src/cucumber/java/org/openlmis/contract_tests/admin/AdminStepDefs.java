@@ -35,7 +35,6 @@ public class AdminStepDefs {
                         .getJson().toString())
                 .when()
                 .post(baseUrlOfService("referencedata") + "programs");
-
     }
 
     @Given("^I should get response with the created program's id$")

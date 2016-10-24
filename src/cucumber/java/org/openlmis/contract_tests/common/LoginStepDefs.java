@@ -30,4 +30,5 @@ public class LoginStepDefs {
 
         ACCESS_TOKEN = from(tokenResponseString).get("access_token");
     }
+
 }

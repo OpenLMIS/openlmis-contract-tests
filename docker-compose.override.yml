@@ -26,7 +26,7 @@ services:
         ,http://${VIRTUAL_HOST}/requisition
         ,http://${VIRTUAL_HOST}/referencedata'
       - 'cucumber'
-      - '-Ptags=@admin'
+      - '-Ptags=@storeroom_manager'
 #the programs end point has been removed from requisition service
 #please replace the @admin with new test cases
 #      - '-Ptags=@notImplementedYet'

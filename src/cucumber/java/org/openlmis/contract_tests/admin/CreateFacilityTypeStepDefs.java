@@ -1,6 +1,5 @@
 package org.openlmis.contract_tests.admin;
 
-
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
@@ -13,7 +12,7 @@ import cucumber.api.java.en.Given;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-public class CreateFacilityType {
+public class CreateFacilityTypeStepDefs {
 
   private Response createFacilityType;
   private String createdFacilityTypeId;
