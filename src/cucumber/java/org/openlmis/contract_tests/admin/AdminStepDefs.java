@@ -9,7 +9,8 @@ import static org.jglue.fluentjson.JsonBuilderFactory.buildObject;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -23,7 +24,7 @@ public class AdminStepDefs {
         enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
-    @Given("^I try to create a program with name: (.*), code: (.*)$")
+    @When("^I try to create a program with name: (.*), code: (.*)$")
     public void ITryToCreateAProgramWith(String name, String code) throws Throwable {
         createProgramResponse = given()
                 .contentType(ContentType.JSON)
@@ -37,7 +38,7 @@ public class AdminStepDefs {
                 .post(baseUrlOfService("referencedata") + "programs");
     }
 
-    @Given("^I should get response with the created program's id$")
+    @Then("^I should get response with the created program's id$")
     public void IShouldGetResponseWithTheCreatedProgramId() throws Throwable {
         createProgramResponse
                 .then()
@@ -45,7 +46,7 @@ public class AdminStepDefs {
         createdProgramId = from(createProgramResponse.asString()).get("id");
     }
 
-    @Given("^I try to get program with id$")
+    @When("^I try to get program with id$")
     public void ITryToGetProgramWithId() throws Throwable {
         getProgramResponse = given()
                 .param("access_token", ACCESS_TOKEN)
@@ -53,7 +54,7 @@ public class AdminStepDefs {
                 .get(baseUrlOfService("referencedata") + "programs/" + createdProgramId);
     }
 
-    @Given("^I should get program with name: (.*), code: (.*)$")
+    @Then("^I should get program with name: (.*), code: (.*)$")
     public void IShouldGetProgramWith(String name, String code) throws Throwable {
         getProgramResponse
                 .then()

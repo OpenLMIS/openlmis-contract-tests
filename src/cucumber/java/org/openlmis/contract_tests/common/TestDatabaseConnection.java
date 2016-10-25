@@ -1,7 +1,6 @@
 package org.openlmis.contract_tests.common;
 
 import com.ibatis.common.jdbc.ScriptRunner;
-import org.openlmis.contract_tests.exception.InitialDataExeption;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -28,7 +27,7 @@ public class TestDatabaseConnection {
   List<String> SCHEMAS = Collections.unmodifiableList(
       Arrays.asList("referencedata", "requisition"));
 
-  public void loadData() throws InitialDataExeption {
+  public void loadData() throws InitialDataException {
     Connection connection = null;
     Statement statementToLoadScrpit = null;
     try {
@@ -41,14 +40,14 @@ public class TestDatabaseConnection {
             String.valueOf(Paths.get(getClass().getResource(PATH_TO_SCRIPT).toURI())))));
 
       } catch (IOException ex) {
-        throw new InitialDataExeption("InitialDataExeption: Not find demo-data file.", ex);
+        throw new InitialDataException("InitialDataExeption: Not find demo-data file.", ex);
       } catch (URISyntaxException ex) {
-        throw new InitialDataExeption(
+        throw new InitialDataException(
             "InitialDataExeption: Path to file not be parsed as a URI.", ex);
       }
 
     } catch (SQLException ex) {
-      throw new InitialDataExeption("InitialDataExeption: Database error.", ex);
+      throw new InitialDataException("InitialDataExeption: Database error.", ex);
     } finally {
       try {
 
@@ -59,13 +58,13 @@ public class TestDatabaseConnection {
           connection.close();
         }
       } catch (SQLException ex) {
-        throw new InitialDataExeption(
+        throw new InitialDataException(
             "InitialDataExeption: Cannot close database connection.", ex);
       }
     }
   }
 
-  public void removeData() throws InitialDataExeption {
+  public void removeData() throws InitialDataException {
     Connection connection = null;
     Statement statementToReadTablesName = null;
     Statement statementToTruncateTable = null;
@@ -89,7 +88,7 @@ public class TestDatabaseConnection {
       }
 
     } catch (SQLException ex) {
-      throw new InitialDataExeption("InitialDataExeption: Database error.", ex);
+      throw new InitialDataException("InitialDataExeption: Database error.", ex);
     } finally {
       try {
         if (resultSetOfTablesNameQuery != null) {
@@ -105,7 +104,7 @@ public class TestDatabaseConnection {
           connection.close();
         }
       } catch (SQLException ex) {
-        throw new InitialDataExeption(
+        throw new InitialDataException(
             "InitialDataExeption: Cannot close database connection.", ex);
       }
     }

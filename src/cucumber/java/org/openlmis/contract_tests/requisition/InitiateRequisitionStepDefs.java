@@ -10,10 +10,11 @@ import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfSer
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import io.restassured.response.Response;
+import org.openlmis.contract_tests.common.InitialDataException;
 import org.openlmis.contract_tests.common.TestDatabaseConnection;
-import org.openlmis.contract_tests.exception.InitialDataExeption;
 
 public class InitiateRequisitionStepDefs {
 
@@ -28,14 +29,14 @@ public class InitiateRequisitionStepDefs {
   private TestDatabaseConnection databaseConnection;
 
   @Before
-  public void setUp() throws InitialDataExeption {
+  public void setUp() throws InitialDataException {
     databaseConnection = new TestDatabaseConnection();
     //Because we have some initial data. We must remove it before loader.
     databaseConnection.removeData();
     databaseConnection.loadData();
   }
 
-  @Given("^I try to initiate a requisition with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", " +
+  @When("^I try to initiate a requisition with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", " +
       "(true|false)$")
   public void ITryToCreateARequisitionWith(String program, String facility,
                                            String period, Boolean emergency) throws Throwable {
@@ -49,7 +50,7 @@ public class InitiateRequisitionStepDefs {
         .post(baseUrlOfService("requisition") + "requisitions/initiate");
   }
 
-  @Given("^I should get response with the initiated requisition's id$")
+  @Then("^I should get response with the initiated requisition's id$")
   public void IShouldGetResponseWithTheInitiatedRequisitionId() throws Throwable {
     initiateRequisitionResponse
         .then()
@@ -57,7 +58,7 @@ public class InitiateRequisitionStepDefs {
     initiatedRequisitionId = from(initiateRequisitionResponse.asString()).get("id");
   }
 
-  @Given("^I try to get requisition with id$")
+  @When("^I try to get requisition with id$")
   public void ITryToGetRequisitionWithId() throws Throwable {
     getRequisitionResponse = given()
         .queryParam("access_token", ACCESS_TOKEN)
@@ -65,7 +66,7 @@ public class InitiateRequisitionStepDefs {
         .get(baseUrlOfService("requisition") + "requisitions/" + initiatedRequisitionId);
   }
 
-  @Given("^I should get a requisition with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"," +
+  @Then("^I should get a requisition with \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"," +
       " (true|false), \"([^\"]*)\"$")
   public void IShouldGetRequisitionWith(String programId, String facilityId, String periodId,
                                         Boolean emergency, String status) throws Throwable {
@@ -79,7 +80,7 @@ public class InitiateRequisitionStepDefs {
   }
 
   @After
-  public void cleanUp() throws InitialDataExeption {
+  public void cleanUp() throws InitialDataException {
     databaseConnection.removeData();
   }
 }

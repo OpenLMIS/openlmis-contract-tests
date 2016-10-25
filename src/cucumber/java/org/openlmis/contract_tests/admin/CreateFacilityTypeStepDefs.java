@@ -8,7 +8,8 @@ import static org.jglue.fluentjson.JsonBuilderFactory.buildObject;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
@@ -21,7 +22,7 @@ public class CreateFacilityTypeStepDefs {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
 
-  @Given("^I try to create a facilityType with code: (.*)$")
+  @When("^I try to create a facilityType with code: (.*)$")
   public void ITryToCreateAFacilityTypeWith(String code) throws Throwable {
     createFacilityType = given()
         .contentType(ContentType.JSON)
@@ -33,7 +34,7 @@ public class CreateFacilityTypeStepDefs {
         .post(baseUrlOfService("referencedata") + "facilityTypes");
   }
 
-  @Given("^I should get response with the created facilityType's id$")
+  @Then("^I should get response with the created facilityType's id$")
   public void IShouldGetResponseWithTheCreatedfacilityTypeId() throws Throwable {
     createFacilityType
         .then()
