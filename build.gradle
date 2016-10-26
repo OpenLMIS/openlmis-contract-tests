@@ -25,7 +25,7 @@ repositories {
 }
 
 cucumber {
-    formats = ['pretty', 'html:build/cucumber']
+    formats = ['pretty', 'html:build/cucumber', 'junit:build/cucumber/junit/test_report.xml']
     glueDirs = ['src/cucumber/']
     featureDirs = ['src/cucumber/resources/']
 
