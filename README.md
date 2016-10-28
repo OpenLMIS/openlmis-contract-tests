@@ -33,6 +33,14 @@ The example above is simple, it involves only 2 services and 2 end points.
 
 However, the 
 
+## Running
+
+Run with a script: "run_contract_tests.sh".
+Such as: `./run_contract_tests.sh -v`
+
+"-v" - parameter ->  run clean up after tests
+Script automatically pull actual images.
+
 ## Principle
 
 applies for more complex situations as well:
