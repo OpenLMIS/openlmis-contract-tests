@@ -29,7 +29,6 @@ cucumber {
     glueDirs = ['src/cucumber/']
     featureDirs = ['src/cucumber/resources/']
 
-
     def tagsArgs = project.getProperty('tags')
     if (tagsArgs != null) {
         tags = tagsArgs.split(',')
@@ -52,7 +51,7 @@ task waitFor {
 private boolean isReachable(container) {
     boolean isRequestSuccessFul = false
 
-    for (def i = 0; i < 24; i++) {
+    for (def i = 0; i < 48; i++) {
         println("trying $container ${i + 1} times")
 
         def response = ""

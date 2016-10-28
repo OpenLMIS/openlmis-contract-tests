@@ -18,10 +18,9 @@ import java.util.List;
 
 public class TestDatabaseConnection {
 
-  private static final String URL = "jdbc:postgresql://db:5432/";
-  private static final String DB_NAME = "open_lmis";
-  private static final String USER_NAME = "postgres";
-  private static final String PASSWORD = "p@ssw0rd";
+  private static final String DATABASE_URL = System.getenv("DATABASE_URL");
+  private static final String USER_NAME = System.getenv("POSTGRES_USER");
+  private static final String PASSWORD = System.getenv("POSTGRES_PASSWORD");
   private static final String PATH_TO_SCRIPT = "/demo-data/input.sql";
 
   List<String> SCHEMAS = Collections.unmodifiableList(
@@ -31,7 +30,7 @@ public class TestDatabaseConnection {
     Connection connection = null;
     Statement statementToLoadScrpit = null;
     try {
-      connection = DriverManager.getConnection(URL + DB_NAME, USER_NAME, PASSWORD);
+      connection = DriverManager.getConnection(DATABASE_URL, USER_NAME, PASSWORD);
       statementToLoadScrpit = connection.createStatement();
 
       ScriptRunner runner = new ScriptRunner(connection, false, true);
@@ -70,7 +69,7 @@ public class TestDatabaseConnection {
     Statement statementToTruncateTable = null;
     ResultSet resultSetOfTablesNameQuery = null;
     try {
-      connection = DriverManager.getConnection(URL + DB_NAME, USER_NAME, PASSWORD);
+      connection = DriverManager.getConnection(DATABASE_URL, USER_NAME, PASSWORD);
       statementToReadTablesName = connection.createStatement();
       statementToTruncateTable = connection.createStatement();
 

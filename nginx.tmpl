@@ -75,7 +75,11 @@ server {
 }
 {{ end }}
 
+# First for each loop
 {{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
+# Get only VIRTUAL_HOST with "nginx-proxy" value
+{{ if eq $host "nginx-proxy" }}
+# Second for each loop
 {{ range $location, $ctns := groupByMulti $ "Env.VIRTUAL_LOCATION" "," }}
 
 upstream {{ $location }} {
@@ -221,5 +225,6 @@ server {
 }
 {{ end }}
 
+{{ end }}
 {{ end }}
 {{ end }}
