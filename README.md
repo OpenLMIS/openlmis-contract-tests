@@ -33,13 +33,22 @@ The example above is simple, it involves only 2 services and 2 end points.
 
 However, the 
 
+## Quick Start
+
+  1. Fork/clone this repository from GitHub.
+
+  `git clone https://github.com/OpenLMIS/openlmis-requisition-refUI.git`
+
+  2. Develop w/ Docker by running `docker-compose run contract_tests`
+
 ## Running
 
 Run with a script: "run_contract_tests.sh".
 Such as: `./run_contract_tests.sh -v`
 
-"-v" - parameter ->  run clean up after tests
-Script automatically pull actual images.
+"-v" - parameter ->  run clean up after tests.
+
+Script automatically pull actual images before contract tests.
 
 ## Principle
 
@@ -62,7 +71,7 @@ The following things should be done:
 
 #### Create cucumber feature file
 This file describes a list of steps that the test should take, in a human readability friendly manner.
-Look at [administration.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/admin/administration.feature) for example.
+Look at [administration.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/admin/Administration.feature) for example.
 
 #### Create step definitions
 The step definition file provides the feature file with runnable code.
@@ -71,18 +80,20 @@ Look at [AdminStepDefs.java](https://github.com/OpenLMIS/openlmis-contract-tests
 
 #### Assign cucumber feature appropriate tag 
 Tags allow us to run different test cases in pipelines of different services.
-Look at the first line of [administration.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/admin/administration.feature) for example.
+Look at the first line of [administration.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/admin/Administration.feature) for example.
 
 When tag is defined, it allows us to run:
 `gradle clean cucumber -Ptags=@admin,@otherTag,@yetAnotherTag`
 This will only run test cases that match the tags, nothing else.
 
-#### Define docker compose file (if not already present)
+#### Docker compose file
 This docker compose file will be used by CI to link required containers together and run the tests.
-Look at [docker-compose.requisition-service.yml](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/docker-compose.requisition-service.yml) for example.
+Look at [docker-compose.override.yml](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/docker-compose.override.yml) for example.
 
-#### Configure Jenkins job (if not already present)
-Create a new job in both auth service and requisition service's pipelines, which uses the compose file defined in the previous step to run tests.
+#### Jenkins job
+Job in both auth service and requisition service's pipelines, which uses the compose file defined in the previous step to run tests.
 
 By doing this step, we can ensure that when either service's code changes, the test is ran.
-Look at [this job](http://build.openlmis.org/view/Requisitoin/job/OpenLMIS-requisition-contract-test/configure) for example.
+Look at [OpenLMIS-requisition-contract-test](http://ci.openlmis.org:8080/job/OpenLMIS-requisition-contract-test/)
+
+Report [Result of tests on Jenkins] (http://ci.openlmis.org:8080/job/OpenLMIS-requisition-contract-test/ws/build/cucumber/index.html)
