@@ -19,44 +19,44 @@ services:
       - consul
 
   requisition-refui:
-    image: openlmis/requisition-refui
+    image: openlmis/requisition-refui:3.0.0-SNAPSHOT
     env_file: .env
     environment:
       # Changing the virtual location affects loading of the assets on UI. Handle with care.
       - VIRTUAL_LOCATION=public
 
   requisition:
-    image: openlmis/requisition
+    image: openlmis/requisition:3.0.0-SNAPSHOT
     env_file: .env
     environment:
       VIRTUAL_LOCATION: requisition
-      JAVA_OPTS: '-Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   referencedata:
-    image: openlmis/referencedata
+    image: openlmis/referencedata:3.0.0-SNAPSHOT
     env_file: .env
     environment:
       VIRTUAL_LOCATION: referencedata
-      JAVA_OPTS: '-Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   auth:
-    image: openlmis/auth
+    image: openlmis/auth:3.0.0-SNAPSHOT
     env_file: .env
     environment:
       VIRTUAL_LOCATION: auth
-      JAVA_OPTS: '-Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   notification:
-    image: openlmis/notification
+    image: openlmis/notification:3.0.0-SNAPSHOT
     env_file: .env
     environment:
       VIRTUAL_LOCATION: notification

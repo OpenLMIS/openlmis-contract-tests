@@ -37,7 +37,7 @@ However, the
 
   1. Fork/clone this repository from GitHub.
 
-  `git clone https://github.com/OpenLMIS/openlmis-requisition-refUI.git`
+  `git clone https://github.com/OpenLMIS/openlmis-contract-tests.git`
 
   2. Develop w/ Docker by running `docker-compose run contract_tests`
 
