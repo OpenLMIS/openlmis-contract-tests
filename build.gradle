@@ -3,6 +3,7 @@ plugins {
 }
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 project.ext {
     cucumberVersion = '1.2.4'
