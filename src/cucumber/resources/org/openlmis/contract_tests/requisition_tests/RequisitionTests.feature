@@ -1,5 +1,5 @@
-@storeroom_manager
-Feature: Storeroom Manager
+@RequisitionTests
+Feature: RequisitionTests
   Scenario Outline: Storeroom Manager user should be able to initiate a requisition
     Given I have logged in as admin
 

@@ -46,7 +46,7 @@ public class TestDatabaseConnection {
       }
 
     } catch (SQLException ex) {
-      throw new InitialDataException("InitialDataExeption: Database error.", ex);
+      throw new InitialDataException("InitialDataExeption: Database connection error.", ex);
     } finally {
       try {
 
@@ -87,7 +87,7 @@ public class TestDatabaseConnection {
       }
 
     } catch (SQLException ex) {
-      throw new InitialDataException("InitialDataExeption: Database error.", ex);
+      throw new InitialDataException("InitialDataExeption: Database connection error.", ex);
     } finally {
       try {
         if (resultSetOfTablesNameQuery != null) {
