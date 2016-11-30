@@ -10,25 +10,32 @@ import org.apache.commons.codec.binary.Base64;
 
 public class LoginStepDefs {
 
-    public static String ACCESS_TOKEN;
+  public static String ACCESS_TOKEN;
 
-    @Given("^I have logged in as (.*)$")
-    public void IHaveLoggedInAs(String userName) throws Throwable {
-        String plainCreds = "trusted-client:secret";
-        byte[] plainCredsBytes = plainCreds.getBytes();
-        byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-        String base64Creds = new String(base64CredsBytes);
+  @Given("^I have logged in as (.*)$")
+  public void haveLoggedInAs(String userName) throws Throwable {
+    String plainCreds = "trusted-client:secret";
+    byte[] plainCredsBytes = plainCreds.getBytes();
+    byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+    String base64Creds = new String(base64CredsBytes);
 
-        String tokenResponseString = given()
-                .header("Authorization", "Basic " + base64Creds)
-                .param("grant_type", "password")
-                .param("username", userName)
-                .param("password", passwordOf(userName))
-                .when()
-                .post(baseUrlOfService("auth") + "token")
-                .asString();
+    String tokenResponseString = given()
+        .header("Authorization", "Basic " + base64Creds)
+        .param("grant_type", "password")
+        .param("username", userName)
+        .param("password", passwordOf(userName))
+        .when()
+        .post(baseUrlOfService("auth") + "token")
+        .asString();
 
-        ACCESS_TOKEN = from(tokenResponseString).get("access_token");
-    }
+    ACCESS_TOKEN = from(tokenResponseString).get("access_token");
+  }
 
+  @Given("^I logout$")
+  public void tryLogout() {
+    given()
+        .queryParam("access_token", ACCESS_TOKEN)
+        .when()
+        .post(baseUrlOfService("auth") + "/users/logout");
+  }
 }

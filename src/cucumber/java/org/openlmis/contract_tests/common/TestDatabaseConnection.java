@@ -21,10 +21,11 @@ public class TestDatabaseConnection {
   private static final String DATABASE_URL = System.getenv("DATABASE_URL");
   private static final String USER_NAME = System.getenv("POSTGRES_USER");
   private static final String PASSWORD = System.getenv("POSTGRES_PASSWORD");
-  private static final String PATH_TO_SCRIPT = "/demo-data/input.sql";
+  private static final String PATH_TO_SCRIPT = "/demo-data/";
+  private static final String FILE_NAME_SUFFIX = "_input.sql";
 
   List<String> SCHEMAS = Collections.unmodifiableList(
-      Arrays.asList("referencedata", "requisition"));
+      Arrays.asList("referencedata", "requisition", "auth"));
 
   public void loadData() throws InitialDataException {
     Connection connection = null;
@@ -35,18 +36,20 @@ public class TestDatabaseConnection {
 
       ScriptRunner runner = new ScriptRunner(connection, false, true);
       try {
-        runner.runScript(new BufferedReader(new FileReader(
-            String.valueOf(Paths.get(getClass().getResource(PATH_TO_SCRIPT).toURI())))));
-
+        for (String schema : SCHEMAS) {
+          runner.runScript(new BufferedReader(new FileReader(
+              String.valueOf(Paths.get(getClass()
+                  .getResource(PATH_TO_SCRIPT + schema + FILE_NAME_SUFFIX).toURI())))));
+        }
       } catch (IOException ex) {
-        throw new InitialDataException("InitialDataExeption: Not find demo-data file.", ex);
+        throw new InitialDataException("InitialDataException: Not find demo-data file.", ex);
       } catch (URISyntaxException ex) {
         throw new InitialDataException(
-            "InitialDataExeption: Path to file not be parsed as a URI.", ex);
+            "InitialDataException: Path to file not be parsed as a URI.", ex);
       }
 
     } catch (SQLException ex) {
-      throw new InitialDataException("InitialDataExeption: Database connection error.", ex);
+      throw new InitialDataException("InitialDataException: Database connection error.", ex);
     } finally {
       try {
 
@@ -58,7 +61,7 @@ public class TestDatabaseConnection {
         }
       } catch (SQLException ex) {
         throw new InitialDataException(
-            "InitialDataExeption: Cannot close database connection.", ex);
+            "InitialDataException: Cannot close database connection.", ex);
       }
     }
   }
@@ -76,7 +79,7 @@ public class TestDatabaseConnection {
       for (String schema : SCHEMAS) {
         resultSetOfTablesNameQuery = statementToReadTablesName.executeQuery(
             "SELECT table_name \n" +
-                "  FROM information_schema.tables\n" +
+                " FROM information_schema.tables\n" +
                 " WHERE table_schema='" + schema + "';");
 
         while (!resultSetOfTablesNameQuery.isClosed() && resultSetOfTablesNameQuery.next()) {
@@ -87,7 +90,7 @@ public class TestDatabaseConnection {
       }
 
     } catch (SQLException ex) {
-      throw new InitialDataException("InitialDataExeption: Database connection error.", ex);
+      throw new InitialDataException("InitialDataException: Database connection error.", ex);
     } finally {
       try {
         if (resultSetOfTablesNameQuery != null) {
@@ -104,7 +107,7 @@ public class TestDatabaseConnection {
         }
       } catch (SQLException ex) {
         throw new InitialDataException(
-            "InitialDataExeption: Cannot close database connection.", ex);
+            "InitialDataException: Cannot close database connection.", ex);
       }
     }
   }

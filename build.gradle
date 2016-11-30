@@ -14,6 +14,7 @@ project.ext {
 dependencies {
     compile 'org.postgresql:postgresql:9.4.1211'
     compile 'com.ibatis:ibatis2-common:2.1.7.597'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
     testCompile 'io.rest-assured:rest-assured:' + restAssuredVersion
     testCompile 'info.cukes:cucumber-java:' + cucumberVersion
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
