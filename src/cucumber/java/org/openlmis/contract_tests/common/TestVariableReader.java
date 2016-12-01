@@ -21,7 +21,7 @@ public class TestVariableReader {
     }
 
     public static String passwordOf(String userName) {
-        return properties.getProperty(userName + PASSWORD_SUFFIX);
+        return properties.getProperty(userName.toLowerCase() + PASSWORD_SUFFIX);
     }
 
     public static String baseUrlOfService(String serviceName) {
