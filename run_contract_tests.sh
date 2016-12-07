@@ -6,12 +6,12 @@ curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
 #pull all images
 docker-compose pull
 
-#change VIRTUAL_HOST value from localhost to nginx-proxy
-ip="VIRTUAL_HOST=nginx-proxy"
+#change VIRTUAL_HOST value from localhost to nginx
+ip="VIRTUAL_HOST=nginx"
 sed -e "s/VIRTUAL_HOST=localhost/$ip/g" -i .env
 
-#change CONSUL_HOST value from localhost to consul-server
-ip="CONSUL_HOST=consul-server"
+#change CONSUL_HOST value from localhost to consul
+ip="CONSUL_HOST=consul"
 sed -e "s/CONSUL_HOST=localhost/$ip/g" -i .env
 
 #run docker file

@@ -9,8 +9,8 @@ services:
     links:
     - db
     - log
-    - nginx-proxy
-    - consul-server
+    - nginx
+    - consul
     - auth
     - requisition
     - requisition-refui

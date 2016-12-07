@@ -53,7 +53,7 @@ task waitFor {
 private boolean isReachable(container) {
     boolean isRequestSuccessFul = false
 
-    for (def i = 0; i < 50; i++) {
+    for (def i = 0; i < 20; i++) {
         println("trying $container ${i + 1} times")
 
         def response = ""
