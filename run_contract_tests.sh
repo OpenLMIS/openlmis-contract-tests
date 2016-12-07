@@ -6,9 +6,8 @@ curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
 #pull all images
 docker-compose pull
 
-#change VIRTUAL_HOST value from localhost to nginx-proxy
-ip="VIRTUAL_HOST=nginx-proxy"
-sed -e "s/VIRTUAL_HOST=localhost/$ip/g" -i .env
+#change VIRTUAL_HOST and CONSUL_HOST values from localhost to machine's IP address
+./set_base_environment.sh
 
 #run docker file
 /usr/local/bin/docker-compose run contract_tests
