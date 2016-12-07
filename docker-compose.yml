@@ -16,7 +16,7 @@ services:
       - "80:80"
     env_file: .env
     depends_on: [consul]
-    network_mode: host
+    # Note: network_mode: host will break the build since we're using container communication
 
   requisition-refui:
     image: openlmis/requisition-refui:3.0.0-SNAPSHOT
