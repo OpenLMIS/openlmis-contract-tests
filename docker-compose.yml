@@ -7,13 +7,13 @@ services:
     ports:
       - "8300"
       - "8400"
-      - "8500:8500"
+      - "8500"
       - "53"
 
   nginx:
     image: openlmis/openlmis-nginx
     ports:
-      - "80:80"
+      - "80"
     env_file: .env
     depends_on: [consul]
     # Note: network_mode: host will break the build since we're using container communication
