@@ -1,13 +1,13 @@
 version: "2"
 services:
 
-  consul:
+  consul-server:
     command: -server -bootstrap
     image: gliderlabs/consul-server
     ports:
       - "8300"
       - "8400"
-      - "8500"
+      - "8500:8500"
       - "53"
 
   nginx-proxy:
@@ -15,7 +15,7 @@ services:
     ports:
       - "80"
     env_file: .env
-    depends_on: [consul]
+    links: [consul-server]
     # Note: network_mode: host will break the build since we're using container communication
 
   requisition-refui:
@@ -73,10 +73,10 @@ services:
   db:
     image: openlmis/postgres
     env_file: .env
-    depends_on: [consul]
+    depends_on: [consul-server]
 
   log:
     image: openlmis/rsyslog
     volumes:
       - '../logs/requisition:/var/log'
-    depends_on: [consul]
+    depends_on: [consul-server]

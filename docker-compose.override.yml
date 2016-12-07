@@ -10,7 +10,7 @@ services:
     - db
     - log
     - nginx-proxy
-    - consul
+    - consul-server
     - auth
     - requisition
     - requisition-refui

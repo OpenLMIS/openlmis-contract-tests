@@ -10,8 +10,8 @@ docker-compose pull
 ip="VIRTUAL_HOST=nginx-proxy"
 sed -e "s/VIRTUAL_HOST=localhost/$ip/g" -i .env
 
-#change CONSUL_HOST value from localhost to consul
-ip="CONSUL_HOST=consul"
+#change CONSUL_HOST value from localhost to consul-server
+ip="CONSUL_HOST=consul-server"
 sed -e "s/CONSUL_HOST=localhost/$ip/g" -i .env
 
 #run docker file
