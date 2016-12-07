@@ -9,7 +9,7 @@ services:
     links:
     - db
     - log
-    - nginx
+    - nginx-proxy
     - consul
     - auth
     - requisition

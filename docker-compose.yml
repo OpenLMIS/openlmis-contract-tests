@@ -10,7 +10,7 @@ services:
       - "8500"
       - "53"
 
-  nginx:
+  nginx-proxy:
     image: openlmis/openlmis-nginx
     ports:
       - "80"
