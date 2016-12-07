@@ -12,6 +12,7 @@ services:
 
   nginx-proxy:
     image: openlmis/openlmis-nginx
+    container_name: nginx-proxy
     ports:
       - "80"
     env_file: .env
