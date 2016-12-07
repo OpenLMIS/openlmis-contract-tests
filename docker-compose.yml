@@ -11,7 +11,7 @@ services:
       - "53"
 
   nginx:
-    image: openlmis/openlmis-nginx
+    image: openlmis/nginx
     env_file: .env
     links: [consul]
     # Note: network_mode: host will break the build since we're using container communication
