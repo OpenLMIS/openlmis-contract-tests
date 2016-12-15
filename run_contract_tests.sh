@@ -19,6 +19,12 @@ sed -e "s/CONSUL_HOST=localhost/$ip/g" -i .env
 
 #cleaning after tests
 contract_test_result=$?
+
+if [ $contract_test_result -ne 0 ]; then
+  echo "========== Logging output from containers =========="
+  /usr/local/bin/docker-compose logs
+fi
+
 /usr/local/bin/docker-compose down $1
 #don't remove the $1 in the line above
 #CI will append -v to it, so all dangling volumes are removed after the job runs
