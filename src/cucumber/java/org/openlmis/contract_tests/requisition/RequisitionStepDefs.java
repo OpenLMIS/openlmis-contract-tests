@@ -16,6 +16,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,21 +24,32 @@ import org.json.simple.parser.ParseException;
 import org.openlmis.contract_tests.common.InitialDataException;
 import org.openlmis.contract_tests.common.TestDatabaseConnection;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class RequisitionStepDefs {
 
   private Response requisitionResponse;
+  private Response periodResponse;
   private String requisitionId;
+  private String periodId;
   private JSONObject requisition;
+  private JSONObject period;
+
   private TestDatabaseConnection databaseConnection;
 
   private static final String BASE_URL_OF_REQUISITION_SERVICE =
       baseUrlOfService("requisition") + "requisitions/";
 
+  private static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
+      baseUrlOfService("referencedata");
+
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
+
+  private final static Logger LOGGER = Logger.getLogger(RequisitionStepDefs.class.getName());
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
@@ -98,7 +110,7 @@ public class RequisitionStepDefs {
   @When("^I try update fields in requisition:$")
   public void tryUpdateFieldsInRequisition(DataTable argsList) throws Throwable {
 
-    if (requisition == null) {
+    if (requisition == null || !requisition.get("id").equals(requisitionId)) {
       JSONParser parser = new JSONParser();
       Object object = parser.parse(requisitionResponse.asString());
       requisition = (JSONObject) object;
@@ -179,6 +191,60 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/reject");
+  }
+
+  @When("^I try to get period with id:$")
+  public void tryGetPeriod(DataTable argsList) throws ParseException {
+    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    for (Map map : data) {
+      periodResponse = given()
+          .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+          .contentType(ContentType.JSON)
+          .when()
+          .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + map.get("periodId"));
+    }
+  }
+
+  @Then("^I should get response with the period id$")
+  public void shouldGetResponseWithThePeriodId() {
+    periodResponse
+        .then()
+        .contentType(ContentType.JSON)
+        .body("id", notNullValue());
+    periodId = from(periodResponse.asString()).get("id");
+  }
+
+  @When("^I try update period to actual date$")
+  public void tryUpdateDateInPeriod() throws ParseException {
+    if (period == null) {
+      JSONParser parser = new JSONParser();
+      Object object = parser.parse(periodResponse.asString());
+      period = (JSONObject) object;
+    }
+    period.replace("startDate", LocalDate.now().toString());
+    period.replace("endDate", LocalDate.now().plusDays(30).toString());
+
+    periodResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .contentType(ContentType.JSON)
+        .body(period.toJSONString())
+        .when()
+        .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + periodId);
+  }
+
+  @When("^I try to delete initiated requisition$")
+  public void tryDeleteRequisition() {
+    requisitionResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .delete(BASE_URL_OF_REQUISITION_SERVICE + requisitionId);
+  }
+
+  @Then("^I should get response of deleted requisition$")
+  public void shouldGetResponseWithDeletedRequisition() {
+    requisitionResponse
+        .then()
+        .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
