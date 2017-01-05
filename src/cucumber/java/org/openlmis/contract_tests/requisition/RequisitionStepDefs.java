@@ -28,7 +28,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class RequisitionStepDefs {
 
@@ -49,7 +48,8 @@ public class RequisitionStepDefs {
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
-  private final static Logger LOGGER = Logger.getLogger(RequisitionStepDefs.class.getName());
+  private static final String INCORRECT_PERIOD_ERROR =
+      "Error occurred while initiating requisition - incorrect suggested period.";
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
@@ -216,20 +216,21 @@ public class RequisitionStepDefs {
 
   @When("^I try update period to actual date$")
   public void tryUpdateDateInPeriod() throws ParseException {
-    if (period == null) {
-      JSONParser parser = new JSONParser();
-      Object object = parser.parse(periodResponse.asString());
-      period = (JSONObject) object;
-    }
-    period.replace("startDate", LocalDate.now().toString());
-    period.replace("endDate", LocalDate.now().plusDays(30).toString());
+    tryUpdatePeriod(0);
+  }
 
-    periodResponse = given()
-        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .contentType(ContentType.JSON)
-        .body(period.toJSONString())
-        .when()
-        .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + periodId);
+  @When("^I try update period to future date$")
+  public void tryUpdateDateToFutureDayInPeriod() throws ParseException {
+    tryUpdatePeriod(120);
+  }
+
+  @Then("^I should get response of incorrect period$")
+  public void shouldGetResponseOfIncorrectPeriod() {
+    requisitionResponse
+        .then()
+        .statusCode(HttpStatus.SC_BAD_REQUEST)
+        .body("message",
+            is(INCORRECT_PERIOD_ERROR));
   }
 
   @When("^I try to delete initiated requisition$")
@@ -256,6 +257,23 @@ public class RequisitionStepDefs {
       JSONObject requisitionLineAsJson = (JSONObject) requisitionLine;
       requisitionLineAsJson.replace(keyToUpdate, newValue);
     }
+  }
+
+  private void tryUpdatePeriod(int daysToAdd) throws ParseException {
+    if (period == null) {
+      JSONParser parser = new JSONParser();
+      Object object = parser.parse(periodResponse.asString());
+      period = (JSONObject) object;
+    }
+    period.replace("startDate", LocalDate.now().plusDays(daysToAdd).toString());
+    period.replace("endDate", LocalDate.now().plusDays(daysToAdd + 30).toString());
+
+    periodResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .contentType(ContentType.JSON)
+        .body(period.toJSONString())
+        .when()
+        .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + periodId);
   }
 
   @After
