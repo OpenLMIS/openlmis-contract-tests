@@ -112,8 +112,7 @@ public class RequisitionStepDefs {
 
     if (requisition == null || !requisition.get("id").equals(requisitionId)) {
       JSONParser parser = new JSONParser();
-      Object object = parser.parse(requisitionResponse.asString());
-      requisition = (JSONObject) object;
+      requisition = (JSONObject) parser.parse(requisitionResponse.asString());
     }
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
@@ -136,8 +135,7 @@ public class RequisitionStepDefs {
   public void shouldGetUpdatedRequisition(DataTable argsList) throws ParseException {
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
     JSONParser parser = new JSONParser();
-    Object object = parser.parse(requisitionResponse.asString());
-    JSONObject requisition = (JSONObject) object;
+    JSONObject requisition = (JSONObject) parser.parse(requisitionResponse.asString());
     Object requisitionLineItems = requisition.get(("requisitionLineItems"));
     JSONArray requisitionLines = (JSONArray) requisitionLineItems;
 
@@ -214,7 +212,7 @@ public class RequisitionStepDefs {
     periodId = from(periodResponse.asString()).get("id");
   }
 
-  @When("^I try update period to actual date$")
+  @When("^I try update period to current date$")
   public void tryUpdateDateInPeriod() throws ParseException {
     tryUpdatePeriod(0);
   }
@@ -262,8 +260,7 @@ public class RequisitionStepDefs {
   private void tryUpdatePeriod(int daysToAdd) throws ParseException {
     if (period == null) {
       JSONParser parser = new JSONParser();
-      Object object = parser.parse(periodResponse.asString());
-      period = (JSONObject) object;
+      period = (JSONObject) parser.parse(periodResponse.asString());
     }
     period.replace("startDate", LocalDate.now().plusDays(daysToAdd).toString());
     period.replace("endDate", LocalDate.now().plusDays(daysToAdd + 30).toString());
