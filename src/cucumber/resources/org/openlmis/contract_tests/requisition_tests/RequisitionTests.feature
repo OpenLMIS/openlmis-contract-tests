@@ -77,6 +77,9 @@ Feature: Requisition Tests
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
+
+    When I try to get requisition with id
+    Then I should get response of not found
     And I logout
 
 
@@ -111,7 +114,7 @@ Feature: Requisition Tests
       | 516ac930-0d28-49f5-a178-64764e22b236 |
     Then I should get response with the period id
 
-    #Now periods in demo data are set on 2017.
+    #Now periods in demo data are set to current year.
     #Update period to current date.
     #Period must contains current date.
     When I try update period to current date
@@ -216,6 +219,9 @@ Feature: Requisition Tests
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
+
+    When I try to get requisition with id
+    Then I should get response of not found
     And I logout
 
 

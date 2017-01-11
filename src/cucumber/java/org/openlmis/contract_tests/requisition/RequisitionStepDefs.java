@@ -246,6 +246,13 @@ public class RequisitionStepDefs {
         .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
+  @Then("^I should get response of not found$")
+  public void shouldGetResponseOfNotFound() {
+    requisitionResponse
+        .then()
+        .statusCode(HttpStatus.SC_NOT_FOUND);
+  }
+
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
                                                 String keyToUpdate, Object newValue) {
     Object requisitionLineItems = requisition.get(("requisitionLineItems"));
