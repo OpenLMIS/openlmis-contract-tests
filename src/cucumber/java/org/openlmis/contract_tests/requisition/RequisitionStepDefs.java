@@ -253,6 +253,16 @@ public class RequisitionStepDefs {
         .statusCode(HttpStatus.SC_NOT_FOUND);
   }
 
+  @When("^I try to convert requisition to order$")
+  public void tryConvertRequisitionToOrder() {
+    requisitionResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .contentType(ContentType.JSON)
+        .body(createBodyForConvertToOrder())
+        .post(BASE_URL_OF_REQUISITION_SERVICE + "convertToOrder");
+  }
+
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
                                                 String keyToUpdate, Object newValue) {
     Object requisitionLineItems = requisition.get(("requisitionLineItems"));
@@ -278,6 +288,16 @@ public class RequisitionStepDefs {
         .body(period.toJSONString())
         .when()
         .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + periodId);
+  }
+
+  private JSONArray createBodyForConvertToOrder() {
+    JSONObject json = new JSONObject();
+    json.put("requisitionId", requisitionId);
+    //supplyingDepot from demo-data
+    json.put("supplyingDepotId", "19121381-9f3d-4e77-b9e5-d3f59fc1639e");
+    JSONArray array = new JSONArray();
+    array.add(json);
+    return array;
   }
 
   @After
