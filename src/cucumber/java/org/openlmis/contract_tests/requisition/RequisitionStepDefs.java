@@ -34,6 +34,7 @@ public class RequisitionStepDefs {
   private Response requisitionResponse;
   private Response periodResponse;
   private String requisitionId;
+  private String supervisoryNodeId;
   private String periodId;
   private JSONObject requisition;
   private JSONObject period;
@@ -54,7 +55,7 @@ public class RequisitionStepDefs {
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
-
+  
   @Before
   public void setUp() throws InitialDataException {
     databaseConnection = new TestDatabaseConnection();
@@ -109,11 +110,14 @@ public class RequisitionStepDefs {
 
   @When("^I try update fields in requisition:$")
   public void tryUpdateFieldsInRequisition(DataTable argsList) throws Throwable {
-
     if (requisition == null || !requisition.get("id").equals(requisitionId)) {
       JSONParser parser = new JSONParser();
       requisition = (JSONObject) parser.parse(requisitionResponse.asString());
     }
+    if (supervisoryNodeId != null) {
+      requisition.replace("supervisoryNode", null, supervisoryNodeId);
+    }
+
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
     for (Map map : data) {
@@ -173,6 +177,8 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/authorize");
+
+    supervisoryNodeId = from(requisitionResponse.asString()).get("supervisoryNode");
   }
 
   @When("^I try to approve a requisition$")
