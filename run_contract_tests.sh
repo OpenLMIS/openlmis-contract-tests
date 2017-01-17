@@ -14,6 +14,22 @@ sed -e "s/VIRTUAL_HOST=localhost/$ip/g" -i .env
 ip="CONSUL_HOST=consul"
 sed -e "s/CONSUL_HOST=localhost/$ip/g" -i .env
 
+#change MAIL_HOST value from localhost to smtp.gmail.com
+mail="MAIL_HOST=smtp.gmail.com"
+sed -e "s/MAIL_HOST=localhost/$mail/g" -i .env
+
+#change MAIL_PORT value from 25 to 465
+mail="MAIL_PORT=465"
+sed -e "s/MAIL_PORT=25/$mail/g" -i .env
+
+#change MAIL_USERNAME value from noreply@openlmis.org to contract.tests@gmail.com
+mail="MAIL_USERNAME=contract.tests@gmail.com"
+sed -e "s/MAIL_USERNAME=noreply@openlmis.org/$mail/g" -i .env
+
+#change MAIL_PASSWORD value from "" to olmis1234
+mail="MAIL_PASSWORD=olmis1234"
+sed -e "s/MAIL_PASSWORD=/$mail/g" -i .env
+
 #run docker file
 /usr/local/bin/docker-compose run contract_tests
 
