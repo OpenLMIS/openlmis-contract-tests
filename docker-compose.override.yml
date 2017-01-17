@@ -16,6 +16,7 @@ services:
     - requisition-refui
     - referencedata
     - notification
+    - fulfillment
 
     entrypoint:
       - 'gradle'
@@ -24,7 +25,8 @@ services:
       - '-Pcontainers=
         http://${VIRTUAL_HOST}/auth
         ,http://${VIRTUAL_HOST}/requisition
-        ,http://${VIRTUAL_HOST}/referencedata'
+        ,http://${VIRTUAL_HOST}/referencedata
+        ,http://${VIRTUAL_HOST}/fulfillment'
       - 'cucumber'
       - '-Ptags=@RequisitionTests'
 #the programs end point has been removed from requisition service
