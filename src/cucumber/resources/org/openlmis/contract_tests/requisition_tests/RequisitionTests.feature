@@ -17,12 +17,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 2                     | 3                | 1                 | 2                 | 5                     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 2                     | 3                | 1                 | 2                 | 5                     | 5     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     | 5     |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -59,12 +59,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 7                     | 3                | 3                 | 4                 | 10                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 7                     | 3                | 3                 | 4                 | test                         | 10                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 7                     | 3                | 3                 | 4                 | 10                    | 10    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 10    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -99,12 +99,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 20                    | 5                | 21                | 22                | 25                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 20                    | 5                | 21                | 22                | 25                    | 25    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -130,12 +130,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 15                    | 15               | 6                 | 7                 | 30                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 15                    | 15               | 6                 | 7                 | test                         | 30                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 15                    | 15               | 6                 | 7                 | 30                    | 30    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 30    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -173,12 +173,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 5                     | 13               | 2                 | 7                 | 18                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 5                     | 13               | 2                 | 7                 | test                         | 18                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 5                     | 13               | 2                 | 7                 | 18                    | 18    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 5                     | 13               | 2                 | 7                 | test                         | 18                    | 18    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -201,12 +201,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 12                    | 20               | 8                 | 9                 | 32                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 12                    | 20               | 8                 | 9                 | 32                    | 32    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 32    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -242,12 +242,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 20                    | 5                | 21                | 22                | 25                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 20                    | 5                | 21                | 22                | 25                    | 25    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -281,12 +281,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 30                    | 5                | 0                 | 8                 | 35                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 30                    | 5                | 0                 | 8                 | test                         | 35                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 30                    | 5                | 0                 | 8                 | 35                    | 35    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 30                    | 5                | 0                 | 8                 | test                         | 35                    | 35    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -304,12 +304,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 1                     | 1                | 16                | 17                | 2                     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 1                     | 1                | 16                | 17                | test                         | 2                     |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 1                     | 1                | 16                | 17                | 2                     | 2     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 1                     | 1                | 16                | 17                | test                         | 2                     | 2     |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -335,12 +335,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 2                     | 2                | 2                 | 2                 | 4                     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 2                     | 2                | 2                 | 2                 | test                         | 4                     |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 2                     | 2                | 2                 | 2                 | 4                     | 4     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 4     |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
@@ -376,12 +376,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity |
-      | 9                     | 2                | 0                 | 5                 | 11                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | totalConsumedQuantity | total |
-      | 9                     | 2                | 0                 | 5                 | 11                    | 11    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
