@@ -56,7 +56,7 @@ public class RequisitionStepDefs {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
   
-  @Before
+  @Before("@RequisitionTests")
   public void setUp() throws InitialDataException {
     databaseConnection = new TestDatabaseConnection();
     //Because we have some initial data (bootstrap). We must remove it before loader.
@@ -306,7 +306,7 @@ public class RequisitionStepDefs {
     return array;
   }
 
-  @After
+  @After("@RequisitionTests")
   public void cleanUp() throws InitialDataException {
     databaseConnection.removeData();
   }
