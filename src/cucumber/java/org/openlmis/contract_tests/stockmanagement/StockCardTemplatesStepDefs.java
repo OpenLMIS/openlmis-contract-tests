@@ -22,6 +22,8 @@ public class StockCardTemplatesStepDefs {
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
+  private static final String STOCKMANAGEMENT_ERROR_PROGRAM_NOT_FOUND = "stockmanagement.error.program.notFound";
+
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
@@ -62,6 +64,14 @@ public class StockCardTemplatesStepDefs {
         .statusCode(HttpStatus.SC_CREATED);
   }
 
+  @Then("^I should get response of incorrect body format with program$")
+  public void IShouldGetResponseOfIncorrectBodyFormat() throws Throwable {
+    createTemplateResponse
+        .then()
+        .body("messageKey", is(STOCKMANAGEMENT_ERROR_PROGRAM_NOT_FOUND))
+        .statusCode(HttpStatus.SC_BAD_REQUEST);
+  }
+
   @When("^I try to get a stock card template with programId: (.*), facilityTypeId: (.*)$")
   public void ITryToGetAStockCardTemplate(String programId, String facilityTypeId) throws Throwable {
     getTemplateResponse = given()
@@ -81,5 +91,12 @@ public class StockCardTemplatesStepDefs {
         .body("programId", is(programId))
         .body("facilityTypeId", is(facilityTypeId))
         .statusCode(HttpStatus.SC_OK);
+  }
+
+  @Then("^I should get response of stock card template not found$")
+  public void IShouldGetResponseOfStockCardTemplateNotFound() throws Throwable {
+    getTemplateResponse
+        .then()
+        .statusCode(HttpStatus.SC_NOT_FOUND);
   }
 }
