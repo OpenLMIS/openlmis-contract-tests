@@ -56,6 +56,7 @@ Run with a script: "run_contract_tests.sh".
 Such as: `./run_contract_tests.sh TBD.yml -v`
 
 "TBD.yml" - parameter -> run with specific file name (e.g., "docker-compose.requisition.yml" OR "docker-compose.stockmanagment.yml").
+
 "-v" - parameter ->  run clean up after tests.
 
 Script automatically pull actual images before contract tests.
