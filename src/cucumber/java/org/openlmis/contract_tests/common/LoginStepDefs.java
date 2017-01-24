@@ -14,7 +14,12 @@ public class LoginStepDefs {
 
   @Given("^I have logged in as (.*)$")
   public void haveLoggedInAs(String userName) throws Throwable {
+
     String plainCreds = "trusted-client:secret";
+    if (userName.equals("administrator")) {
+      plainCreds = "user-client:changeme";
+    }
+
     byte[] plainCredsBytes = plainCreds.getBytes();
     byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
     String base64Creds = new String(base64CredsBytes);
