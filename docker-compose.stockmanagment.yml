@@ -1,0 +1,41 @@
+version: "2"
+services:
+
+  stockmanagement:
+    image: openlmis/stockmanagement:1.0.0-SNAPSHOT
+    env_file: .env
+    environment:
+      JAVA_OPTS: '-Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  contract_tests:
+    image: openlmis/dev
+    env_file: .env
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+    - db
+    - log
+    - nginx
+    - consul
+    - auth
+    - referencedata
+    - stockmanagement
+
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=
+        http://${VIRTUAL_HOST}/stockmanagement
+        ,http://${VIRTUAL_HOST}/auth
+        ,http://${VIRTUAL_HOST}/referencedata'
+      - 'cucumber'
+      - '-Ptags=@StockCardTemplatesTests'
+
+volumes:
+  gradlecache:
+    external: false

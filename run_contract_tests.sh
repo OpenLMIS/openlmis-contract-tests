@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+FILENAME=${1}
+
 #download env file
 curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
 
 #pull all images
-docker-compose pull
+/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} pull
 
 #change VIRTUAL_HOST value from localhost to nginx
 ip="VIRTUAL_HOST=nginx"
@@ -31,7 +33,7 @@ mail="MAIL_PASSWORD=olmis1234"
 sed -e "s/MAIL_PASSWORD=/$mail/g" -i .env
 
 #run docker file
-/usr/local/bin/docker-compose run contract_tests
+/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} run contract_tests
 
 #cleaning after tests
 contract_test_result=$?
@@ -41,7 +43,7 @@ if [ $contract_test_result -ne 0 ]; then
   /usr/local/bin/docker-compose logs
 fi
 
-/usr/local/bin/docker-compose down $1
+/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down $2
 #don't remove the $1 in the line above
 #CI will append -v to it, so all dangling volumes are removed after the job runs
 
