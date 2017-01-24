@@ -31,10 +31,9 @@ cucumber {
     glueDirs = ['src/cucumber/']
     featureDirs = ['src/cucumber/resources/']
 
+
     def tagsArgs = project.getProperty('tags')
-    if (tagsArgs != null) {
-        tags = tagsArgs.split(',')
-    }
+    tags = Collections.singletonList(tagsArgs)
 }
 
 task waitFor {
