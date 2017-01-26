@@ -5,7 +5,7 @@ services:
     image: openlmis/requisition:3.0.0-SNAPSHOT
     env_file: .env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -21,7 +21,7 @@ services:
     image: openlmis/notification:3.0.0-SNAPSHOT
     env_file: .env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -30,7 +30,7 @@ services:
     image: openlmis/fulfillment:3.0.0-SNAPSHOT
     env_file: .env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
