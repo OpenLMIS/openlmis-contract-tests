@@ -20,7 +20,7 @@ services:
     image: openlmis/referencedata:3.0.0-SNAPSHOT
     env_file: .env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+      JAVA_OPTS: '-Xmx128m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -29,7 +29,7 @@ services:
     image: openlmis/auth:3.0.0-SNAPSHOT
     env_file: .env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+      JAVA_OPTS: '-Xmx128m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
