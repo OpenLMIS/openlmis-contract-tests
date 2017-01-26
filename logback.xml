@@ -22,6 +22,10 @@
     <logger name="org.openlmis.requisition" level="DEBUG" additivity="false">
         <appender-ref ref="SYSLOG"/>
     </logger>
+    
+    <logger name="org.hibernate.tool.hbm2ddl" level="OFF" additivity="false">
+        <appender-ref ref="SYSLOG"/>
+    </logger>
 
     <!-- Define the root logger log level -->
     <root level="WARN">
