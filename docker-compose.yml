@@ -4,6 +4,7 @@ services:
   consul:
     command: -server -bootstrap
     image: gliderlabs/consul-server
+    mem_limit: 128m
     ports:
       - "8300"
       - "8400"
@@ -14,11 +15,13 @@ services:
     image: openlmis/nginx
     env_file: .env
     links: [consul]
+    mem_limit: 128m
     # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
     image: openlmis/referencedata:3.0.0-SNAPSHOT
     env_file: .env
+    mem_limit: 128m
     environment:
       JAVA_OPTS: '-Xmx128m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
@@ -28,6 +31,7 @@ services:
   auth:
     image: openlmis/auth:3.0.0-SNAPSHOT
     env_file: .env
+    mem_limit: 128m
     environment:
       JAVA_OPTS: '-Xmx128m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
@@ -36,11 +40,13 @@ services:
 
 
   db:
+    mem_limit: 128m
     image: openlmis/postgres
     env_file: .env
     depends_on: [consul]
 
   log:
+    mem_limit: 128m
     image: openlmis/rsyslog
     volumes:
       - '../logs/requisition:/var/log'
