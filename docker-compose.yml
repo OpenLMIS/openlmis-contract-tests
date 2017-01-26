@@ -15,15 +15,15 @@ services:
     image: openlmis/nginx
     env_file: .env
     links: [consul]
-    mem_limit: 128m
+    mem_limit: 256m
     # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
     image: openlmis/referencedata:3.0.0-SNAPSHOT
     env_file: .env
-    mem_limit: 128m
+    mem_limit: 256m
     environment:
-      JAVA_OPTS: '-Xmx128m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -31,22 +31,22 @@ services:
   auth:
     image: openlmis/auth:3.0.0-SNAPSHOT
     env_file: .env
-    mem_limit: 128m
+    mem_limit: 256m
     environment:
-      JAVA_OPTS: '-Xmx128m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
 
   db:
-    mem_limit: 128m
+    mem_limit: 256m
     image: openlmis/postgres
     env_file: .env
     depends_on: [consul]
 
   log:
-    mem_limit: 128m
+    mem_limit: 256m
     image: openlmis/rsyslog
     volumes:
       - '../logs/requisition:/var/log'
