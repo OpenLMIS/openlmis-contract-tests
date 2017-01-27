@@ -21,7 +21,7 @@ services:
   referencedata:
     image: openlmis/referencedata:3.0.0-SNAPSHOT
     env_file: .env
-    mem_limit: 320m
+    mem_limit: 512m
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:

@@ -3,7 +3,7 @@ services:
 
   requisition:
     image: openlmis/requisition:3.0.0-SNAPSHOT
-    mem_limit: 320m
+    mem_limit: 512m
     env_file: .env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
@@ -13,7 +13,7 @@ services:
 
   requisition-refui:
     image: openlmis/requisition-refui:3.0.0-SNAPSHOT
-    mem_limit: 320m
+    mem_limit: 512m
     env_file: .env
     environment:
       # Changing the virtual location affects loading of the assets on UI. Handle with care.
@@ -21,7 +21,7 @@ services:
 
   notification:
     image: openlmis/notification:3.0.0-SNAPSHOT
-    mem_limit: 320m
+    mem_limit: 512m
     env_file: .env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
@@ -30,7 +30,7 @@ services:
     depends_on: [log]
 
   fulfillment:
-    mem_limit: 320m
+    mem_limit: 512m
     image: openlmis/fulfillment:3.0.0-SNAPSHOT
     env_file: .env
     environment:
