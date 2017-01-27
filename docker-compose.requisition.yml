@@ -69,6 +69,8 @@ services:
         ,http://${VIRTUAL_HOST}/fulfillment'
       - 'cucumber'
       - '-Ptags=@RequisitionTests'
+      - '--stacktrace'
+      - '--debug'
 #the programs end point has been removed from requisition service
 #please replace the @admin with new test cases
 #      - '-Ptags=@notImplementedYet'
