@@ -40,7 +40,7 @@ services:
     depends_on: [log]
 
   contract_tests:
-    mem_limit: 512m
+    mem_limit: 768m
     image: openlmis/dev
     environment:
       GRADLE_OPTS: '-Xmx256m'
