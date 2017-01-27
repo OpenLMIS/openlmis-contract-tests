@@ -15,13 +15,13 @@ services:
     image: openlmis/nginx
     env_file: .env
     links: [consul]
-    mem_limit: 256m
+    mem_limit: 128m
     # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
     image: openlmis/referencedata:3.0.0-SNAPSHOT
     env_file: .env
-    mem_limit: 256m
+    mem_limit: 320m
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
@@ -31,7 +31,7 @@ services:
   auth:
     image: openlmis/auth:3.0.0-SNAPSHOT
     env_file: .env
-    mem_limit: 512m
+    mem_limit: 320m
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
     volumes:
@@ -46,7 +46,7 @@ services:
     depends_on: [consul]
 
   log:
-    mem_limit: 256m
+    mem_limit: 128m
     image: openlmis/rsyslog
     volumes:
       - '../logs/requisition:/var/log'
