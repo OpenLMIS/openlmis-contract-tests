@@ -379,7 +379,7 @@ Feature: Requisition Tests
 
     When I try to get requisition with id
     Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                            | emergency |
+      | programId                            | facilityId                           | periodId                             | emergency |
       | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
@@ -412,4 +412,36 @@ Feature: Requisition Tests
     When I try to convert requisition to order
     And I try to get requisition with id
     Then I should get a requisition with "RELEASED" status
+    And I logout
+
+
+  Scenario: The supervisory node should be assigned to a basic requisition after authorizing it
+    Given I have logged in as StoreInCharge
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+    And I should get a requisition without supervisoryNode
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+
+    When I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
     And I logout

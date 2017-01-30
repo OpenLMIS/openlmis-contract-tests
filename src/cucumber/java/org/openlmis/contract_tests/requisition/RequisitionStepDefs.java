@@ -5,6 +5,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
@@ -18,6 +19,7 @@ import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
+import org.hamcrest.Matcher;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -180,11 +182,12 @@ public class RequisitionStepDefs {
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/authorize");
   }
 
-  @And("I should get a requisition with supervisoryNode$")
-  public void shouldGetRequisitionWithSupervisoryNode() {
+  @And("^I should get a requisition with(out|) supervisoryNode$")
+  public void shouldGetRequisitionWithSupervisoryNode(String suffix) {
+    Matcher matcher = (suffix.isEmpty()) ? notNullValue() : nullValue();
     requisitionResponse
         .then()
-        .body("supervisoryNode", notNullValue());
+        .body("supervisoryNode", matcher);
 
     supervisoryNodeId = from(requisitionResponse.asString()).get("supervisoryNode");
   }
