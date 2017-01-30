@@ -12,6 +12,7 @@ import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfSer
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
@@ -55,7 +56,7 @@ public class RequisitionStepDefs {
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
-  
+
   @Before("@RequisitionTests")
   public void setUp() throws InitialDataException {
     databaseConnection = new TestDatabaseConnection();
@@ -177,6 +178,13 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/authorize");
+  }
+
+  @And("I should get a requisition with supervisoryNode$")
+  public void shouldGetRequisitionWithSupervisoryNode() {
+    requisitionResponse
+        .then()
+        .body("supervisoryNode", notNullValue());
 
     supervisoryNodeId = from(requisitionResponse.asString()).get("supervisoryNode");
   }

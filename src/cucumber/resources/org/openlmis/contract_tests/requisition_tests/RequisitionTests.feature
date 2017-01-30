@@ -29,6 +29,7 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -71,9 +72,11 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
 
     When I try to reject authorized requisition
     Then I should get a requisition with "INITIATED" status
+    And I should get a requisition with supervisoryNode
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
@@ -142,6 +145,7 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -213,9 +217,11 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
 
     When I try to reject authorized requisition
     Then I should get a requisition with "INITIATED" status
+    And I should get a requisition with supervisoryNode
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
@@ -316,6 +322,7 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -347,6 +354,7 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -388,6 +396,7 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
