@@ -443,5 +443,5 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout

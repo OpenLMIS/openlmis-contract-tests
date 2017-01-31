@@ -167,11 +167,11 @@ public class RequisitionStepDefs {
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/submit");
   }
 
-  @Then("^I should get a requisition with \"([^\"]*)\" status$")
-  public void shouldGetResponseWithTheRequisitionStatus(String status) {
+  @Then("^I should get a requisition with \"([^\"]*)\" ([a-zA-Z]+)$")
+  public void shouldGetResponseWithSpecifiedFieldValue(String value, String fieldName) {
     requisitionResponse
         .then()
-        .body("status", is(status));
+        .body(fieldName, is(value));
   }
 
   @When("^I try to authorize a requisition$")
