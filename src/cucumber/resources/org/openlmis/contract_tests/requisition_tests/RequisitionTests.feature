@@ -29,7 +29,6 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -58,6 +57,7 @@ Feature: Requisition Tests
       | programId                            | facilityId                           | periodId                             | emergency |
       | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
+    And I should get a requisition without supervisoryNode
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
@@ -72,11 +72,11 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
 
     When I try to reject authorized requisition
     Then I should get a requisition with "INITIATED" status
-    And I should get a requisition with supervisoryNode
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
@@ -145,7 +145,6 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -203,6 +202,7 @@ Feature: Requisition Tests
       | programId                            | facilityId                           | periodId                             | emergency |
       | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     And I should get a requisition with "INITIATED" status
+    And I should get a requisition without supervisoryNode
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
@@ -217,11 +217,11 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
 
     When I try to reject authorized requisition
     Then I should get a requisition with "INITIATED" status
-    And I should get a requisition with supervisoryNode
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
@@ -322,7 +322,6 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -354,7 +353,6 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -396,7 +394,6 @@ Feature: Requisition Tests
 
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with supervisoryNode
 
     When I try update fields in requisition:
       | approvedQuantity |
@@ -451,6 +448,35 @@ Feature: Requisition Tests
     Given I have logged in as StoreInCharge
 
     When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+
+    When I try to get period with id:
+      | periodId                             |
+      | 516ac930-0d28-49f5-a178-64764e22b236 |
+    Then I should get response with the period id
+
+    When I try update period to current date
+    And I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
       | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true     |
     Then I should get response with the initiated requisition's id

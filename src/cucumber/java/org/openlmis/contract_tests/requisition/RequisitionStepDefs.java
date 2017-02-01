@@ -180,6 +180,8 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/authorize");
+
+    supervisoryNodeId = from(requisitionResponse.asString()).get("supervisoryNode");
   }
 
   @And("^I should get a requisition with(out|) supervisoryNode$")
