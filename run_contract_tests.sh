@@ -41,6 +41,8 @@ contract_test_result=$?
 if [ $contract_test_result -ne 0 ]; then
   echo "========== Logging output from containers =========="
   /usr/local/bin/docker-compose logs
+  echo "========== Logging nginx settings =========="
+  /usr/local/bin/docker-compose exec nginx cat /etc/nginx/conf.d/default.conf
 fi
 
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down $2
