@@ -12,7 +12,7 @@ INSERT INTO referencedata.rights (id, name, type) VALUES ('bffa2de2-dc2a-47dd-b1
 INSERT INTO referencedata.rights (id, name, type) VALUES ('feb4c0b8-f6d2-4289-b29d-811c1d0b2863', 'REQUISITION_AUTHORIZE', 'SUPERVISION');
 INSERT INTO referencedata.rights (id, name, type) VALUES ('c3eb5df0-c3ac-4e70-a978-02827462f60e', 'REQUISITION_DELETE', 'SUPERVISION');
 INSERT INTO referencedata.rights (id, name, type) VALUES ('e101d2b8-6a0f-4af6-a5de-a9576b4ebc50', 'REQUISITION_VIEW', 'SUPERVISION');
-INSERT INTO referencedata.rights (id, name, type) VALUES ('65626c3d-513f-4255-93fd-808709860594', 'FULFILLMENT_TRANSFER_ORDER', 'ORDER_FULFILLMENT');
+INSERT INTO referencedata.rights (id, name, type) VALUES ('65626c3d-513f-4255-93fd-808709860594', 'ORDERS_TRANSFER', 'ORDER_FULFILLMENT');
 INSERT INTO referencedata.rights (id, name, type) VALUES ('24df2715-850c-4336-b650-90eb78c544bf', 'PODS_MANAGE', 'ORDER_FULFILLMENT');
 INSERT INTO referencedata.rights (id, name, type) VALUES ('60580166-ab1c-464a-8401-08384efc57b7', 'ORDERS_EDIT', 'ORDER_FULFILLMENT');
 INSERT INTO referencedata.geographic_levels (SELECT * FROM json_populate_recordset(NULL::referencedata.geographic_levels, '[{"id":"6b78e6c6-292e-4733-bb9c-3d802ad61206","code":"Country","levelnumber":1},{"id":"9b497d87-cdd9-400e-bb04-fae0bf6a9491","code":"Region","levelnumber":2},{"id":"93c05138-4550-4461-9e8a-79d5f050c223","code":"District","levelnumber":3},{"id":"90e35999-a64f-4312-ba8f-bc13a1311c75","code":"City","levelnumber":4}]'));
