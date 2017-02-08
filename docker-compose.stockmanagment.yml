@@ -36,6 +36,16 @@ services:
       - 'cucumber'
       - '-Ptags=@StockCardTemplatesTests'
 
+  referencedata:
+    image: openlmis/referencedata:3.0.0-SNAPSHOT
+    env_file: .env
+    mem_limit: 512m
+    environment:
+      JAVA_OPTS: '-Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
 volumes:
   gradlecache:
     external: false
