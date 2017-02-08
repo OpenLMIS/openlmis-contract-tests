@@ -25,7 +25,7 @@ public class TestDatabaseConnection {
   private static final String FILE_NAME_SUFFIX = "_input.sql";
 
   List<String> SCHEMAS = Collections.unmodifiableList(
-      Arrays.asList("referencedata", "requisition", "auth"));
+      Arrays.asList("referencedata", "requisition", "auth", "fulfillment"));
 
   public void loadData() throws InitialDataException {
     Connection connection = null;
