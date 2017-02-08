@@ -62,10 +62,10 @@ services:
       - 'clean'
       - 'waitFor'
       - '-Pcontainers=
-        http://${VIRTUAL_HOST}/auth
-        ,http://${VIRTUAL_HOST}/requisition
-        ,http://${VIRTUAL_HOST}/referencedata
-        ,http://${VIRTUAL_HOST}/fulfillment'
+        ${BASE_URL}/auth
+        ,${BASE_URL}/requisition
+        ,${BASE_URL}/referencedata
+        ,${BASE_URL}/fulfillment'
       - 'cucumber'
       - '-Ptags=@RequisitionTests'
       - '--stacktrace'

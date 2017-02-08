@@ -30,9 +30,9 @@ services:
       - 'clean'
       - 'waitFor'
       - '-Pcontainers=
-        http://${VIRTUAL_HOST}/stockmanagement
-        ,http://${VIRTUAL_HOST}/auth
-        ,http://${VIRTUAL_HOST}/referencedata'
+        ${BASE_URL}/stockmanagement
+        ,${BASE_URL}/auth
+        ,${BASE_URL}/referencedata'
       - 'cucumber'
       - '-Ptags=@StockCardTemplatesTests'
 

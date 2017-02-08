@@ -8,9 +8,9 @@ curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
 #pull all images
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} pull
 
-#change VIRTUAL_HOST value from localhost to nginx
-ip="VIRTUAL_HOST=nginx"
-sed -e "s/VIRTUAL_HOST=localhost/$ip/g" -i .env
+#change BASE_URL host value from localhost to nginx
+ip="BASE_URL=http:\/\/nginx"
+sed -e "s/BASE_URL=http:\/\/localhost/$ip/g" -i .env
 
 #change CONSUL_HOST value from localhost to consul
 ip="CONSUL_HOST=consul"

@@ -8,8 +8,6 @@ public class TestVariableReader {
     private static final String PASSWORD_SUFFIX = ".password";
     private static final String SERVICE_BASE_URL_SUFFIX = ".service.base.url";
 
-    private static final String VIRTUAL_HOST_SUFFIX = "http://"
-        + System.getenv("VIRTUAL_HOST");
     public static final Properties properties = new Properties();
 
     static {
@@ -25,6 +23,6 @@ public class TestVariableReader {
     }
 
     public static String baseUrlOfService(String serviceName) {
-        return VIRTUAL_HOST_SUFFIX + properties.getProperty(serviceName + SERVICE_BASE_URL_SUFFIX);
+        return System.getenv("BASE_URL") + properties.getProperty(serviceName + SERVICE_BASE_URL_SUFFIX);
     }
 }
