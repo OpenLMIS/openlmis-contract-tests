@@ -46,6 +46,16 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  auth:
+    image: openlmis/auth:3.0.0-SNAPSHOT
+    env_file: .env
+    mem_limit: 512m
+    environment:
+      JAVA_OPTS: '-Xmx512m -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
 volumes:
   gradlecache:
     external: false
