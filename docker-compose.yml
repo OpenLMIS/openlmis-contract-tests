@@ -33,7 +33,7 @@ services:
     env_file: .env
     mem_limit: 512m
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dspring.jpa.properties.hibernate.hbm2ddl.import_files=/bootstrap.sql,file:///demo-data/data.sql'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
