@@ -1,0 +1,49 @@
+version: "2"
+services:
+
+  notification:
+    image: openlmis/notification:3.0.0-SNAPSHOT
+    mem_limit: 512m
+    env_file: .env
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  contract_tests:
+    mem_limit: 768m
+    image: openlmis/dev
+    environment:
+      GRADLE_OPTS: '-Xmx256m'
+    env_file: .env
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+    - db
+    - log
+    - nginx
+    - consul
+    - auth
+    - referencedata
+    - notification
+
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=
+        ${BASE_URL}/auth
+        ,${BASE_URL}/referencedata'
+      - 'cucumber'
+      - '-Ptags=@UserTests'
+      - '--stacktrace'
+      - '--debug'
+#the programs end point has been removed from requisition service
+#please replace the @admin with new test cases
+#      - '-Ptags=@notImplementedYet'
+
+volumes:
+  gradlecache:
+    external: false
