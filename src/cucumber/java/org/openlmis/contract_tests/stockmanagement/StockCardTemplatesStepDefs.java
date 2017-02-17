@@ -1,16 +1,16 @@
 package org.openlmis.contract_tests.stockmanagement;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
-
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
+
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 
 public class StockCardTemplatesStepDefs {
 
@@ -29,7 +29,7 @@ public class StockCardTemplatesStepDefs {
   }
 
   @When("^I try to get the default stock card template")
-  public void ITryToGetTheDefaultStockCardTemplate() {
+  public void iTryToGetTheDefaultStockCardTemplate() {
     getTemplateResponse = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -38,14 +38,14 @@ public class StockCardTemplatesStepDefs {
   }
 
   @Then("^I should get the default stock card template")
-  public void IShouldGetTheDefaultStockCardTemplate() {
+  public void iShouldGetTheDefaultStockCardTemplate() {
     getTemplateResponse
         .then()
         .statusCode(HttpStatus.SC_OK);
   }
 
   @When("^I try to create a stock card template$")
-  public void ITryToCreateAStockCardTemplate(String bodyString) throws Throwable {
+  public void iTryToCreateAStockCardTemplate(String bodyString) throws Throwable {
     createTemplateResponse = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -54,7 +54,7 @@ public class StockCardTemplatesStepDefs {
   }
 
   @Then("^I should get response of created$")
-  public void IShouldGetResponseOfCreated() throws Throwable {
+  public void iShouldGetResponseOfCreated() throws Throwable {
     createTemplateResponse
         .then()
         .body("stockCardFields[0].name", is("packSize"))
@@ -65,7 +65,7 @@ public class StockCardTemplatesStepDefs {
   }
 
   @Then("^I should get response of incorrect body format with program$")
-  public void IShouldGetResponseOfIncorrectBodyFormat() throws Throwable {
+  public void iShouldGetResponseOfIncorrectBodyFormat() throws Throwable {
     createTemplateResponse
         .then()
         .body("messageKey", is(STOCKMANAGEMENT_ERROR_PROGRAM_NOT_FOUND))
@@ -73,7 +73,8 @@ public class StockCardTemplatesStepDefs {
   }
 
   @When("^I try to get a stock card template with programId: (.*), facilityTypeId: (.*)$")
-  public void ITryToGetAStockCardTemplate(String programId, String facilityTypeId) throws Throwable {
+  public void iTryToGetAStockCardTemplate(String programId, String facilityTypeId)
+      throws Throwable {
     getTemplateResponse = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -85,7 +86,8 @@ public class StockCardTemplatesStepDefs {
 
 
   @Then("^I should get a stock card template with programId: (.*), facilityTypeId: (.*)$")
-  public void IShouldGetAStockCardTemplate(String programId, String facilityTypeId) throws Throwable {
+  public void iShouldGetAStockCardTemplate(String programId, String facilityTypeId)
+      throws Throwable {
     getTemplateResponse
         .then()
         .body("programId", is(programId))
@@ -94,7 +96,7 @@ public class StockCardTemplatesStepDefs {
   }
 
   @Then("^I should get response of stock card template not found$")
-  public void IShouldGetResponseOfStockCardTemplateNotFound() throws Throwable {
+  public void iShouldGetResponseOfStockCardTemplateNotFound() throws Throwable {
     getTemplateResponse
         .then()
         .statusCode(HttpStatus.SC_NOT_FOUND);

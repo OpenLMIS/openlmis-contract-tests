@@ -2,7 +2,7 @@
 Feature: Stock Card Templates Tests
 
 
-  Scenario: administrator user should be able to get the default stock card template
+  Scenario: Administrator user should be able to get the default stock card template
     Given I have logged in as administrator
 
     When I try to get the default stock card template
@@ -10,7 +10,7 @@ Feature: Stock Card Templates Tests
     And I logout
 
 
-  Scenario: administrator user should be able to create a stock card templates
+  Scenario: Administrator user should be able to create a stock card templates
     Given I have logged in as administrator
 
     When I try to create a stock card template
@@ -130,7 +130,7 @@ Feature: Stock Card Templates Tests
     Then I should get response of incorrect body format with program
     And I logout
 
-  Scenario: administrator user should be able to get a specific stock card templates
+  Scenario: Administrator user should be able to get a specific stock card templates
     Given I have logged in as administrator
 
     When I try to get a stock card template with programId: dce17f2e-af3e-40ad-8e00-3496adef44c3, facilityTypeId: 663b1d34-cc17-4d60-9619-e553e45aa441

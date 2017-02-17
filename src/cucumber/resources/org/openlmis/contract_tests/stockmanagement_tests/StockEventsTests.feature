@@ -1,7 +1,7 @@
 @StockEventsTests
 Feature: Stock Events Tests
 
-  Scenario: storeroom manager user should be able to create stock event
+  Scenario: Storeroom manager user should be able to create stock event
     Given I have logged in as srmanager1
 
     When I try to create a stock event
@@ -46,7 +46,7 @@ Feature: Stock Events Tests
     Then I should get response of incorrect body with orderable
     And I logout
 
-  Scenario: user without create event permission should not be able to create event
+  Scenario: User without create event permission should not be able to create event
     Given I have logged in as administrator
 
     When I try to create a stock event
@@ -67,4 +67,4 @@ Feature: Stock Events Tests
       "documentNumber":"DN.1"
     }
     """
-    Then I should get response of incorrect user permission
+    Then I should get response of incorrect user permission of create events

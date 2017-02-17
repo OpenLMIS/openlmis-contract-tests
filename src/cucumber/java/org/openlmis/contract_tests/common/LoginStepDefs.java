@@ -16,7 +16,7 @@ public class LoginStepDefs {
   public void haveLoggedInAs(String userName) throws Throwable {
 
     String plainCreds = "trusted-client:secret";
-    if (userName.equals("administrator") || userName.equals("srmanager1")) {
+    if (userName.equals("administrator") || userName.contains("srmanager")) {
       plainCreds = "user-client:changeme";
     }
 
