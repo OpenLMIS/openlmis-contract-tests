@@ -35,6 +35,7 @@ services:
       - 'waitFor'
       - '-Pcontainers=
         ${BASE_URL}/auth
+        ,${BASE_URL}/notification
         ,${BASE_URL}/referencedata'
       - 'cucumber'
       - '-Ptags=@UserTests'
