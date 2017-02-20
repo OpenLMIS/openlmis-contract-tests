@@ -6,7 +6,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 project.ext {
-    cucumberVersion = '1.2.4'
+    cucumberVersion = '1.2.5'
     junitVersion = '4.12'
     restAssuredVersion = '3.0.0'
 }
