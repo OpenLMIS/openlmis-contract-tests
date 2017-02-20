@@ -656,3 +656,68 @@ Feature: Requisition Tests
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
+
+  Scenario: Total cost should be calculated properly and not change after status changes
+    Given I have logged in as srmanager1
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 432               | test                         | 11                    |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | packsToShip | pricePerPack | totalCost |
+      | 9                     | 2                | 0                 | 432               | test                         | 11                    | 5           | 5.23         | 26.15     |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I should get a updated requisition with:
+      | totalCost |
+      | 26.15     |
+    And I logout
+
+    When I have logged in as smanager1
+    When I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a updated requisition with:
+      | totalCost |
+      | 26.15     |
+    And I logout
+
+    When I have logged in as psupervisor
+    When I try update fields in requisition:
+      | approvedQuantity |
+      | 430              |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | approvedQuantity | totalCost |
+      | 430              | 26.15     |
+
+    When I try to approve a requisition
+    Then I should get a requisition with "APPROVED" status
+    And I should get a updated requisition with:
+      | totalCost |
+      | 26.15     |
+    And I logout
+
+    When I have logged in as wclerk1
+    And I try to convert requisition to order
+    Then I logout
+
+    When I have logged in as srmanager1
+    And I try to get requisition with id
+    Then I should get a requisition with "RELEASED" status
+    And I should get a updated requisition with:
+      | totalCost |
+      | 26.15     |
+    And I logout
