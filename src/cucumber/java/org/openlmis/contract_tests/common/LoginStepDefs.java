@@ -2,11 +2,16 @@ package org.openlmis.contract_tests.common;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 import static org.openlmis.contract_tests.common.TestVariableReader.passwordOf;
 
-import cucumber.api.java.en.Given;
 import org.apache.commons.codec.binary.Base64;
+
+import cucumber.api.java.en.Given;
 
 public class LoginStepDefs {
 
@@ -14,12 +19,9 @@ public class LoginStepDefs {
 
   @Given("^I have logged in as (.*)$")
   public void haveLoggedInAs(String userName) throws Throwable {
-
-    String plainCreds = "trusted-client:secret";
-    if (userName.equals("administrator") || userName.contains("srmanager")) {
-      plainCreds = "user-client:changeme";
-    }
-
+    String plainCreds = isNotBlank(userName)
+        ? "user-client:changeme"
+        : "trusted-client:secret";
     byte[] plainCredsBytes = plainCreds.getBytes();
     byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
     String base64Creds = new String(base64CredsBytes);
@@ -34,6 +36,11 @@ public class LoginStepDefs {
         .asString();
 
     ACCESS_TOKEN = from(tokenResponseString).get("access_token");
+    assertThat(
+        "Can't log as >" + userName + "< with password >" + passwordOf(userName) + "<",
+        ACCESS_TOKEN,
+        is(notNullValue())
+    );
   }
 
   @Given("^I logout$")

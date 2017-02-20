@@ -2,18 +2,18 @@
 Feature: Requisition Tests
 
 
-  Scenario: StoreInCharge user should be able to approve a requisition
-    Given I have logged in as StoreInCharge
+  Scenario: Program Supervisor user should be able to approve a requisition
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -26,11 +26,15 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to authorize a requisition
+    When I have logged in as smanager1
+    And I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I logout
 
-    When I try update fields in requisition:
+    When I have logged in as psupervisor
+    And I try update fields in requisition:
       | approvedQuantity |
       | 4                |
     And I try to get requisition with id
@@ -43,19 +47,58 @@ Feature: Requisition Tests
     And I logout
 
 
-  Scenario: StoreInCharge user should be able to reject authorized requisition
-  and delete initiated requisition
-    Given I have logged in as StoreInCharge
+  Scenario: Program Supervisor user should be able to reject authorized requisition
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+    And I should get a requisition without supervisoryNode
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 7                     | 3                | 3                 | 4                 | test                         | 10                    |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 10    |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    And I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    When I have logged in as psupervisor
+    When I try to reject authorized requisition
+    Then I should get a requisition with "INITIATED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    
+  Scenario: Storeroom Manager user should be able to delete initiated requisition
+    Given I have logged in as srmanager1
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
     And I should get a requisition without supervisoryNode
 
@@ -70,14 +113,6 @@ Feature: Requisition Tests
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
 
-    When I try to authorize a requisition
-    Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
-
-    When I try to reject authorized requisition
-    Then I should get a requisition with "INITIATED" status
-    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
-
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
 
@@ -86,19 +121,19 @@ Feature: Requisition Tests
     And I logout
 
 
-  Scenario: StoreInCharge user should be able to approve emergency requisition
-    Given I have logged in as StoreInCharge
+  Scenario: Program Supervisor user should be able to approve emergency requisition
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -111,7 +146,9 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
+    When I have logged in as administrator
     When I try to get period with id:
       | periodId                             |
       | 516ac930-0d28-49f5-a178-64764e22b236 |
@@ -121,15 +158,18 @@ Feature: Requisition Tests
     #Update period to current date.
     #Period must contains current date.
     When I try update period to current date
+    Then I logout
+
+    When I have logged in as srmanager1
     And I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -142,11 +182,15 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to authorize a requisition
+    When I have logged in as smanager1
+    And I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I logout
 
-    When I try update fields in requisition:
+    When I have logged in as psupervisor
+    And I try update fields in requisition:
       | approvedQuantity |
       | 10               |
     And I try to get requisition with id
@@ -159,20 +203,19 @@ Feature: Requisition Tests
     And I logout
 
 
-  Scenario: StoreInCharge user should be able to reject authorized emergency requisition
-  and delete initiated emergency requisition
-    Given I have logged in as StoreInCharge
+  Scenario: Program Supervisor user should be able to reject authorized emergency requisition
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -185,22 +228,101 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to get period with id:
+    When I have logged in as administrator
+    And I try to get period with id:
       | periodId                             |
       | 516ac930-0d28-49f5-a178-64764e22b236 |
     Then I should get response with the period id
 
     When I try update period to current date
+    Then I logout
+
+    When I have logged in as srmanager1
     And I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+    And I should get a requisition with "INITIATED" status
+    And I should get a requisition without supervisoryNode
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 32    |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    And I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    When I have logged in as psupervisor
+    When I try to reject authorized requisition
+    Then I should get a requisition with "INITIATED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+
+  Scenario: Storeroom Manager user should be able to delete initiated emergency requisition
+    Given I have logged in as srmanager1
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 5                     | 13               | 2                 | 7                 | test                         | 18                    |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 5                     | 13               | 2                 | 7                 | test                         | 18                    | 18    |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as administrator
+    And I try to get period with id:
+      | periodId                             |
+      | 516ac930-0d28-49f5-a178-64764e22b236 |
+    Then I should get response with the period id
+
+    When I try update period to current date
+    Then I logout
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     And I should get a requisition with "INITIATED" status
     And I should get a requisition without supervisoryNode
 
@@ -215,14 +337,6 @@ Feature: Requisition Tests
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
 
-    When I try to authorize a requisition
-    Then I should get a requisition with "AUTHORIZED" status
-    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
-
-    When I try to reject authorized requisition
-    Then I should get a requisition with "INITIATED" status
-    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
-
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
 
@@ -231,20 +345,20 @@ Feature: Requisition Tests
     And I logout
 
 
-  Scenario: StoreInCharge user should get failure response if date outside of period
+  Scenario: Storeroom Manager user should get failure response if date outside of period
   when he creates emergency requisition
-    Given I have logged in as StoreInCharge
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -257,33 +371,38 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to get period with id:
+    When I have logged in as administrator
+    And I try to get period with id:
       | periodId                             |
       | 516ac930-0d28-49f5-a178-64764e22b236 |
     Then I should get response with the period id
 
     When I try update period to future date
+    Then I logout
+
+    When I have logged in as srmanager1
     And I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     Then I should get response of incorrect period
     And I logout
 
 
-  Scenario: StoreInCharge user should be able to approve second emergency requisition in the same period
-    Given I have logged in as StoreInCharge
+  Scenario: Program Supervisor user should be able to approve second emergency requisition in the same period
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -296,16 +415,21 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to get period with id:
+    When I have logged in as administrator
+    And I try to get period with id:
       | periodId                             |
       | 516ac930-0d28-49f5-a178-64764e22b236 |
     Then I should get response with the period id
 
     When I try update period to current date
+    Then I logout
+
+    When I have logged in as srmanager1
     And I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     Then I should get response with the initiated requisition's id
     And I should get a requisition with "INITIATED" status
 
@@ -319,11 +443,15 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to authorize a requisition
+    When I have logged in as smanager1
+    And I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I logout
 
-    When I try update fields in requisition:
+    When I have logged in as psupervisor
+    And I try update fields in requisition:
       | approvedQuantity |
       | 1                |
     And I try to get requisition with id
@@ -333,10 +461,12 @@ Feature: Requisition Tests
 
     When I try to approve a requisition
     Then I should get a requisition with "APPROVED" status
+    And I logout
 
+    When I have logged in as srmanager1
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true     |
     Then I should get response with the initiated requisition's id
     And I should get a requisition with "INITIATED" status
 
@@ -350,11 +480,15 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to authorize a requisition
+    When I have logged in as smanager1
+    And I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I logout
 
-    When I try update fields in requisition:
+    When I have logged in as psupervisor
+    And I try update fields in requisition:
       | approvedQuantity |
       | 2                |
     And I try to get requisition with id
@@ -367,18 +501,18 @@ Feature: Requisition Tests
     And I logout
 
 
-  Scenario: StoreInCharge user should be able to convert requisition to order
-    Given I have logged in as StoreInCharge
+  Scenario: Warehouse Manager user should be able to convert requisition to order
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -391,10 +525,14 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
+    When I have logged in as smanager1
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
+    And I logout
 
+    When I have logged in as psupervisor
     When I try update fields in requisition:
       | approvedQuantity |
       | 4                |
@@ -405,25 +543,30 @@ Feature: Requisition Tests
 
     When I try to approve a requisition
     Then I should get a requisition with "APPROVED" status
+    And I logout
 
-    When I try to convert requisition to order
+    When I have logged in as wclerk1
+    And I try to convert requisition to order
+    Then I logout
+
+    When I have logged in as srmanager1
     And I try to get requisition with id
     Then I should get a requisition with "RELEASED" status
     And I logout
 
 
   Scenario: The supervisory node should be assigned to a regular requisition after authorizing it
-    Given I have logged in as StoreInCharge
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
     And I should get a requisition without supervisoryNode
 
@@ -437,7 +580,9 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
+    When I have logged in as smanager1
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
@@ -445,18 +590,18 @@ Feature: Requisition Tests
 
 
   Scenario: The supervisory node should be assigned to an emergency requisition after authorizing it
-    Given I have logged in as StoreInCharge
+    Given I have logged in as srmanager1
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -469,22 +614,27 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
-    When I try to get period with id:
+    When I have logged in as administrator
+    And I try to get period with id:
       | periodId                             |
       | 516ac930-0d28-49f5-a178-64764e22b236 |
     Then I should get response with the period id
 
     When I try update period to current date
+    Then I logout
+
+    When I have logged in as srmanager1
     And I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | 516ac930-0d28-49f5-a178-64764e22b236 | true     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | true      |
     And I should get a requisition with "INITIATED" status
     And I should get a requisition without supervisoryNode
 
@@ -498,7 +648,9 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
+    And I logout
 
+    When I have logged in as smanager1
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
