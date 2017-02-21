@@ -21,6 +21,7 @@ import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
@@ -44,6 +45,8 @@ import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -171,6 +174,28 @@ public class RequisitionStepDefs {
           item.toJSONString(), Objects.toString(item.get(entry.getKey())), is(entry.getValue()))
       );
     }));
+  }
+
+  @Then("^I should get updated requisition with proper total cost$")
+  public void shouldGetUpdatedRequisitionWithProperTotalCost() throws ParseException {
+    JSONParser parser = new JSONParser();
+    JSONObject requisition = (JSONObject) parser.parse(requisitionResponse.asString());
+    Object requisitionLineItems = requisition.get(("requisitionLineItems"));
+    JSONArray requisitionLines = (JSONArray) requisitionLineItems;
+
+    for (Object requisitionLineObject : requisitionLines) {
+      JSONObject requisitionLine = (JSONObject) requisitionLineObject;
+      BigDecimal packsToShip = new BigDecimal((Long) requisitionLine.get("packsToShip"));
+      BigDecimal pricePerPack = new BigDecimal((Double) requisitionLine.get("pricePerPack"));
+
+      BigDecimal totalCost = new BigDecimal((Double) requisitionLine.get("totalCost")).setScale(
+          2, RoundingMode.HALF_UP);
+
+      BigDecimal calculatedTotalCost = packsToShip.multiply(
+          pricePerPack).setScale(2, RoundingMode.HALF_UP);
+
+      assertEquals(calculatedTotalCost, totalCost);
+    }
   }
 
   @When("^I try to submit a requisition$")

@@ -544,23 +544,23 @@ Feature: Requisition Tests
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
       | 9                     | 2                | 0                 | 432               | test                         | 11                    |
     And I try to get requisition with id
-    Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | packsToShip | pricePerPack | totalCost |
-      | 9                     | 2                | 0                 | 432               | test                         | 11                    | 5           | 5.23         | 26.15     |
+    Then I should get updated requisition with proper total cost
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 321               | test                         | 11                    |
+    And I try to get requisition with id
+    Then I should get updated requisition with proper total cost
 
     When I try to submit a requisition
     Then I should get a requisition with "SUBMITTED" status
-    And I should get a updated requisition with:
-      | totalCost |
-      | 26.15     |
+    And I should get updated requisition with proper total cost
     And I logout
 
     When I have logged in as smanager1
     When I try to authorize a requisition
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get a updated requisition with:
-      | totalCost |
-      | 26.15     |
+    And I should get updated requisition with proper total cost
     And I logout
 
     When I have logged in as psupervisor
@@ -568,15 +568,11 @@ Feature: Requisition Tests
       | approvedQuantity |
       | 430              |
     And I try to get requisition with id
-    Then I should get a updated requisition with:
-      | approvedQuantity | totalCost |
-      | 430              | 26.15     |
+    Then I should get updated requisition with proper total cost
 
     When I try to approve a requisition
     Then I should get a requisition with "APPROVED" status
-    And I should get a updated requisition with:
-      | totalCost |
-      | 26.15     |
+    And I should get updated requisition with proper total cost
     And I logout
 
     When I have logged in as wclerk1
@@ -586,9 +582,7 @@ Feature: Requisition Tests
     When I have logged in as srmanager1
     And I try to get requisition with id
     Then I should get a requisition with "RELEASED" status
-    And I should get a updated requisition with:
-      | totalCost |
-      | 26.15     |
+    And I should get updated requisition with proper total cost
     And I logout
 
 
