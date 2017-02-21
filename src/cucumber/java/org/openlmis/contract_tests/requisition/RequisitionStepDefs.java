@@ -25,14 +25,6 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import cucumber.api.DataTable;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
 import org.json.simple.JSONArray;
@@ -42,10 +34,20 @@ import org.json.simple.parser.ParseException;
 import org.openlmis.contract_tests.common.InitialDataException;
 import org.openlmis.contract_tests.common.TestDatabaseConnection;
 
+import cucumber.api.DataTable;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class RequisitionStepDefs {
 
@@ -58,6 +60,9 @@ public class RequisitionStepDefs {
   private JSONObject period;
 
   private TestDatabaseConnection databaseConnection;
+
+  private static final String BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE =
+      baseUrlOfService("requisition") + "requisitionTemplates/";
 
   private static final String BASE_URL_OF_REQUISITION_SERVICE =
       baseUrlOfService("requisition") + "requisitions/";
@@ -138,40 +143,34 @@ public class RequisitionStepDefs {
 
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
-    for (Map map : data) {
-      Map<String, String> hashMap = new HashMap<>(map);
-      for (String fieldName : hashMap.keySet()) {
-        updateFieldInRequisitionLineItem(requisition, fieldName, map.get(fieldName));
-      }
-    }
+    data.forEach(map -> map.entrySet().forEach(entry ->
+        updateFieldInRequisitionLineItem(requisition, entry.getKey(), entry.getValue())
+    ));
 
-    requisitionResponse = given()
+    given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .contentType(ContentType.JSON)
         .body(requisition.toJSONString())
         .when()
-        .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId);
+        .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId).then()
+        .statusCode(200);
   }
 
   @Then("^I should get a updated requisition with:$")
   public void shouldGetUpdatedRequisition(DataTable argsList) throws ParseException {
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+
     JSONParser parser = new JSONParser();
-    JSONObject requisition = (JSONObject) parser.parse(requisitionResponse.asString());
-    Object requisitionLineItems = requisition.get(("requisitionLineItems"));
-    JSONArray requisitionLines = (JSONArray) requisitionLineItems;
+    JSONObject root = (JSONObject) parser.parse(requisitionResponse.asString());
+    JSONArray lineItems = (JSONArray) root.get("requisitionLineItems");
 
-    int counter = 0;
-    for (Map map : data) {
-      Object oneLine = requisitionLines.get(counter);
-      JSONObject requisitionLine = (JSONObject) oneLine;
+    data.forEach(map -> lineItems.forEach(line -> {
+      JSONObject item = (JSONObject) line;
 
-      Map<String, String> hashMap = new HashMap<>(map);
-      for (String fieldName : hashMap.keySet()) {
-        assertThat(requisitionLine.get(fieldName).toString(), is(map.get(fieldName)));
-      }
-      counter++;
-    }
+      map.entrySet().forEach(entry -> assertThat(
+          item.toJSONString(), Objects.toString(item.get(entry.getKey())), is(entry.getValue()))
+      );
+    }));
   }
 
   @When("^I try to submit a requisition$")
@@ -297,12 +296,41 @@ public class RequisitionStepDefs {
         .post(BASE_URL_OF_REQUISITION_SERVICE + "convertToOrder");
   }
 
+  @Given("^I update a requisition template for program (.*):$")
+  public void tryUpdateRequisitionTemplateForProgram(String program, DataTable data)
+      throws ParseException {
+    String templateAsString = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .queryParam("program", program)
+        .when()
+        .get(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + "search")
+        .then()
+        .statusCode(200)
+        .extract()
+        .asString();
+
+    JSONParser parser = new JSONParser();
+    JSONObject template = (JSONObject) parser.parse(templateAsString);
+    String id = template.get("id").toString();
+
+    data.asMaps(String.class, Object.class).forEach(map -> map.forEach(template::replace));
+
+    given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .queryParam("id", id)
+        .contentType(ContentType.JSON)
+        .body(template.toJSONString())
+        .when()
+        .put(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + id)
+        .then()
+        .statusCode(200);
+  }
+
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
                                                 String keyToUpdate, Object newValue) {
-    Object requisitionLineItems = requisition.get(("requisitionLineItems"));
-    JSONArray requisitionLines = (JSONArray) requisitionLineItems;
+    JSONArray requisitionLineItems = (JSONArray) requisition.get("requisitionLineItems");
 
-    for (Object requisitionLine : requisitionLines) {
+    for (Object requisitionLine : requisitionLineItems) {
       JSONObject requisitionLineAsJson = (JSONObject) requisitionLine;
       requisitionLineAsJson.replace(keyToUpdate, newValue);
     }

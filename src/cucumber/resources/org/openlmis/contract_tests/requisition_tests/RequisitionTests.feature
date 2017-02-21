@@ -590,3 +590,171 @@ Feature: Requisition Tests
       | totalCost |
       | 26.15     |
     And I logout
+
+
+  Scenario Outline: Average consumption should be calculated properly (Number of periods to average: <periods>)
+    Given I have logged in as administrator
+    And I update a requisition template for program dce17f2e-af3e-40ad-8e00-3496adef44c3:
+      | numberOfPeriodsToAverage |
+      | <periods>                |
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
+      | 10               | 0                     | 10                    | 30                | we need more                 | 20                |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
+      | 10               | 0                     | 10                    | 30                | we need more                 | 20                | 10    | 30                  | <average_1>        |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    And I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
+      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
+      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 30    | 20                  | <average_2>        |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    And I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 61694e82-1be6-40a4-9aaa-bfbb720a0d7d | false     |
+
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 61694e82-1be6-40a4-9aaa-bfbb720a0d7d | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
+      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
+      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 20    | 0                   | <average_3>        |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    And I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | c9287c65-67fa-4958-adb6-52069f2b1379 | false     |
+
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | c9287c65-67fa-4958-adb6-52069f2b1379 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
+      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
+      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 40    | 15                  | <average_4>        |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    And I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 2d490229-02f8-4235-9be4-1443fd8f7b4f | false     |
+
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 2d490229-02f8-4235-9be4-1443fd8f7b4f | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
+      | 25               | 25                    | 50                    | 50                | we need more                 | 0                 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
+      | 25               | 25                    | 50                    | 50                | we need more                 | 0                 | 50    | 50                  | <average_5>        |
+
+    When I try to submit a requisition
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    And I try to authorize a requisition
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I logout
+
+    Examples:
+    | periods | average_1 | average_2 | average_3 | average_4 | average_5 |
+    | 2       | 30        | 25        | 10        | 8         | 33        |
+    | 3       | 30        | 25        | 17        | 12        | 22        |
+    | 4       | 30        | 25        | 17        | 17        | 22        |
