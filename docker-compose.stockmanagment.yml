@@ -34,7 +34,7 @@ services:
         ,${BASE_URL}/auth
         ,${BASE_URL}/referencedata'
       - 'cucumber'
-      - '-Ptags=@StockCardTemplatesTests,@StockEventsTests,@StockCardsTests'
+      - '-Ptags=@StockCardTemplatesTests'
 
   referencedata:
     image: openlmis/referencedata:3.0.0-SNAPSHOT
