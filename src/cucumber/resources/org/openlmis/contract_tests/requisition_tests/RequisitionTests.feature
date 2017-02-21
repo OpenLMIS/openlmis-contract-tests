@@ -204,32 +204,6 @@ Feature: Requisition Tests
 
 
   Scenario: Program Supervisor user should be able to reject authorized emergency requisition
-    Given I have logged in as srmanager1
-
-    When I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-
-    Then I should get response with the initiated requisition's id
-
-    When I try to get requisition with id
-    Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-    And I should get a requisition with "INITIATED" status
-
-    When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 5                     | 13               | 2                 | 7                 | test                         | 18                    |
-    And I try to get requisition with id
-    Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 5                     | 13               | 2                 | 7                 | test                         | 18                    | 18    |
-
-    When I try to submit a requisition
-    Then I should get a requisition with "SUBMITTED" status
-    And I logout
-
     When I have logged in as administrator
     And I try to get period with id:
       | periodId                             |
@@ -278,32 +252,6 @@ Feature: Requisition Tests
 
 
   Scenario: Storeroom Manager user should be able to delete initiated emergency requisition
-    Given I have logged in as srmanager1
-
-    When I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-
-    Then I should get response with the initiated requisition's id
-
-    When I try to get requisition with id
-    Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-    And I should get a requisition with "INITIATED" status
-
-    When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 5                     | 13               | 2                 | 7                 | test                         | 18                    |
-    And I try to get requisition with id
-    Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 5                     | 13               | 2                 | 7                 | test                         | 18                    | 18    |
-
-    When I try to submit a requisition
-    Then I should get a requisition with "SUBMITTED" status
-    And I logout
-
     When I have logged in as administrator
     And I try to get period with id:
       | periodId                             |
@@ -345,34 +293,7 @@ Feature: Requisition Tests
     And I logout
 
 
-  Scenario: Storeroom Manager user should get failure response if date outside of period
-  when he creates emergency requisition
-    Given I have logged in as srmanager1
-
-    When I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-
-    Then I should get response with the initiated requisition's id
-
-    When I try to get requisition with id
-    Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-    And I should get a requisition with "INITIATED" status
-
-    When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 20                    | 5                | 21                | 22                | test                         | 25                    |
-    And I try to get requisition with id
-    Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
-
-    When I try to submit a requisition
-    Then I should get a requisition with "SUBMITTED" status
-    And I logout
-
+  Scenario: Storeroom Manager user should get failure response if date outside of period when he creates emergency requisition
     When I have logged in as administrator
     And I try to get period with id:
       | periodId                             |
@@ -391,32 +312,6 @@ Feature: Requisition Tests
 
 
   Scenario: Program Supervisor user should be able to approve second emergency requisition in the same period
-    Given I have logged in as srmanager1
-
-    When I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-
-    Then I should get response with the initiated requisition's id
-
-    When I try to get requisition with id
-    Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-    And I should get a requisition with "INITIATED" status
-
-    When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 30                    | 5                | 0                 | 8                 | test                         | 35                    |
-    And I try to get requisition with id
-    Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 30                    | 5                | 0                 | 8                 | test                         | 35                    | 35    |
-
-    When I try to submit a requisition
-    Then I should get a requisition with "SUBMITTED" status
-    And I logout
-
     When I have logged in as administrator
     And I try to get period with id:
       | periodId                             |
@@ -590,32 +485,6 @@ Feature: Requisition Tests
 
 
   Scenario: The supervisory node should be assigned to an emergency requisition after authorizing it
-    Given I have logged in as srmanager1
-
-    When I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-
-    Then I should get response with the initiated requisition's id
-
-    When I try to get requisition with id
-    Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
-    And I should get a requisition with "INITIATED" status
-
-    When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 20                    | 5                | 21                | 22                | test                         | 25                    |
-    And I try to get requisition with id
-    Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
-
-    When I try to submit a requisition
-    Then I should get a requisition with "SUBMITTED" status
-    And I logout
-
     When I have logged in as administrator
     And I try to get period with id:
       | periodId                             |
