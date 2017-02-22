@@ -180,8 +180,7 @@ public class RequisitionStepDefs {
   public void shouldGetUpdatedRequisitionWithProperTotalCost() throws ParseException {
     JSONParser parser = new JSONParser();
     JSONObject requisition = (JSONObject) parser.parse(requisitionResponse.asString());
-    Object requisitionLineItems = requisition.get(("requisitionLineItems"));
-    JSONArray requisitionLines = (JSONArray) requisitionLineItems;
+    JSONArray requisitionLines = (JSONArray) requisition.get("requisitionLineItems");
 
     for (Object requisitionLineObject : requisitionLines) {
       JSONObject requisitionLine = (JSONObject) requisitionLineObject;
