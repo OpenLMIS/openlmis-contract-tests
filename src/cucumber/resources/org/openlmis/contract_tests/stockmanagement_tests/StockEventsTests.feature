@@ -11,7 +11,6 @@ Feature: Stock Events Tests
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
       "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
 
-      "noticedDate": "2017-02-06T09:58:51.819Z",
       "occurredDate": "2017-02-06T17:55:32+08:00",
 
       "quantity": 123,
@@ -31,7 +30,6 @@ Feature: Stock Events Tests
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
       "orderableId": "11111111-2222-3333-4444-000000000000",
 
-      "noticedDate": "2017-02-06T09:58:51.819Z",
       "occurredDate": "2017-02-06T17:55:32+08:00",
 
       "quantity": 123,
@@ -56,7 +54,6 @@ Feature: Stock Events Tests
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
       "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
 
-      "noticedDate": "2017-02-06T09:58:51.819Z",
       "occurredDate": "2017-02-06T17:55:32+08:00",
 
       "quantity": 123,

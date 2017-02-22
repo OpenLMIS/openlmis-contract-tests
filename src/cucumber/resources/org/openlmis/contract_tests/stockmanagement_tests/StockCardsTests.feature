@@ -12,7 +12,6 @@ Feature: Stock Cards Tests
       "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
 
       "occurredDate": "2017-02-06T10:00:00.000Z",
-      "noticedDate": "2017-02-06T11:00:00.000Z",
 
       "sourceId":"087e81f6-a74d-4bba-9d01-16e0d64e9609",
 
@@ -34,7 +33,6 @@ Feature: Stock Cards Tests
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
       "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
 
-      "noticedDate": "2017-02-09T10:00:00.000Z",
       "occurredDate": "2017-02-09T10:00:00.000Z",
 
       "destinationId": "e89eaf68-50c1-47f2-b83a-5b51ffa2206e",
