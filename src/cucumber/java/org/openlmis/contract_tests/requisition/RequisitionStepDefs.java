@@ -18,6 +18,7 @@ package org.openlmis.contract_tests.requisition;
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
+import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -39,11 +40,11 @@ import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -54,6 +55,7 @@ import java.util.Objects;
 
 public class RequisitionStepDefs {
 
+  private Response requisitionTemplateResponse;
   private Response requisitionResponse;
   private Response periodResponse;
   private String requisitionId;
@@ -61,6 +63,9 @@ public class RequisitionStepDefs {
   private String periodId;
   private JSONObject requisition;
   private JSONObject period;
+
+  private String requisitionTemplateProgram;
+  private DataTable requisitionTemplateUpdateData;
 
   private TestDatabaseConnection databaseConnection;
 
@@ -328,34 +333,57 @@ public class RequisitionStepDefs {
         .post(BASE_URL_OF_REQUISITION_SERVICE + "convertToOrder");
   }
 
-  @Given("^I update a requisition template for program (.*):$")
-  public void tryUpdateRequisitionTemplateForProgram(String program, DataTable data)
-      throws ParseException {
-    String templateAsString = given()
+  @When("^I try get a requisition template for a program (.*)$")
+  public void getRequisitionTemplateForProgram(String program) {
+    requisitionTemplateProgram = program;
+
+    requisitionTemplateResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .queryParam("program", program)
+        .queryParam("program", requisitionTemplateProgram)
         .when()
-        .get(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + "search")
+        .get(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + "search");
+  }
+
+  @Then("^I should get response with requisition template$")
+  public void getRequisitionTemplateForProgram() {
+    requisitionTemplateResponse
         .then()
         .statusCode(200)
-        .extract()
-        .asString();
+        .body("programId", is(requisitionTemplateProgram));
+  }
+
+  @When("^I try to update a requisition template:$")
+  public void updateRequisitionTemplate(DataTable data) throws ParseException {
+    requisitionTemplateUpdateData = data;
 
     JSONParser parser = new JSONParser();
-    JSONObject template = (JSONObject) parser.parse(templateAsString);
+    JSONObject template = (JSONObject) parser.parse(requisitionTemplateResponse.asString());
     String id = template.get("id").toString();
 
-    data.asMaps(String.class, Object.class).forEach(map -> map.forEach(template::replace));
+    requisitionTemplateUpdateData
+        .asMaps(String.class, Object.class)
+        .forEach(map -> map.forEach(template::replace));
 
-    given()
+    requisitionTemplateResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam("id", id)
         .contentType(ContentType.JSON)
         .body(template.toJSONString())
         .when()
-        .put(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + id)
+        .put(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + id);
+  }
+
+  @Then("^I should get response that template has been updated$")
+  public void checkIfRequisitionTemplateWasUpdated() {
+    ValidatableResponse validatableResponse = requisitionTemplateResponse
         .then()
         .statusCode(200);
+
+    requisitionTemplateUpdateData
+        .asMaps(String.class, String.class)
+        .forEach(map -> map.forEach(
+            (key, value) -> validatableResponse.body(key, is(hasToString(value)))
+        ));
   }
 
   private void updateFieldInRequisitionLineItem(JSONObject requisition,

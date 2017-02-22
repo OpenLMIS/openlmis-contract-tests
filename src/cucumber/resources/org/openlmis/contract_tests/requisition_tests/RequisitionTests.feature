@@ -588,9 +588,12 @@ Feature: Requisition Tests
 
   Scenario Outline: Average consumption should be calculated properly (Number of periods to average: <periods>)
     Given I have logged in as administrator
-    And I update a requisition template for program dce17f2e-af3e-40ad-8e00-3496adef44c3:
+    And I try get a requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
+    And I should get response with requisition template
+    And I try to update a requisition template:
       | numberOfPeriodsToAverage |
       | <periods>                |
+    And I should get response that template has been updated
 
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
