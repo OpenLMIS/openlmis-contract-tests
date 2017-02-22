@@ -27,17 +27,20 @@ repositories {
 }
 
 cucumber {
-    formats = ['pretty', 'html:build/cucumber', 'junit:build/cucumber/junit/test_report.xml']
+    formats = ['pretty',
+               'html:build/cucumber',
+               'junit:build/cucumber/junit/test_report.xml',
+               'json:build/cucumber.json']
+
     glueDirs = ['src/cucumber/']
     featureDirs = ['src/cucumber/resources/']
-
 
     def tagsArgs = project.getProperty('tags')
     tags = Collections.singletonList(tagsArgs)
 }
 
 task waitFor {
-    if(project.hasProperty('containers')) {
+    if (project.hasProperty('containers')) {
         def containers = project.getProperty('containers').split(',')
         println "waiting for " + containers + " to be started up and serving"
 
