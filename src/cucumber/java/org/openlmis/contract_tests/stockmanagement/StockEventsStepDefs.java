@@ -36,7 +36,7 @@ public class StockEventsStepDefs {
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
   private static final String STOCKMANAGEMENT_ERROR_ORDERABLE_NOT_FOUND =
-      "stockmanagement.error.event.ordeableId.invalid";
+      "stockmanagement.error.event.orderableId.invalid";
 
   @When("^I try to create a stock event$")
   public void iTryToCreateAStockEvent(String bodyString) throws Throwable {
