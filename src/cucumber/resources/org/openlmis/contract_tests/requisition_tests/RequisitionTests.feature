@@ -752,3 +752,31 @@ Feature: Requisition Tests
     | 2       | 30        | 25        | 10        | 8         | 33        |
     | 3       | 30        | 25        | 17        | 12        | 22        |
     | 4       | 30        | 25        | 17        | 17        | 22        |
+
+    
+  Scenario: Storeroom Manager user should be able to skip initiated requisition
+    Given I have logged in as srmanager1
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try to skip initiated requisition
+    Then I should get a requisition with "SKIPPED" status
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+    Then I should get response with the initiated requisition's id
+    When I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance |
+      | 0                |
+    And I logout

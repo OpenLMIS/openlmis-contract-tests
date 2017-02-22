@@ -240,6 +240,14 @@ public class RequisitionStepDefs {
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/approve");
   }
 
+  @When("^I try to skip initiated requisition$")
+  public void trySkipRequisition() {
+    requisitionResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/skip");
+  }
+
   @When("^I try to reject authorized requisition$")
   public void tryRejectRequisition() {
     requisitionResponse = given()
