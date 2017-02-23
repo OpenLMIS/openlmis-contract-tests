@@ -35,10 +35,15 @@ public class StockCardsStepDefs {
   private static final String URL_OF_STOCK_CARD_MANAGEMENT =
       baseUrlOfService("stockmanagement") + "stockCards/";
 
-  private static final String URL_OF_STOCK_CARD_IDS =
-      baseUrlOfService("stockmanagement") + "stockCardIds";
+  private static final String URL_OF_STOCK_CARD_SUMMARIIES =
+      baseUrlOfService("stockmanagement") + "stockCardSummaries";
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
+  private static final String PROGRAM_PARAM_NAME = "program";
+  private static final String FACILITY_PARAM_NAME = "facility";
+
+  private static final String FACILITY_ID = "176c4276-1fb1-4507-8ad2-cdfba0f47445";
+  private static final String PROGRAM_ID = "dce17f2e-af3e-40ad-8e00-3496adef44c3";
 
   private String stockCardId;
 
@@ -46,12 +51,11 @@ public class StockCardsStepDefs {
   public void iHaveGotStockCardId() {
     idsResponse = given().contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .when().get(URL_OF_STOCK_CARD_IDS).andReturn();
+        .queryParam(PROGRAM_PARAM_NAME, PROGRAM_ID)
+        .queryParam(FACILITY_PARAM_NAME, FACILITY_ID)
+        .when().get(URL_OF_STOCK_CARD_SUMMARIIES).andReturn();
 
-    stockCardId = idsResponse.asString().substring(idsResponse.asString().lastIndexOf('.') + 1);
-    if (stockCardId.contains(",")) {
-      stockCardId = stockCardId.substring(stockCardId.lastIndexOf(',') + 1);
-    }
+    stockCardId = idsResponse.jsonPath().getString("id[0]");
   }
 
   @When("^I try to get stock card with card id$")
