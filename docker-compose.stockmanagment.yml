@@ -30,8 +30,8 @@ services:
       - 'clean'
       - 'waitFor'
       - '-Pcontainers=
-        ${BASE_URL}/stockmanagement
-        ,${BASE_URL}/auth
+        ${BASE_URL}/auth
+        ,${BASE_URL}/stockmanagement
         ,${BASE_URL}/referencedata'
       - 'cucumber'
       - '-Ptags=@StockCardTemplatesTests,@StockEventsTests,@StockCardsTests'

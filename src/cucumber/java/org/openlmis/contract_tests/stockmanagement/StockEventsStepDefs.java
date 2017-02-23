@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.is;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
@@ -37,6 +38,9 @@ public class StockEventsStepDefs {
 
   private static final String STOCKMANAGEMENT_ERROR_ORDERABLE_NOT_FOUND =
       "stockmanagement.error.event.orderableId.invalid";
+
+  private static final String STOCKMANAGEMENT_ERROR_EVENT_DEBIT_QUANTITY_EXCEED_SOH =
+      "stockmanagement.error.event.debit.quantity.exceed.stockOnHand";
 
   @When("^I try to create a stock event$")
   public void iTryToCreateAStockEvent(String bodyString) throws Throwable {
@@ -67,5 +71,13 @@ public class StockEventsStepDefs {
     createEventResponse
         .then()
         .statusCode(HttpStatus.SC_FORBIDDEN);
+  }
+
+  @Then("^I should get response of incorrect body with quantity exceed stock on hand$")
+  public void iShouldGetResponseOfIncorrectBodyWithQuantityExceedStockOnHand() throws Throwable {
+    createEventResponse
+        .then()
+        .body("messageKey", is(STOCKMANAGEMENT_ERROR_EVENT_DEBIT_QUANTITY_EXCEED_SOH))
+        .statusCode(HttpStatus.SC_BAD_REQUEST);
   }
 }

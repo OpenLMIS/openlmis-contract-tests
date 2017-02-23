@@ -42,6 +42,25 @@ Feature: Stock Events Tests
     """
 
     Then I should get response of incorrect body with orderable
+
+    When I try to create a stock event
+    """
+    {
+      "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
+      "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
+      "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
+
+      "occurredDate": "2017-02-06T17:55:32+08:00",
+
+      "quantity": 500,
+
+      "destinationId": "e89eaf68-50c1-47f2-b83a-5b51ffa2206e",
+
+      "signature": "manager 1",
+      "documentNumber":"DN.1"
+    }
+    """
+    Then I should get response of incorrect body with quantity exceed stock on hand
     And I logout
 
   Scenario: User without create event permission should not be able to create event
