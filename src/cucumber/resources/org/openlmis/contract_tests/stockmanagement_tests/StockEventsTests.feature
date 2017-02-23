@@ -45,7 +45,7 @@ Feature: Stock Events Tests
     And I logout
 
   Scenario: User without create event permission should not be able to create event
-    Given I have logged in as administrator
+    Given I have logged in as wclerk1
 
     When I try to create a stock event
     """
