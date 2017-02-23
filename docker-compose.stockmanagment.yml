@@ -11,7 +11,7 @@ services:
     depends_on: [log]
 
   contract_tests:
-    image: openlmis/dev
+    image: openlmis/dev:1
     env_file: .env
     volumes:
       - '.:/app'

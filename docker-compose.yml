@@ -12,7 +12,7 @@ services:
       - "53"
 
   nginx:
-    image: openlmis/nginx
+    image: openlmis/nginx:1
     env_file: .env
     links: [consul]
     mem_limit: 128m
@@ -47,7 +47,7 @@ services:
 
   log:
     mem_limit: 128m
-    image: openlmis/rsyslog
+    image: openlmis/rsyslog:1
     volumes:
       - '../logs/requisition:/var/log'
     depends_on: [consul]
