@@ -19,7 +19,7 @@ INSERT INTO referencedata.rights (id, description, name, type) VALUES ('35cf256f
 INSERT INTO referencedata.rights (id, description, name, type) VALUES ('60561639-4f94-4371-a5b5-ba95ecf7627f', NULL, 'REPORT_TEMPLATES_EDIT', 'REPORTS');
 INSERT INTO referencedata.rights (id, description, name, type) VALUES ('7b2da074-b754-4e49-bad3-2520651e5107', NULL, 'ORDERS_VIEW', 'ORDER_FULFILLMENT');
 INSERT INTO referencedata.rights (id, description, name, type) VALUES ('60580166-ab1c-464a-8401-08384efc57b7', NULL, 'ORDERS_EDIT', 'ORDER_FULFILLMENT');
-INSERT INTO referencedata.rights (id, description, name, type) VALUES ('94ae9da9-3d66-465e-9b1f-572c705e5d7f', NULL, 'STOCK_EVENT_CREATE', 'STOCK_MANAGEMENT');
+INSERT INTO referencedata.rights (id, description, name, type) VALUES ('94ae9da9-3d66-465e-9b1f-572c705e5d7f', NULL, 'STOCK_EVENT_CREATE', 'SUPERVISION');
 INSERT INTO referencedata.roles (id, description, name) VALUES ('a439c5de-b8aa-11e6-80f5-76304dec7eb7', NULL, 'System Administrator');
 INSERT INTO referencedata.users (id, active, allownotify, email, extradata, firstname, lastname, loginrestricted, timezone, username, verified, homefacilityid) VALUES ('35316636-6264-6331-2d34-3933322d3462', false, true, 'example@mail.com', NULL, 'Admin', 'User', false, 'UTC', 'admin', false, NULL);
 INSERT INTO referencedata.role_assignments (type, id, roleid, userid, warehouseid, programid, supervisorynodeid) VALUES ('direct', '3104bc34-d83b-4139-9008-87f180ac6259', 'a439c5de-b8aa-11e6-80f5-76304dec7eb7', '35316636-6264-6331-2d34-3933322d3462', NULL, NULL, NULL);
