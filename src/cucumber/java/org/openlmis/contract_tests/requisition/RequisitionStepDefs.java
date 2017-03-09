@@ -27,6 +27,7 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import io.restassured.response.ExtractableResponse;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
 import org.json.simple.JSONArray;
@@ -49,9 +50,11 @@ import io.restassured.response.ValidatableResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class RequisitionStepDefs {
 
@@ -103,7 +106,7 @@ public class RequisitionStepDefs {
           .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
           .queryParam("program", map.get("programId"))
           .queryParam("facility", map.get("facilityId"))
-          .queryParam("suggestedPeriod", map.get("periodId"))
+          .queryParam("suggestedPeriod", map.getOrDefault("periodId", periodId))
           .queryParam("emergency", map.get("emergency"))
           .when()
           .post(BASE_URL_OF_REQUISITION_SERVICE + "initiate");
@@ -134,7 +137,7 @@ public class RequisitionStepDefs {
           .then()
           .body("program.id", is(map.get("programId")))
           .body("facility.id", is(map.get("facilityId")))
-          .body("processingPeriod.id", is(map.get("periodId")))
+          .body("processingPeriod.id", is(map.getOrDefault("periodId", periodId)))
           .body("emergency", is(Boolean.parseBoolean(String.valueOf(map.get("emergency")))));
     }
   }
@@ -273,6 +276,29 @@ public class RequisitionStepDefs {
     }
   }
 
+  @When("^I try to get periods by program (.*) and facility (.*)$")
+  public void getPeriodsByProgramAndFacility(String programId, String facilityId) {
+    periodResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .queryParam("programId", programId)
+        .queryParam("facilityId", facilityId)
+        .when()
+        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/search");
+  }
+
+  @When("^I try to delete current period")
+  public void tryDeletePeriod() throws ParseException {
+    JSONParser parser = new JSONParser();
+    JSONArray periods = (JSONArray) parser.parse(periodResponse.asString());
+    String id = findPeriodByDate(periods, LocalDate.now());
+
+    periodResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .contentType(ContentType.JSON)
+        .when()
+        .delete(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + id);
+  }
+
   @Then("^I should get response with the period id$")
   public void shouldGetResponseWithThePeriodId() {
     periodResponse
@@ -282,14 +308,21 @@ public class RequisitionStepDefs {
     periodId = from(periodResponse.asString()).get("id");
   }
 
-  @When("^I try update period to current date$")
-  public void tryUpdateDateInPeriod() throws ParseException {
-    tryUpdatePeriod(0);
+  @Then("^I should get response with status ([0-9]+)$")
+  public void shouldGetResponseWithStatus(String statusCode) {
+    periodResponse
+        .then()
+        .statusCode(Integer.parseInt(statusCode));
   }
 
-  @When("^I try update period to future date$")
-  public void tryUpdateDateToFutureDayInPeriod() throws ParseException {
-    tryUpdatePeriod(120);
+  @When("^I try to get or create a period with current date and schedule (.*)$")
+  public void tryCreateAPeriodWithCurrentDate(String id) throws ParseException {
+    getOrCreatePeriod(0, id);
+  }
+
+  @When("^I try to get or create a period with future date and schedule (.*)$")
+  public void tryCreateAPeriodWithFutureDate(String id) throws ParseException {
+    getOrCreatePeriod(120, id);
   }
 
   @Then("^I should get response of incorrect period$")
@@ -396,20 +429,82 @@ public class RequisitionStepDefs {
     }
   }
 
-  private void tryUpdatePeriod(int daysToAdd) throws ParseException {
-    if (period == null) {
-      JSONParser parser = new JSONParser();
-      period = (JSONObject) parser.parse(periodResponse.asString());
+  private void getOrCreatePeriod(int daysToAdd, String scheduleId) throws ParseException {
+    LocalDate periodDate = LocalDate.now().plusDays(daysToAdd);
+    JSONArray periods = getExistingPeriods(scheduleId);
+
+    // first, try to find a period matching specified date among existing ones
+    periodId = findPeriodByDate(periods, periodDate);
+    if (periodId != null) {
+      return;
     }
-    period.replace("startDate", LocalDate.now().plusDays(daysToAdd).toString());
-    period.replace("endDate", LocalDate.now().plusDays(daysToAdd + 30).toString());
+    // period not found, create it based on the latest one
+    period = (JSONObject) periods.get(periods.size() - 1);
+    LocalDate endDate = parseDate(period.get("endDate"));
+
+    while (null != period && !isWithinRange(periodDate, period)) {
+      UUID id = UUID.randomUUID();
+      LocalDate startDate = endDate.plusDays(1);
+      endDate = startDate.plusDays(30);
+      periodId = createPeriod(period, id, startDate, endDate);
+    }
+  }
+
+  private String createPeriod(JSONObject period, UUID id,
+                              LocalDate startDate, LocalDate endDate) throws ParseException {;
+    DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE;
+
+    period.replace("id", id.toString());
+    period.replace("startDate", startDate.format(dtf));
+    period.replace("endDate", endDate.format(dtf));
 
     periodResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .contentType(ContentType.JSON)
         .body(period.toJSONString())
         .when()
-        .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + periodId);
+        .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + id);
+    periodResponse
+        .then()
+        .statusCode(200);
+
+    JSONParser parser = new JSONParser();
+    period = (JSONObject) parser.parse(periodResponse.asString());
+
+    return (String) period.get("id");
+  }
+
+  private boolean isWithinRange(LocalDate date, JSONObject period) {
+    LocalDate startDate = parseDate(period.get("startDate"));
+    LocalDate endDate = parseDate(period.get("endDate"));
+    return !(date.isBefore(startDate) || date.isAfter(endDate));
+  }
+
+  private LocalDate parseDate(Object dateString) {
+    return LocalDate.parse((String) dateString);
+  }
+
+  private JSONArray getExistingPeriods(String scheduleId) throws ParseException {
+    ExtractableResponse<Response> periods = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .queryParam("processingScheduleId", scheduleId)
+        .when()
+        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/searchByScheduleAndDate")
+        .then()
+        .statusCode(200)
+        .extract();
+    JSONParser parser = new JSONParser();
+    return (JSONArray) parser.parse(periods.asString());
+  }
+
+  private String findPeriodByDate(JSONArray periods, LocalDate periodDate) {
+    for (Object periodObj : periods) {
+      period = (JSONObject) periodObj;
+      if (isWithinRange(periodDate, period)) {
+        return (String) period.get("id");
+      }
+    }
+    return null;
   }
 
   private JSONArray createBodyForConvertToOrder() {
