@@ -27,7 +27,6 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import io.restassured.response.ExtractableResponse;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
 import org.json.simple.JSONArray;
@@ -72,19 +71,21 @@ public class RequisitionStepDefs {
 
   private TestDatabaseConnection databaseConnection;
 
+  public static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
+
+  public static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
+      baseUrlOfService("referencedata");
+
   private static final String BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE =
       baseUrlOfService("requisition") + "requisitionTemplates/";
 
   private static final String BASE_URL_OF_REQUISITION_SERVICE =
       baseUrlOfService("requisition") + "requisitions/";
 
-  private static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
-      baseUrlOfService("referencedata");
-
-  private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
-
   private static final String INCORRECT_PERIOD_ERROR =
       "Error occurred while initiating requisition - incorrect suggested period.";
+
+  private static final Integer FOUR_MONTHS = 120;
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
@@ -290,7 +291,7 @@ public class RequisitionStepDefs {
   public void tryDeletePeriod() throws ParseException {
     JSONParser parser = new JSONParser();
     JSONArray periods = (JSONArray) parser.parse(periodResponse.asString());
-    String id = findPeriodByDate(periods, LocalDate.now());
+    String id = ProcessingPeriodUtils.findPeriodByDate(periods, LocalDate.now());
 
     periodResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -317,12 +318,12 @@ public class RequisitionStepDefs {
 
   @When("^I try to get or create a period with current date and schedule (.*)$")
   public void tryCreateAPeriodWithCurrentDate(String id) throws ParseException {
-    getOrCreatePeriod(0, id);
+    periodId = getOrCreatePeriod(0, id);
   }
 
   @When("^I try to get or create a period with future date and schedule (.*)$")
   public void tryCreateAPeriodWithFutureDate(String id) throws ParseException {
-    getOrCreatePeriod(120, id);
+    periodId = getOrCreatePeriod(FOUR_MONTHS, id);
   }
 
   @Then("^I should get response of incorrect period$")
@@ -429,29 +430,44 @@ public class RequisitionStepDefs {
     }
   }
 
-  private void getOrCreatePeriod(int daysToAdd, String scheduleId) throws ParseException {
+  private JSONArray createBodyForConvertToOrder() {
+    JSONObject json = new JSONObject();
+    json.put("requisitionId", requisitionId);
+    //supplyingDepot from demo-data
+    json.put("supplyingDepotId", "19121381-9f3d-4e77-b9e5-d3f59fc1639e");
+    JSONArray array = new JSONArray();
+    array.add(json);
+    return array;
+  }
+
+  @After("@RequisitionTests")
+  public void cleanUp() throws InitialDataException {
+    databaseConnection.removeData();
+  }
+
+  private String getOrCreatePeriod(int daysToAdd, String scheduleId) throws ParseException {
     LocalDate periodDate = LocalDate.now().plusDays(daysToAdd);
-    JSONArray periods = getExistingPeriods(scheduleId);
+    JSONArray periods = ProcessingPeriodUtils.getExistingPeriods(scheduleId);
 
     // first, try to find a period matching specified date among existing ones
-    periodId = findPeriodByDate(periods, periodDate);
-    if (periodId != null) {
-      return;
-    }
-    // period not found, create it based on the latest one
-    period = (JSONObject) periods.get(periods.size() - 1);
-    LocalDate endDate = parseDate(period.get("endDate"));
+    String periodId = ProcessingPeriodUtils.findPeriodByDate(periods, periodDate);
+    if (periodId == null) {
+      // period not found, create it based on the latest one
+      JSONObject period = (JSONObject) periods.get(periods.size() - 1);
+      LocalDate endDate = ProcessingPeriodUtils.parseDate(period.get("endDate"));
 
-    while (null != period && !isWithinRange(periodDate, period)) {
-      UUID id = UUID.randomUUID();
-      LocalDate startDate = endDate.plusDays(1);
-      endDate = startDate.plusDays(30);
-      periodId = createPeriod(period, id, startDate, endDate);
+      while (!ProcessingPeriodUtils.isWithinRange(periodDate, period)) {
+        UUID id = UUID.randomUUID();
+        LocalDate startDate = endDate.plusDays(1);
+        endDate = startDate.plusDays(30);
+        periodId = createPeriod(period, id, startDate, endDate);
+      }
     }
+    return periodId;
   }
 
   private String createPeriod(JSONObject period, UUID id,
-                              LocalDate startDate, LocalDate endDate) throws ParseException {;
+                              LocalDate startDate, LocalDate endDate) throws ParseException {
     DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE;
 
     period.replace("id", id.toString());
@@ -473,53 +489,4 @@ public class RequisitionStepDefs {
 
     return (String) period.get("id");
   }
-
-  private boolean isWithinRange(LocalDate date, JSONObject period) {
-    LocalDate startDate = parseDate(period.get("startDate"));
-    LocalDate endDate = parseDate(period.get("endDate"));
-    return !(date.isBefore(startDate) || date.isAfter(endDate));
-  }
-
-  private LocalDate parseDate(Object dateString) {
-    return LocalDate.parse((String) dateString);
-  }
-
-  private JSONArray getExistingPeriods(String scheduleId) throws ParseException {
-    ExtractableResponse<Response> periods = given()
-        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .queryParam("processingScheduleId", scheduleId)
-        .when()
-        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/searchByScheduleAndDate")
-        .then()
-        .statusCode(200)
-        .extract();
-    JSONParser parser = new JSONParser();
-    return (JSONArray) parser.parse(periods.asString());
-  }
-
-  private String findPeriodByDate(JSONArray periods, LocalDate periodDate) {
-    for (Object periodObj : periods) {
-      period = (JSONObject) periodObj;
-      if (isWithinRange(periodDate, period)) {
-        return (String) period.get("id");
-      }
-    }
-    return null;
-  }
-
-  private JSONArray createBodyForConvertToOrder() {
-    JSONObject json = new JSONObject();
-    json.put("requisitionId", requisitionId);
-    //supplyingDepot from demo-data
-    json.put("supplyingDepotId", "19121381-9f3d-4e77-b9e5-d3f59fc1639e");
-    JSONArray array = new JSONArray();
-    array.add(json);
-    return array;
-  }
-
-  @After("@RequisitionTests")
-  public void cleanUp() throws InitialDataException {
-    databaseConnection.removeData();
-  }
-
 }
