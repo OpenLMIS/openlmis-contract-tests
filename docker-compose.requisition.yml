@@ -36,6 +36,16 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  referencedata:
+    image: openlmis/referencedata:3.0.1-SNAPSHOT
+    env_file: .env
+    mem_limit: 512m
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
   contract_tests:
     mem_limit: 1024m
     image: openlmis/dev:1
