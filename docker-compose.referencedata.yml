@@ -2,7 +2,7 @@ version: "2"
 services:
 
   notification:
-    image: openlmis/notification:latest
+    image: openlmis/notification:3.0.1-SNAPSHOT
     mem_limit: 512m
     env_file: .env
     environment:

@@ -2,7 +2,7 @@ version: "2"
 services:
 
   requisition:
-    image: openlmis/requisition:latest
+    image: openlmis/requisition:3.0.1-SNAPSHOT
     mem_limit: 512m
     env_file: .env
     environment:
@@ -12,12 +12,12 @@ services:
     depends_on: [log]
 
   requisition-refui:
-    image: openlmis/requisition-refui:latest
+    image: openlmis/requisition-refui:3.0.1-SNAPSHOT
     mem_limit: 512m
     env_file: .env
 
   notification:
-    image: openlmis/notification:latest
+    image: openlmis/notification:3.0.1-SNAPSHOT
     mem_limit: 512m
     env_file: .env
     environment:
@@ -28,7 +28,7 @@ services:
 
   fulfillment:
     mem_limit: 512m
-    image: openlmis/fulfillment:latest
+    image: openlmis/fulfillment:3.0.1-SNAPSHOT
     env_file: .env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
