@@ -36,6 +36,7 @@ public class ValidSourceDestinationStepDefs {
   private Response response;
   private String organizationId;
   private String validSourceAssignmentId;
+  private String validDestinationAssignmentId;
 
   @When("^I try to create a new organization$")
   public void iTryToCreateANewOrganization(String bodyString) throws Throwable {
@@ -89,8 +90,8 @@ public class ValidSourceDestinationStepDefs {
         .body("name", hasItem(organizationName));
   }
 
-  @When("^I try to assign created organization to combination of program and facility type$")
-  public void iTryToAssignCreatedOrganizationToCombinationOfProgramAndFacilityType() throws Throwable {
+  @When("^I try to assign created organization as source to combination of program and facility type$")
+  public void iTryToAssignCreatedOrganizationAsSourceToCombinationOfProgramAndFacilityType() throws Throwable {
     response = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -111,8 +112,8 @@ public class ValidSourceDestinationStepDefs {
         .get(URL_OF_VALID_SOURCES);
   }
 
-  @Then("^I should get response of all valid source assignment that contains newly assignment$")
-  public void iShouldGetResponseOfAllValidSourceAssignmentThatContainsNewlyAssignment() throws Throwable {
+  @Then("^I should get response of all valid source assignments that contains newly assignment$")
+  public void iShouldGetResponseOfAllValidSourceAssignmentsThatContainsNewlyAssignment() throws Throwable {
     ArrayList<String> assignmentIds = from(response.asString()).get("id");
     validSourceAssignmentId = assignmentIds.get(assignmentIds.size() - 1);
 
@@ -121,8 +122,8 @@ public class ValidSourceDestinationStepDefs {
         .body("node.referenceId", hasItem(organizationId));
   }
 
-  @When("^I try to detach created organization to combination of program and facility type$")
-  public void iTryToDetachCreatedOrganizationToCombinationOfProgramAndFacilityType() throws Throwable {
+  @When("^I try to detach created organization as source to combination of program and facility type$")
+  public void iTryToDetachCreatedOrganizationAsSourceToCombinationOfProgramAndFacilityType() throws Throwable {
     response = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -136,6 +137,56 @@ public class ValidSourceDestinationStepDefs {
     response.then()
         .statusCode(HttpStatus.SC_OK)
         .body("id", not(hasItem(validSourceAssignmentId)));
+  }
+
+
+  @When("^I try to assign created organization as destination to combination of program and facility type$")
+  public void iTryToAssignCreatedOrganizationAsDestinationToCombinationOfProgramAndFacilityType() throws Throwable {
+    response = given()
+        .contentType(ContentType.JSON)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .body(createValidSourceDestination())
+        .when()
+        .post(URL_OF_VALID_DESTINATIONS);
+    response.then().statusCode(HttpStatus.SC_CREATED);
+  }
+
+  @And("^I try to get all valid destination assignments$")
+  public void iTryToGetAllValidDestinationAssignments() throws Throwable {
+    response = given()
+        .contentType(ContentType.JSON)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .queryParam(PROGRAM_PARAM_NAME, PROGRAM)
+        .queryParam(FACILITY_TYPE_PARAM_NAME, FACILITY_TYPE)
+        .when()
+        .get(URL_OF_VALID_DESTINATIONS);
+  }
+
+  @Then("^I should get response of all valid destination assignments that contains newly assignment$")
+  public void iShouldGetResponseOfAllValidDestinationAssignmentsThatContainsNewlyAssignment() throws Throwable {
+    ArrayList<String> assignmentIds = from(response.asString()).get("id");
+    validDestinationAssignmentId = assignmentIds.get(assignmentIds.size() - 1);
+
+    response.then()
+        .statusCode(HttpStatus.SC_OK)
+        .body("node.referenceId", hasItem(organizationId));
+  }
+
+  @When("^I try to detach created organization as destination to combination of program and facility type$")
+  public void iTryToDetachCreatedOrganizationAsDestinationToCombinationOfProgramAndFacilityType() throws Throwable {
+    response = given()
+        .contentType(ContentType.JSON)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .delete(URL_OF_VALID_DESTINATIONS + validDestinationAssignmentId);
+    response.then().statusCode(HttpStatus.SC_NO_CONTENT);
+  }
+
+  @Then("^I should get response of all valid destination assignments that not contains detached assignment$")
+  public void iShouldGetResponseOfAllValidDestinationAssignmentsThatNotContainsDetachedAssignment() throws Throwable {
+    response.then()
+        .statusCode(HttpStatus.SC_OK)
+        .body("id", not(hasItem(validDestinationAssignmentId)));
   }
 
   private JSONObject createValidSourceDestination() {

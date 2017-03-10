@@ -24,10 +24,18 @@ Feature: Valid Source Destination Tests
     And I try to get all organizations
     Then I should get response of all organizations that contains updated organization name updateOrg
 
-    When I try to assign created organization to combination of program and facility type
+    When I try to assign created organization as source to combination of program and facility type
     And I try to get all valid source assignments
-    Then I should get response of all valid source assignment that contains newly assignment
+    Then I should get response of all valid source assignments that contains newly assignment
 
-    When I try to detach created organization to combination of program and facility type
+    When I try to detach created organization as source to combination of program and facility type
     And I try to get all valid source assignments
     Then I should get response of all valid source assignments that not contains detached assignment
+
+    When I try to assign created organization as destination to combination of program and facility type
+    And I try to get all valid destination assignments
+    Then I should get response of all valid destination assignments that contains newly assignment
+
+    When I try to detach created organization as destination to combination of program and facility type
+    And I try to get all valid destination assignments
+    Then I should get response of all valid destination assignments that not contains detached assignment
