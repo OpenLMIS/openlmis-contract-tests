@@ -27,3 +27,7 @@ Feature: Valid Source Destination Tests
     When I try to assign created organization to combination of program and facility type
     And I try to get all valid source assignments
     Then I should get response of all valid source assignment that contains newly assignment
+
+    When I try to detach created organization to combination of program and facility type
+    And I try to get all valid source assignments
+    Then I should get response of all valid source assignments that not contains detached assignment
