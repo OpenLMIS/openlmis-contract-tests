@@ -23,3 +23,7 @@ Feature: Valid Source Destination Tests
     """
     And I try to get all organizations
     Then I should get response of all organizations that contains updated organization name updateOrg
+
+    When I try to assign created organization to combination of program and facility type
+    And I try to get all valid source assignments
+    Then I should get response of all valid source assignment that contains newly assignment
