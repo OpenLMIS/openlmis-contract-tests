@@ -85,7 +85,7 @@ public class RequisitionStepDefs {
   private static final String INCORRECT_PERIOD_ERROR =
       "Error occurred while initiating requisition - incorrect suggested period.";
 
-  private static final Integer FOUR_MONTHS = 120;
+  private static final int FOUR_MONTHS = 120;
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
