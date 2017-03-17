@@ -20,12 +20,12 @@ import static org.hamcrest.Matchers.is;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import cucumber.api.PendingException;
+import org.apache.http.HttpStatus;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 
 public class StockEventsStepDefs {
 
@@ -36,8 +36,8 @@ public class StockEventsStepDefs {
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
-  private static final String STOCKMANAGEMENT_ERROR_ORDERABLE_NOT_FOUND =
-      "stockmanagement.error.event.orderableId.invalid";
+  private static final String STOCKMANAGEMENT_ERROR_ORDERABLE_NOT_APPROVED =
+      "stockmanagement.error.event.orderable.not.in.approvedList";
 
   private static final String STOCKMANAGEMENT_ERROR_EVENT_DEBIT_QUANTITY_EXCEED_SOH =
       "stockmanagement.error.event.debit.quantity.exceed.stockOnHand";
@@ -62,7 +62,7 @@ public class StockEventsStepDefs {
   public void iShouldGetResponseOfIncorrectBodyWithOrderable() throws Throwable {
     createEventResponse
         .then()
-        .body("messageKey", is(STOCKMANAGEMENT_ERROR_ORDERABLE_NOT_FOUND))
+        .body("messageKey", is(STOCKMANAGEMENT_ERROR_ORDERABLE_NOT_APPROVED))
         .statusCode(HttpStatus.SC_BAD_REQUEST);
   }
 
