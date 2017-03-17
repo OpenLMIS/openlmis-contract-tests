@@ -20,12 +20,13 @@ import static org.hamcrest.Matchers.is;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import org.apache.http.HttpStatus;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 
 public class StockCardsStepDefs {
 
@@ -35,7 +36,7 @@ public class StockCardsStepDefs {
   private static final String URL_OF_STOCK_CARD_MANAGEMENT =
       baseUrlOfService("stockmanagement") + "stockCards/";
 
-  private static final String URL_OF_STOCK_CARD_SUMMARIIES =
+  public static final String URL_OF_STOCK_CARD_SUMMARIES =
       baseUrlOfService("stockmanagement") + "stockCardSummaries";
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
@@ -53,7 +54,7 @@ public class StockCardsStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam(PROGRAM_PARAM_NAME, PROGRAM_ID)
         .queryParam(FACILITY_PARAM_NAME, FACILITY_ID)
-        .when().get(URL_OF_STOCK_CARD_SUMMARIIES).andReturn();
+        .when().get(URL_OF_STOCK_CARD_SUMMARIES).andReturn();
 
     stockCardId = idsResponse.jsonPath().getString("id[0]");
   }
