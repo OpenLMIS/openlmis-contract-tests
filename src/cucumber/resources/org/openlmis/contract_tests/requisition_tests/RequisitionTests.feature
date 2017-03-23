@@ -110,9 +110,6 @@ Feature: Requisition Tests
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
       | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 10    |
 
-    When I try to submit a requisition
-    Then I should get a requisition with "SUBMITTED" status
-
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
 
@@ -266,9 +263,6 @@ Feature: Requisition Tests
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
       | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 32    |
-
-    When I try to submit a requisition
-    Then I should get a requisition with "SUBMITTED" status
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
