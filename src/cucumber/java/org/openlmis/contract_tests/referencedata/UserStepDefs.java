@@ -107,7 +107,7 @@ public class UserStepDefs {
         .when()
         .body(createBodyForSetPassword())
         .contentType(ContentType.JSON)
-        .post(BASE_URL_OF_REFERENCEDATA_SERVICE + "users/" + "passwordReset");
+        .post(BASE_URL_OF_REFERENCEDATA_SERVICE + "users/auth/" + "passwordReset");
   }
 
   @Then("^I should get correct response$")
