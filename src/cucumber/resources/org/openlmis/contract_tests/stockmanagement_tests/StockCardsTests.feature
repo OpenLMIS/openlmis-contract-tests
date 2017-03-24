@@ -13,8 +13,6 @@ Feature: Stock Cards Tests
 
       "occurredDate": "2017-02-06T10:00:00.000Z",
 
-      "sourceId":"087e81f6-a74d-4bba-9d01-16e0d64e9609",
-
       "quantity": 100,
       "signature": "srmanager"
     }
@@ -34,8 +32,6 @@ Feature: Stock Cards Tests
       "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
 
       "occurredDate": "2017-02-09T10:00:00.000Z",
-
-      "destinationId": "e89eaf68-50c1-47f2-b83a-5b51ffa2206e",
 
       "quantity": 50,
       "signature": "srmanager"
