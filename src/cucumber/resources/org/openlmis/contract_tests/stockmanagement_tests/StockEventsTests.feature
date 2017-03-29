@@ -13,7 +13,7 @@ Feature: Stock Events Tests
       "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
 
       "signature": "manager 1",
-      "documentNumber":"DN.1"，
+      "documentNumber":"DN.1",
 
       "lineItems":[{
         "quantity": 123,
