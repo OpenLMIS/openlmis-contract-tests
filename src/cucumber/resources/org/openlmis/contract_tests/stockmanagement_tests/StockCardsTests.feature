@@ -9,12 +9,13 @@ Feature: Stock Cards Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
-
       "occurredDate": "2017-02-06T10:00:00.000Z",
+      "signature": "srmanager",
 
-      "quantity": 100,
-      "signature": "srmanager"
+      lineItems:[{
+        "quantity": 100,
+        "orderableId": "23819693-0670-4c4b-b400-28e009b86b51"
+      }]
     }
     """
     Then I should get response of the event created
@@ -29,12 +30,13 @@ Feature: Stock Cards Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
-
       "occurredDate": "2017-02-09T10:00:00.000Z",
+      "signature": "srmanager",
 
-      "quantity": 50,
-      "signature": "srmanager"
+      lineItems:[{
+        "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
+        "quantity": 50
+      }]
     }
     """
     Then I should get response of the event created
