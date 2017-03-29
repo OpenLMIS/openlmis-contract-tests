@@ -15,7 +15,7 @@ Feature: Stock Events Tests
       "signature": "manager 1",
       "documentNumber":"DN.1"，
 
-      lineItems:[{
+      "lineItems":[{
         "quantity": 123,
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece"
       }]
@@ -33,7 +33,7 @@ Feature: Stock Events Tests
       "signature": "manager 1",
       "documentNumber":"DN.1",
 
-      lineItems:[{
+      "lineItems":[{
         "orderableId": "11111111-2222-3333-4444-000000000000",
         "quantity": 123
       }]
@@ -53,7 +53,7 @@ Feature: Stock Events Tests
       "signature": "manager 1",
       "documentNumber":"DN.1",
 
-      lineItems:[{
+      "lineItems":[{
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 500
       }]
@@ -76,7 +76,7 @@ Feature: Stock Events Tests
       "signature": "manager 1",
       "documentNumber":"DN.1",
 
-      lineItems:[{
+      "lineItems":[{
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 123
       }]
