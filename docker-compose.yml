@@ -29,7 +29,7 @@ services:
     depends_on: [log]
 
   auth:
-    image: openlmis/auth:3.0.1-SNAPSHOT
+    image: openlmis/auth:3.0.2-SNAPSHOT
     env_file: .env
     mem_limit: 512m
     environment:
