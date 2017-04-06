@@ -19,7 +19,7 @@ import io.restassured.response.Response;
 
 public class PhysicalInventoriesStepDefs {
   private static final String URL_PHYSICAL_INVENTORIES =
-      baseUrlOfService("stockmanagement") + "physicalInventories/";
+      baseUrlOfService("stockmanagement") + "stockEvents/";
 
   private static final String URL_PHYSICAL_INVENTORIES_DRAFT =
       baseUrlOfService("stockmanagement") + "physicalInventories/draft";
@@ -61,8 +61,7 @@ public class PhysicalInventoriesStepDefs {
   @Then("^I should get response of draft physical inventory saved$")
   public void iShouldGetResponseOfDraftPhysicalInventorySaved() throws Throwable {
     response.then()
-        .statusCode(SC_CREATED)
-        .body("lineItems[0].quantity", is(quantity));
+        .statusCode(SC_CREATED);
   }
 
   @When("^I try to submit a physical inventory$")
@@ -72,7 +71,6 @@ public class PhysicalInventoriesStepDefs {
         .body(bodyString)
         .when()
         .post(URL_PHYSICAL_INVENTORIES);
-    quantity = JsonPath.from(bodyString).get("lineItems[0].quantity");
   }
 
   @Then("^I should get response of physical inventory submitted$")

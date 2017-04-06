@@ -32,9 +32,7 @@ Feature: Physical inventories tests
     "facilityId": "e6799d64-d10d-4011-b8c2-0e4d4a3f65ce",
     "lineItems": [
       {
-        "orderable": {
-          "id": "d602d0c6-4052-456c-8ccd-61b4ad77bece"
-        },
+        "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece"
         "quantity": 233
       }
     ],
