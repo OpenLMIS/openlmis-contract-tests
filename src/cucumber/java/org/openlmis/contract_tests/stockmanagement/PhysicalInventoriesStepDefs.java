@@ -94,7 +94,7 @@ public class PhysicalInventoriesStepDefs {
       throws Throwable {
     response.then()
         .statusCode(SC_OK)
-        .body("stockOnHand", hasItem(stockOnHand));
+        .body("content.stockOnHand", hasItem(stockOnHand));
   }
 
 }
