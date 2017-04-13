@@ -9,13 +9,13 @@ Feature: Stock Events Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "occurredDate": "2017-02-06T17:55:32+08:00",
-      "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
 
       "signature": "manager 1",
       "documentNumber":"DN.1",
 
       "lineItems":[{
+        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
         "quantity": 123,
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece"
       }]
@@ -28,12 +28,12 @@ Feature: Stock Events Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "occurredDate": "2017-02-06T17:55:32+08:00",
-      "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
       "signature": "manager 1",
       "documentNumber":"DN.1",
 
       "lineItems":[{
+        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
         "orderableId": "11111111-2222-3333-4444-000000000000",
         "quantity": 123
       }]
@@ -47,13 +47,13 @@ Feature: Stock Events Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "occurredDate": "2017-02-06T17:55:32+08:00",
-      "reasonId": "c1fc3cf3-da18-44b0-a220-77c985202e06",
 
       "signature": "manager 1",
       "documentNumber":"DN.1",
 
       "lineItems":[{
+        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "reasonId": "c1fc3cf3-da18-44b0-a220-77c985202e06",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 500
       }]
@@ -70,13 +70,13 @@ Feature: Stock Events Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "occurredDate": "2017-02-06T17:55:32+08:00",
-      "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
 
       "signature": "manager 1",
       "documentNumber":"DN.1",
 
       "lineItems":[{
+        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 123
       }]

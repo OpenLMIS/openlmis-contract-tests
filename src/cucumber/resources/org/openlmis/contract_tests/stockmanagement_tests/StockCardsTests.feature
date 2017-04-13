@@ -9,10 +9,10 @@ Feature: Stock Cards Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "occurredDate": "2017-02-06T10:00:00.000Z",
       "signature": "srmanager",
 
       "lineItems":[{
+        "occurredDate": "2017-02-06T10:00:00.000Z",
         "quantity": 100,
         "orderableId": "23819693-0670-4c4b-b400-28e009b86b51"
       }]
@@ -30,10 +30,10 @@ Feature: Stock Cards Tests
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
       "facilityId": "176c4276-1fb1-4507-8ad2-cdfba0f47445",
-      "occurredDate": "2017-02-09T10:00:00.000Z",
       "signature": "srmanager",
 
       "lineItems":[{
+        "occurredDate": "2017-02-09T10:00:00.000Z",
         "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
         "quantity": 50
       }]

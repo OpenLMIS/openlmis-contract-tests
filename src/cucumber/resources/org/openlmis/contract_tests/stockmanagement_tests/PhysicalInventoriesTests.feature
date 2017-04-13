@@ -32,12 +32,12 @@ Feature: Physical inventories tests
     "facilityId": "e6799d64-d10d-4011-b8c2-0e4d4a3f65ce",
     "lineItems": [
       {
+        "occurredDate": "2017-03-15T12:00:00.000Z",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 233
       }
     ],
     "documentNumber": "DOC-1",
-    "occurredDate": "2017-03-15T12:00:00.000Z",
     "signature": "test"
     }
     """
