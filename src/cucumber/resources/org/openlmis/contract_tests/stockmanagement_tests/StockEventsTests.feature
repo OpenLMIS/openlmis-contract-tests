@@ -53,7 +53,7 @@ Feature: Stock Events Tests
 
       "lineItems":[{
         "occurredDate": "2017-02-06T17:55:32+08:00",
-        "reasonId": "c1fc3cf3-da18-44b0-a220-77c985202e06",
+        "reasonId": "5b09202e-b8a7-4f77-9e0e-8156f8efc613",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 500
       }]
