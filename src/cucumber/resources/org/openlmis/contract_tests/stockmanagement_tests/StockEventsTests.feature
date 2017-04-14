@@ -33,7 +33,7 @@ Feature: Stock Events Tests
 
       "lineItems":[{
         "occurredDate": "2017-02-06T17:55:32+08:00",
-        "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
+        "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "orderableId": "11111111-2222-3333-4444-000000000000",
         "quantity": 123
       }]
@@ -76,7 +76,7 @@ Feature: Stock Events Tests
 
       "lineItems":[{
         "occurredDate": "2017-02-06T17:55:32+08:00",
-        "reasonId":"e3fc3cf3-da18-44b0-a220-77c985202e06",
+        "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 123
       }]
