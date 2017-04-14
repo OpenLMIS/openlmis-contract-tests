@@ -20,7 +20,7 @@ Feature: Stock Reasons Tests
     {
       "name": "test_reason_1",
       "isFreeTextAllowed": true,
-      "reasonCategory": "AD_HOC",
+      "reasonCategory": "TRANSFER",
       "reasonType": "CREDIT",
       "description": "test description"
     }
@@ -35,7 +35,7 @@ Feature: Stock Reasons Tests
     {
       "name": "update_reason_1",
       "isFreeTextAllowed": true,
-      "reasonCategory": "AD_HOC",
+      "reasonCategory": "TRANSFER",
       "reasonType": "CREDIT",
       "description": "test description"
     }

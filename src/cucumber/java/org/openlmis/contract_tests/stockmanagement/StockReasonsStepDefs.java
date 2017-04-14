@@ -71,7 +71,7 @@ public class StockReasonsStepDefs {
   public void iShouldGetResponseOfStockCardLineItemReasonCategories() throws Throwable {
     reasonResponse.then()
         .statusCode(HttpStatus.SC_OK)
-        .body("$", hasItems("AD_HOC", "ADJUSTMENT"));
+        .body("$", hasItems("TRANSFER", "ADJUSTMENT"));
   }
 
   @When("^I try to create a new stock card line item reason$")
