@@ -4,7 +4,6 @@ import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
@@ -94,7 +93,7 @@ public class PhysicalInventoriesStepDefs {
       throws Throwable {
     response.then()
         .statusCode(SC_OK)
-        .body("content.stockOnHand", hasItem(stockOnHand));
+        .body("stockOnHand", hasItem(stockOnHand));
   }
 
 }

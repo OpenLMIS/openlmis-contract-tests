@@ -56,7 +56,7 @@ public class StockCardsStepDefs {
         .queryParam(FACILITY_PARAM_NAME, FACILITY_ID)
         .when().get(URL_OF_STOCK_CARD_SUMMARIES).andReturn();
 
-    stockCardId = idsResponse.jsonPath().getString("content.id[0]");
+    stockCardId = idsResponse.jsonPath().getString("id[0]");
   }
 
   @When("^I try to get stock card with card id$")
