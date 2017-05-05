@@ -218,7 +218,9 @@ public class RequisitionStepDefs {
   public void shouldGetResponseWithSpecifiedFieldValue(String value, String fieldName) {
     requisitionResponse
         .then()
-        .body(fieldName, is(value));
+        .statusCode(200)
+        .body(fieldName, is(value))
+        .log().body();
   }
 
   @When("^I try to authorize a requisition$")
