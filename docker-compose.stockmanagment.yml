@@ -42,7 +42,7 @@ services:
       @PhysicalInventoriesTests'
 
   referencedata:
-    image: openlmis/referencedata:5.0.0-SNAPSHOT
+    image: openlmis/referencedata:6.0.0-SNAPSHOT
     env_file: .env
     mem_limit: 512m
     environment:
