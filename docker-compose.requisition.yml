@@ -17,7 +17,7 @@ services:
     env_file: .env
 
   notification:
-    image: openlmis/notification:3.0.1-SNAPSHOT
+    image: openlmis/notification:3.0.2-SNAPSHOT
     mem_limit: 512m
     env_file: .env
     environment:
@@ -28,7 +28,7 @@ services:
 
   fulfillment:
     mem_limit: 512m
-    image: openlmis/fulfillment:3.0.2-SNAPSHOT
+    image: openlmis/fulfillment:3.0.3-SNAPSHOT
     env_file: .env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
