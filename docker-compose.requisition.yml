@@ -38,7 +38,7 @@ services:
 
   contract_tests:
     mem_limit: 1024m
-    image: openlmis/dev:1
+    image: openlmis/dev:2
     environment:
       GRADLE_OPTS: '-Xmx256m'
     env_file: .env
