@@ -5,7 +5,7 @@ Feature: Physical inventories tests
     Given I have logged in as srmanager2
 
     When I try to get a draft with facilityId: e6799d64-d10d-4011-b8c2-0e4d4a3f65ce, programId: dce17f2e-af3e-40ad-8e00-3496adef44c3
-    Then I should get the empty draft of physical inventory
+    Then I should get no content
 
     When I try to save the draft physical inventory
     """
