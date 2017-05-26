@@ -35,6 +35,22 @@ Feature: Physical inventories tests
         "occurredDate": "2017-03-15T12:00:00.000Z",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 233
+      },
+      {
+        "occurredDate": "2017-03-15T12:00:00.000Z",
+        "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
+        "lotId": "4727ecbf-df85-41ce-bbe0-bdcc3b1fe448",
+        "quantity": 233
+      },
+      {
+        "occurredDate": "2017-03-15T12:00:00.000Z",
+        "orderableId": "62e16def-53ef-46b5-8bf1-8dab9b0bcec1",
+        "quantity": 233
+      },
+      {
+        "occurredDate": "2017-03-15T12:00:00.000Z",
+        "orderableId": "880cf2eb-7b68-4450-a037-a0dec1a17987",
+        "quantity": 233
       }
     ],
     "documentNumber": "DOC-1",
