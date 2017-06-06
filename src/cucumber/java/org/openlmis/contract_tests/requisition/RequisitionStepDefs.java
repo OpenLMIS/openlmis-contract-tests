@@ -426,7 +426,7 @@ public class RequisitionStepDefs {
 
     for (Object requisitionLine : requisitionLineItems) {
       JSONObject requisitionLineAsJson = (JSONObject) requisitionLine;
-      requisitionLineAsJson.replace(keyToUpdate, newValue);
+      requisitionLineAsJson.put(keyToUpdate, newValue);
     }
   }
 
