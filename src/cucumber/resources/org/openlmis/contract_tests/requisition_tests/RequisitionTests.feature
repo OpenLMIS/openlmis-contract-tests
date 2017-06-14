@@ -25,11 +25,13 @@ Feature: Requisition Tests
       | 2                     | 3                | 1                 | 2                 | test                         | 5                     | 5     |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I logout
 
@@ -43,6 +45,7 @@ Feature: Requisition Tests
       | 4                |
 
     When I try to approve a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
     And I logout
 
@@ -71,22 +74,25 @@ Feature: Requisition Tests
       | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 10    |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
     When I have logged in as psupervisor
     When I try to reject authorized requisition
+    And I try to get requisition with id
     Then I should get a requisition with "INITIATED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
-    
+
   Scenario: Storeroom Manager user should be able to delete initiated requisition
     Given I have logged in as srmanager1
 
@@ -142,6 +148,7 @@ Feature: Requisition Tests
       | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
@@ -171,11 +178,13 @@ Feature: Requisition Tests
       | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 30    |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I logout
 
@@ -189,6 +198,7 @@ Feature: Requisition Tests
       | 10               |
 
     When I try to approve a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
     And I logout
 
@@ -221,17 +231,20 @@ Feature: Requisition Tests
       | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 32    |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
     When I have logged in as psupervisor
     When I try to reject authorized requisition
+    And I try to get requisition with id
     Then I should get a requisition with "INITIATED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -312,11 +325,13 @@ Feature: Requisition Tests
       | 1                     | 1                | 16                | 17                | test                         | 2                     | 2     |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I logout
 
@@ -330,6 +345,7 @@ Feature: Requisition Tests
       | 1                |
 
     When I try to approve a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
     And I logout
 
@@ -349,11 +365,13 @@ Feature: Requisition Tests
       | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 4     |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I logout
 
@@ -367,6 +385,7 @@ Feature: Requisition Tests
       | 2                |
 
     When I try to approve a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
     And I logout
 
@@ -394,11 +413,13 @@ Feature: Requisition Tests
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     When I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I logout
 
@@ -412,6 +433,7 @@ Feature: Requisition Tests
       | 4                |
 
     When I try to approve a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
     And I logout
 
@@ -449,11 +471,13 @@ Feature: Requisition Tests
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     When I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -487,11 +511,13 @@ Feature: Requisition Tests
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     When I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -524,12 +550,14 @@ Feature: Requisition Tests
     Then I should get updated requisition with proper total cost
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I should get updated requisition with proper total cost
     And I logout
 
     When I have logged in as smanager1
     When I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get updated requisition with proper total cost
     And I logout
@@ -542,6 +570,7 @@ Feature: Requisition Tests
     Then I should get updated requisition with proper total cost
 
     When I try to approve a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
     And I should get updated requisition with proper total cost
     And I logout
@@ -588,11 +617,13 @@ Feature: Requisition Tests
       | 10               | 0                     | 10                    | 30                | we need more                 | 20                | 10    | 30                  | <average_1>        |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -619,11 +650,13 @@ Feature: Requisition Tests
       | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 30    | 20                  | <average_2>        |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -650,11 +683,13 @@ Feature: Requisition Tests
       | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 20    | 0                   | <average_3>        |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -681,11 +716,13 @@ Feature: Requisition Tests
       | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 40    | 15                  | <average_4>        |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -712,11 +749,13 @@ Feature: Requisition Tests
       | 25               | 25                    | 50                    | 50                | we need more                 | 0                 | 50    | 50                  | <average_5>        |
 
     When I try to submit a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
     When I have logged in as smanager1
     And I try to authorize a requisition
+    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
@@ -727,7 +766,7 @@ Feature: Requisition Tests
     | 3       | 30        | 25        | 17        | 12        | 22        |
     | 4       | 30        | 25        | 17        | 17        | 22        |
 
-    
+
   Scenario: Storeroom Manager user should be able to skip initiated requisition
     Given I have logged in as srmanager1
 
@@ -743,6 +782,7 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try to skip initiated requisition
+    And I try to get requisition with id
     Then I should get a requisition with "SKIPPED" status
 
     When I try to initiate a requisition with:
