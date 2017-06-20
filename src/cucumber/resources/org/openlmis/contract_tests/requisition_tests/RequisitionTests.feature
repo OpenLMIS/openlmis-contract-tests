@@ -88,7 +88,7 @@ Feature: Requisition Tests
     When I have logged in as psupervisor
     When I try to reject authorized requisition
     And I try to get requisition with id
-    Then I should get a requisition with "INITIATED" status
+    Then I should get a requisition with "REJECTED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
@@ -245,7 +245,7 @@ Feature: Requisition Tests
     When I have logged in as psupervisor
     When I try to reject authorized requisition
     And I try to get requisition with id
-    Then I should get a requisition with "INITIATED" status
+    Then I should get a requisition with "REJECTED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
