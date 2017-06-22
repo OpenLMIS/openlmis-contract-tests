@@ -13,6 +13,8 @@ contract_test_result=$?
 
 echo "========== Logging output from containers =========="
 /usr/local/bin/docker-compose logs
+echo "========== Logging output from syslog =========="
+cat ../logs/requisition/messages
 echo "========== Logging nginx settings =========="
 /usr/local/bin/docker-compose exec nginx cat /etc/nginx/conf.d/default.conf
 
