@@ -19,7 +19,7 @@ services:
     # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
-    image: openlmis/referencedata:6.0.2-SNAPSHOT
+    image: openlmis/referencedata:7.0.0-SNAPSHOT
     env_file: .env
     mem_limit: 512m
     environment:
