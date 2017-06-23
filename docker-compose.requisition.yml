@@ -2,7 +2,7 @@ version: "2"
 services:
 
   requisition:
-    image: openlmis/requisition:4.0.0-SNAPSHOT
+    image: openlmis/requisition:4.0.1-SNAPSHOT
     mem_limit: 512m
     env_file: .env
     environment:
