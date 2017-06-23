@@ -42,7 +42,7 @@ services:
       @PhysicalInventoriesTests'
 
   auth:
-    image: openlmis/auth:3.0.3-SNAPSHOT
+    image: openlmis/auth:3.0.4-SNAPSHOT
     env_file: .env
     mem_limit: 512m
     environment:
