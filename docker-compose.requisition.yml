@@ -36,6 +36,16 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  cce:
+    mem_limit: 512m
+    image: openlmis/cce:1.0.0-beta-SNAPSHOT
+    env_file: .env
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
   contract_tests:
     mem_limit: 1024m
     image: openlmis/dev:2
@@ -56,6 +66,7 @@ services:
     - referencedata
     - notification
     - fulfillment
+    - cce
 
     entrypoint:
       - 'gradle'
