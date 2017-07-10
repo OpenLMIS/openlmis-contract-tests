@@ -432,6 +432,24 @@ Feature: Requisition Tests
       | approvedQuantity |
       | 4                |
 
+    When I try to reject authorized requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "REJECTED" status
+    And I logout
+
+    When I have logged in as srmanager1
+    When I try to submit a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    When I try to authorize a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "AUTHORIZED" status
+    And I logout
+
+    When I have logged in as psupervisor
     When I try to approve a requisition
     And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
