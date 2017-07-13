@@ -68,6 +68,7 @@ public class UserStepDefs {
   public void shouldGetResponseWithTheUserId() {
     userResponse
         .then()
+        .statusCode(HttpStatus.SC_OK)
         .body("id", notNullValue());
     userId = from(userResponse.asString()).get("id");
     userName = from(userResponse.asString()).get("username");
@@ -87,6 +88,7 @@ public class UserStepDefs {
     for (Map map : data) {
       userResponse
           .then()
+          .statusCode(HttpStatus.SC_OK)
           .body("id", is(userId))
           .body("username", is(map.get("username")))
           .body("firstName", is(map.get("firstName")))
