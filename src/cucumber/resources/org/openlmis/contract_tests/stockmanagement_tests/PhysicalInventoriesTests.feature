@@ -50,7 +50,7 @@ Feature: Physical inventories tests
       {
         "occurredDate": "2017-05-26T05:00:00.000Z",
         "orderableId": "880cf2eb-7b68-4450-a037-a0dec1a17987",
-        "quantity": 233
+        "quantity": 70
       }
     ],
     "documentNumber": "DOC-1",
