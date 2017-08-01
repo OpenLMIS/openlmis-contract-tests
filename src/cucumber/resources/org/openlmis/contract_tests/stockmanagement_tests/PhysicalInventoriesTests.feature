@@ -60,5 +60,5 @@ Feature: Physical inventories tests
     Then I should get response of physical inventory submitted
 
     When I try to get stock cards summaries by facilityId: e6799d64-d10d-4011-b8c2-0e4d4a3f65ce, programId: dce17f2e-af3e-40ad-8e00-3496adef44c3
-    Then I should get response of all stock cards summaries that include SOH: 233
+    Then I should get response of all stock cards summaries
     And I logout

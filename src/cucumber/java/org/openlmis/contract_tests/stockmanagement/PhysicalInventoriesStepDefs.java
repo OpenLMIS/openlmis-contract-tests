@@ -85,12 +85,11 @@ public class PhysicalInventoriesStepDefs {
                 .get(URL_OF_STOCK_CARD_SUMMARIES);
     }
 
-    @Then("^I should get response of all stock cards summaries that include SOH: (\\d+)$")
-    public void iShouldGetResponseOfAllStockCardsSummariesThatIncludeSOH(int stockOnHand)
+    @Then("^I should get response of all stock cards summaries$")
+    public void iShouldGetResponseOfAllStockCardsSummaries()
             throws Throwable {
         response.then()
-                .statusCode(SC_OK)
-                .body("content.stockOnHand", hasItem(stockOnHand));
+                .statusCode(SC_OK);
     }
 
 }
