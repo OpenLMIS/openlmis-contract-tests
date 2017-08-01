@@ -14,6 +14,7 @@ Feature: Stock Cards Tests
       "lineItems":[{
         "occurredDate": "2017-02-06T10:00:00.000Z",
         "quantity": 100,
+        "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "orderableId": "23819693-0670-4c4b-b400-28e009b86b51"
       }]
     }
@@ -35,6 +36,7 @@ Feature: Stock Cards Tests
       "lineItems":[{
         "occurredDate": "2017-02-09T10:00:00.000Z",
         "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
+        "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "quantity": 50
       }]
     }
@@ -42,7 +44,7 @@ Feature: Stock Cards Tests
     Then I should get response of the event created
 
     When I try to get stock card with card id
-    Then I should get a stock card with 50 stockOnHand
+    Then I should get a stock card with 150 stockOnHand
     And I logout
 
     Given I have logged in as srmanager2
