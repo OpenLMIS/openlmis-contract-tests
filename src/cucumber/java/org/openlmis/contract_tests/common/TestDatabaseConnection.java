@@ -93,9 +93,10 @@ public class TestDatabaseConnection {
 
       for (String schema : SCHEMAS) {
         resultSetOfTablesNameQuery = statementToReadTablesName.executeQuery(
-            "SELECT table_name \n" +
-                " FROM information_schema.tables\n" +
-                " WHERE table_schema='" + schema + "';");
+            "SELECT table_name" +
+                " FROM information_schema.tables" +
+                " WHERE table_schema='" + schema + "'" +
+                " AND table_name NOT LIKE 'jv_%';");
 
         while (!resultSetOfTablesNameQuery.isClosed() && resultSetOfTablesNameQuery.next()) {
           String tableName = resultSetOfTablesNameQuery.getString(1);
