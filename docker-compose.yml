@@ -24,7 +24,7 @@ services:
     mem_limit: 1024m
     environment:
       JAVA_OPTS: '-Xmx1024m -Dlogging.config=/logback.xml'
-      spring_profiles_active: demo-data
+      spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
