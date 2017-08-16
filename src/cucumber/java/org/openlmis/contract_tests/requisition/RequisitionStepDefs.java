@@ -155,8 +155,13 @@ public class RequisitionStepDefs {
 
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
-    data.forEach(map -> map.entrySet().forEach(entry ->
-        updateFieldInRequisitionLineItem(requisition, entry.getKey(), entry.getValue())
+    data.forEach(map -> map.entrySet().forEach(entry -> {
+          if (entry.getKey().equals("datePhysicalStockCountCompleted")) {
+            requisition.put("datePhysicalStockCountCompleted", entry.getValue());
+          } else {
+            updateFieldInRequisitionLineItem(requisition, entry.getKey(), entry.getValue());
+          }
+        }
     ));
 
     given()
