@@ -17,8 +17,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 2                     | 3                | 1                 | 2                 | test                         | 5                     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -66,8 +66,8 @@ Feature: Requisition Tests
     And I should get a requisition without supervisoryNode
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 7                     | 3                | 3                 | 4                 | test                         | 10                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -140,8 +140,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 20                    | 5                | 21                | 22                | test                         | 25                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 20                    | 5                | 21                | 22                | test                         | 25                    | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -170,8 +170,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 15                    | 15               | 6                 | 7                 | test                         | 30                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -223,8 +223,8 @@ Feature: Requisition Tests
     And I should get a requisition without supervisoryNode
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -317,8 +317,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 1                     | 1                | 16                | 17                | test                         | 2                     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 1                     | 1                | 16                | 17                | test                         | 2                     | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -357,8 +357,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 2                     | 2                | 2                 | 2                 | test                         | 4                     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -405,8 +405,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -481,8 +481,8 @@ Feature: Requisition Tests
     And I should get a requisition without supervisoryNode
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -521,8 +521,8 @@ Feature: Requisition Tests
     And I should get a requisition without supervisoryNode
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -556,8 +556,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
-      | 9                     | 2                | 0                 | 432               | test                         | 11                    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted
+      | 9                     | 2                | 0                 | 432               | test                         | 11                    | 2017-08-15
     And I try to get requisition with id
     Then I should get updated requisition with proper total cost
 
@@ -627,8 +627,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
-      | 10               | 0                     | 10                    | 30                | we need more                 | 20                |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted
+      | 10               | 0                     | 10                    | 30                | we need more                 | 20                | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
@@ -660,8 +660,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
-      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted
+      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
@@ -693,8 +693,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
-      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted
+      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
@@ -726,8 +726,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
-      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted
+      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
@@ -759,8 +759,8 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays |
-      | 25               | 25                    | 50                    | 50                | we need more                 | 0                 |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted
+      | 25               | 25                    | 50                    | 50                | we need more                 | 0                 | 2017-08-15
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
