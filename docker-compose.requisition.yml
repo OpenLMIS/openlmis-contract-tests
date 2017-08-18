@@ -46,6 +46,16 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  stockmanagement:
+    mem_limit: 512m
+    image: openlmis/stockmanagement:1.0.0-SNAPSHOT
+    env_file: .env
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
   contract_tests:
     mem_limit: 1024m
     image: openlmis/dev:2
@@ -67,6 +77,7 @@ services:
     - notification
     - fulfillment
     - cce
+    - stockmanagement
 
     entrypoint:
       - 'gradle'
@@ -76,6 +87,7 @@ services:
         ${BASE_URL}/auth
         ,${BASE_URL}/requisition
         ,${BASE_URL}/referencedata
+        ,${BASE_URL}/stockmanagement
         ,${BASE_URL}/fulfillment'
       - 'cucumber'
       - '-Ptags=@RequisitionTests'
