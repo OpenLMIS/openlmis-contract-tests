@@ -6,7 +6,7 @@ services:
     mem_limit: 512m
     env_file: .env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
