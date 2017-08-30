@@ -252,6 +252,11 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/approve");
+
+    if (requisitionResponse.statusCode() > 200) {
+      System.out.println("Received response: " + requisitionResponse.statusCode());
+      System.out.println(requisitionResponse.body().print());
+    }
   }
 
   @When("^I try to skip initiated requisition$")
