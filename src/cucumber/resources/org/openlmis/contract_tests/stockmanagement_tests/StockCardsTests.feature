@@ -12,7 +12,7 @@ Feature: Stock Cards Tests
       "signature": "srmanager",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06T10:00:00.000Z",
+        "occurredDate": "2017-02-06",
         "quantity": 100,
         "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "orderableId": "23819693-0670-4c4b-b400-28e009b86b51"
@@ -34,7 +34,7 @@ Feature: Stock Cards Tests
       "signature": "srmanager",
 
       "lineItems":[{
-        "occurredDate": "2017-02-09T10:00:00.000Z",
+        "occurredDate": "2017-02-09",
         "orderableId": "23819693-0670-4c4b-b400-28e009b86b51",
         "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "quantity": 50

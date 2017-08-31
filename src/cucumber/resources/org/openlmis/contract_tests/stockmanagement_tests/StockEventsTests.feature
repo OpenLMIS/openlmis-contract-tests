@@ -14,7 +14,7 @@ Feature: Stock Events Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "occurredDate": "2017-02-06",
         "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "quantity": 123,
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece"
@@ -32,7 +32,7 @@ Feature: Stock Events Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "occurredDate": "2017-02-06",
         "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "orderableId": "11111111-2222-3333-4444-000000000000",
         "quantity": 123
@@ -52,7 +52,7 @@ Feature: Stock Events Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "occurredDate": "2017-02-06",
         "reasonId": "5b09202e-b8a7-4f77-9e0e-8156f8efc613",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 500
@@ -75,7 +75,7 @@ Feature: Stock Events Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06T17:55:32+08:00",
+        "occurredDate": "2017-02-06",
         "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 123
