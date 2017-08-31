@@ -82,12 +82,25 @@ public class TestDatabaseConnection {
   }
 
   public void removeData() throws InitialDataException {
+    System.out.println("Clearing data");
+
     Connection connection = null;
     Statement statementToReadTablesName = null;
     Statement statementToTruncateTable = null;
+    Statement statementToClearStock = null;
     ResultSet resultSetOfTablesNameQuery = null;
     try {
       connection = DriverManager.getConnection(DATABASE_URL, USER_NAME, PASSWORD);
+
+      statementToClearStock = connection.createStatement();
+
+/*      statementToClearStock.executeUpdate("DELETE FROM stockmanagement.physical_inventory_line_items");
+      statementToClearStock.executeUpdate("DELETE FROM stockmanagement.physical_inventories");
+      statementToClearStock.executeUpdate("DELETE FROM stockmanagement.stock_event_line_items");
+      statementToClearStock.executeUpdate("DELETE FROM stockmanagement.stock_events");*/
+      statementToClearStock.executeUpdate("DELETE FROM stockmanagement.stock_card_line_items");
+      statementToClearStock.executeUpdate("DELETE FROM stockmanagement.stock_cards");
+
       statementToReadTablesName = connection.createStatement();
       statementToTruncateTable = connection.createStatement();
 
@@ -117,6 +130,9 @@ public class TestDatabaseConnection {
         }
         if (statementToTruncateTable != null) {
           statementToTruncateTable.close();
+        }
+        if (statementToClearStock != null) {
+          statementToClearStock.close();
         }
         if (connection != null) {
           connection.close();
