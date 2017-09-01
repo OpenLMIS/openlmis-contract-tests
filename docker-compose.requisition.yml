@@ -48,7 +48,7 @@ services:
 
   stockmanagement:
     mem_limit: 512m
-    image: openlmis/stockmanagement:1.0.0-SNAPSHOT
+    image: openlmis/stockmanagement:1.0.1-SNAPSHOT
     env_file: .env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
