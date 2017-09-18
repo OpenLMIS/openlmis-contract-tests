@@ -5,7 +5,16 @@ Feature: Physical inventories tests
     Given I have logged in as srmanager2
 
     When I try to get a draft with facilityId: e6799d64-d10d-4011-b8c2-0e4d4a3f65ce, programId: dce17f2e-af3e-40ad-8e00-3496adef44c3
-    Then I should get no content
+    Then I should get OK with empty list
+
+    When I try to create new draft physical inventory
+    """
+    {
+    "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
+    "facilityId": "e6799d64-d10d-4011-b8c2-0e4d4a3f65ce"
+    }
+    """
+    Then I should get response of draft physical inventory created
 
     When I try to save the draft physical inventory
     """
@@ -14,9 +23,7 @@ Feature: Physical inventories tests
     "facilityId": "e6799d64-d10d-4011-b8c2-0e4d4a3f65ce",
     "lineItems": [
       {
-        "orderable": {
-          "id": "d602d0c6-4052-456c-8ccd-61b4ad77bece"
-        },
+        "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece",
         "quantity": 100
       }
     ],
@@ -24,6 +31,9 @@ Feature: Physical inventories tests
     }
     """
     Then I should get response of draft physical inventory saved
+
+    When I try to get physical inventory by id
+    Then I should get response of saved draft physical inventory
 
     When I try to submit a physical inventory
     """
@@ -58,6 +68,9 @@ Feature: Physical inventories tests
     }
     """
     Then I should get response of physical inventory submitted
+
+    When I try to get physical inventory by id
+    Then I should get response of submitted physical inventory
 
     When I try to get stock cards summaries by facilityId: e6799d64-d10d-4011-b8c2-0e4d4a3f65ce, programId: dce17f2e-af3e-40ad-8e00-3496adef44c3
     Then I should get response of all stock cards summaries
