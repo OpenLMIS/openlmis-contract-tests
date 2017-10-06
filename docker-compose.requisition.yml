@@ -41,7 +41,8 @@ services:
     image: openlmis/cce:1.0.0-SNAPSHOT
     env_file: .env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
