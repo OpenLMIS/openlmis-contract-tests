@@ -21,8 +21,8 @@ Feature: Requisition Tests
       | 2                     | 3                | 1                 | 2                 | test                         | 5                     | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 2                     | 3                | 1                 | 2                 | test                         | 5                     | 5     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -70,8 +70,8 @@ Feature: Requisition Tests
       | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 10    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 7                     | 3                | 3                 | 4                 | test                         | 10                    |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -113,8 +113,8 @@ Feature: Requisition Tests
       | 7                     | 3                | 3                 | 4                 | test                         | 10                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 7                     | 3                | 3                 | 4                 | test                         | 10                    | 10    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 7                     | 3                | 3                 | 4                 | test                         | 10                    |
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
@@ -144,8 +144,8 @@ Feature: Requisition Tests
       | 20                    | 5                | 21                | 22                | test                         | 25                    | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -174,8 +174,8 @@ Feature: Requisition Tests
       | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 30    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 15                    | 15               | 6                 | 7                 | test                         | 30                    |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -227,8 +227,8 @@ Feature: Requisition Tests
       | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 32    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -274,8 +274,8 @@ Feature: Requisition Tests
       | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 32    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
 
     When I try to delete initiated requisition
     Then I should get response of deleted requisition
@@ -321,8 +321,8 @@ Feature: Requisition Tests
       | 1                     | 1                | 16                | 17                | test                         | 2                     | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 1                     | 1                | 16                | 17                | test                         | 2                     | 2     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 1                     | 1                | 16                | 17                | test                         | 2                     |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -352,7 +352,7 @@ Feature: Requisition Tests
     When I have logged in as srmanager1
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | true     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | true      |
     Then I should get response with the initiated requisition's id
     And I should get a requisition with "INITIATED" status
 
@@ -361,8 +361,8 @@ Feature: Requisition Tests
       | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 4     |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 2                     | 2                | 2                 | 2                 | test                         | 4                     |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -409,8 +409,8 @@ Feature: Requisition Tests
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -485,8 +485,8 @@ Feature: Requisition Tests
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -525,8 +525,8 @@ Feature: Requisition Tests
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -631,8 +631,8 @@ Feature: Requisition Tests
       | 10               | 0                     | 10                    | 30                | we need more                 | 20                | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
-      | 10               | 0                     | 10                    | 30                | we need more                 | 20                | 10    | 30                  | <average_1>        |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
+      | 10               | 0                     | 10                    | 30                | we need more                 | 20                | 30                  | <average_1>        |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -664,8 +664,8 @@ Feature: Requisition Tests
       | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
-      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 30    | 20                  | <average_2>        |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
+      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 20                  | <average_2>        |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -697,8 +697,8 @@ Feature: Requisition Tests
       | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
-      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 20    | 0                   | <average_3>        |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
+      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 0                   | <average_3>        |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -730,8 +730,8 @@ Feature: Requisition Tests
       | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
-      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 40    | 15                  | <average_4>        |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
+      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 15                  | <average_4>        |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -763,8 +763,8 @@ Feature: Requisition Tests
       | 25               | 25                    | 50                    | 50                | we need more                 | 0                 | 2017-08-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | total | adjustedConsumption | averageConsumption |
-      | 25               | 25                    | 50                    | 50                | we need more                 | 0                 | 50    | 50                  | <average_5>        |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
+      | 25               | 25                    | 50                    | 50                | we need more                 | 0                 | 50                  | <average_5>        |
 
     When I try to submit a requisition
     And I try to get requisition with id
@@ -812,3 +812,82 @@ Feature: Requisition Tests
       | beginningBalance |
       | 0                |
     And I logout
+
+
+  Scenario: Total should be calculated properly
+    Given I have logged in as administrator
+    And I try get a requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
+    And I should get response with requisition template
+    And I try to update total column:
+      | isDisplayed |
+      | true        |
+    And I should get response that template has been updated
+
+    When I have logged in as srmanager1
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     | 2017-08-15                      |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     | 5     |
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    | 2017-08-15                      |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 20                    | 5                | 21                | 22                | test                         | 25                    | 25    |
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 2017-08-15 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 30    |
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 2017-08-15 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 32    |
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 1                     | 1                | 16                | 17                | test                         | 2                     | 2017-08-15 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 1                     | 1                | 16                | 17                | test                         | 2                     | 2     |
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 2017-08-15 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 4     |
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15 |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |

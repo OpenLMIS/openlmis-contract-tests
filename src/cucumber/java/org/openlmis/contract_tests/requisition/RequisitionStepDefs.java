@@ -37,7 +37,6 @@ import org.openlmis.contract_tests.common.DatabaseManager;
 import org.openlmis.contract_tests.common.InitialDataException;
 
 import cucumber.api.DataTable;
-import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -50,6 +49,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -65,10 +65,10 @@ public class RequisitionStepDefs {
   private String supervisoryNodeId;
   private String periodId;
   private JSONObject requisition;
-  private JSONObject period;
 
   private String requisitionTemplateProgram;
   private DataTable requisitionTemplateUpdateData;
+  private Map<String, DataTable> requisitionTemplateColumnsData = new HashMap<>();
 
   public static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
@@ -84,7 +84,7 @@ public class RequisitionStepDefs {
   private static final String INCORRECT_PERIOD_ERROR =
       "Error occurred while initiating requisition - incorrect suggested period.";
 
-  private static final int FOUR_MONTHS = 120;
+  private static final int FOUR_MONTHS = 4;
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
@@ -328,12 +328,12 @@ public class RequisitionStepDefs {
 
   @When("^I try to get or create a period with current date and schedule (.*)$")
   public void tryCreateAPeriodWithCurrentDate(String id) throws ParseException {
-    periodId = getOrCreatePeriod(0, id);
+    getOrCreatePeriod(0, id);
   }
 
   @When("^I try to get or create a period with future date and schedule (.*)$")
   public void tryCreateAPeriodWithFutureDate(String id) throws ParseException {
-    periodId = getOrCreatePeriod(FOUR_MONTHS, id);
+    getOrCreatePeriod(FOUR_MONTHS, id);
   }
 
   @Then("^I should get response of incorrect period$")
@@ -417,17 +417,56 @@ public class RequisitionStepDefs {
         .put(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + id);
   }
 
+  @When("^I try to update (.+) column:$")
+  public void updateRequisitionTemplate(String name, DataTable data) throws ParseException {
+    requisitionTemplateColumnsData.put(name, data);
+
+    JSONParser parser = new JSONParser();
+    JSONObject template = (JSONObject) parser.parse(requisitionTemplateResponse.asString());
+    String id = template.get("id").toString();
+
+    JSONObject columnMaps = (JSONObject) template.get("columnsMap");
+    JSONObject column = (JSONObject) columnMaps.get(name);
+
+    data
+        .asMaps(String.class, Object.class)
+        .forEach(map -> map.forEach(column::replace));
+
+    requisitionTemplateResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .queryParam("id", id)
+        .contentType(ContentType.JSON)
+        .body(template.toJSONString())
+        .when()
+        .put(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + id);
+  }
+
   @Then("^I should get response that template has been updated$")
   public void checkIfRequisitionTemplateWasUpdated() {
     ValidatableResponse validatableResponse = requisitionTemplateResponse
         .then()
         .statusCode(200);
 
-    requisitionTemplateUpdateData
-        .asMaps(String.class, String.class)
-        .forEach(map -> map.forEach(
-            (key, value) -> validatableResponse.body(key, is(hasToString(value)))
-        ));
+    if (null != requisitionTemplateUpdateData) {
+      requisitionTemplateUpdateData
+          .asMaps(String.class, String.class)
+          .forEach(map -> map.forEach(
+              (key, value) -> validatableResponse.body(key, is(hasToString(value)))
+          ));
+    }
+
+    if (!requisitionTemplateColumnsData.isEmpty()) {
+      for (Map.Entry<String, DataTable> entry : requisitionTemplateColumnsData.entrySet()) {
+        String prefix = "columnsMap." + entry.getKey() + ".";
+
+        entry
+            .getValue()
+            .asMaps(String.class, String.class)
+            .forEach(map -> map.forEach(
+                (key, value) -> validatableResponse.body(prefix + key, is(hasToString(value)))
+            ));
+      }
+    }
   }
 
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
@@ -450,8 +489,8 @@ public class RequisitionStepDefs {
     return array;
   }
 
-  private String getOrCreatePeriod(int daysToAdd, String scheduleId) throws ParseException {
-    LocalDate periodDate = LocalDate.now().plusDays(daysToAdd);
+  private void getOrCreatePeriod(int monthsToAdd, String scheduleId) throws ParseException {
+    LocalDate periodDate = LocalDate.now().plusMonths(monthsToAdd);
     JSONArray periods = ProcessingPeriodUtils.getExistingPeriods(scheduleId);
 
     // first, try to find a period matching specified date among existing ones
@@ -468,7 +507,12 @@ public class RequisitionStepDefs {
         periodId = createPeriod(period, id, startDate, endDate);
       }
     }
-    return periodId;
+
+    periodResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .contentType(ContentType.JSON)
+        .when()
+        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + periodId);
   }
 
   private String createPeriod(JSONObject period, UUID id,
