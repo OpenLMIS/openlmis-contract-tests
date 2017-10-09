@@ -33,8 +33,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.openlmis.contract_tests.common.DatabaseManager;
 import org.openlmis.contract_tests.common.InitialDataException;
-import org.openlmis.contract_tests.common.TestDatabaseConnection;
 
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
@@ -56,6 +56,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class RequisitionStepDefs {
+  private static final DatabaseManager DATABASE_MANAGER = new DatabaseManager();
 
   private Response requisitionTemplateResponse;
   private Response requisitionResponse;
@@ -68,8 +69,6 @@ public class RequisitionStepDefs {
 
   private String requisitionTemplateProgram;
   private DataTable requisitionTemplateUpdateData;
-
-  private TestDatabaseConnection databaseConnection;
 
   public static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
@@ -93,10 +92,11 @@ public class RequisitionStepDefs {
 
   @Before("@RequisitionTests")
   public void setUp() throws InitialDataException {
-    databaseConnection = new TestDatabaseConnection();
+    DATABASE_MANAGER.init();
+
     //Because we have some initial data (bootstrap). We must remove it before loader.
-    databaseConnection.removeData();
-    databaseConnection.loadData();
+    DATABASE_MANAGER.removeData();
+    DATABASE_MANAGER.loadData();
   }
 
   @When("^I try to initiate a requisition with:$")
@@ -448,11 +448,6 @@ public class RequisitionStepDefs {
     JSONArray array = new JSONArray();
     array.add(json);
     return array;
-  }
-
-  @After("@RequisitionTests")
-  public void cleanUp() throws InitialDataException {
-    databaseConnection.removeData();
   }
 
   private String getOrCreatePeriod(int daysToAdd, String scheduleId) throws ParseException {

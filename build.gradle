@@ -16,6 +16,7 @@ dependencies {
     compile 'com.ibatis:ibatis2-common:2.1.7.597'
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     compile 'org.json:json:20170516'
+    compile 'org.yaml:snakeyaml:1.18'
     testCompile 'io.rest-assured:rest-assured:' + restAssuredVersion
     testCompile 'info.cukes:cucumber-java:' + cucumberVersion
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
