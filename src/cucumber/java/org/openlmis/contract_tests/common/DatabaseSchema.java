@@ -24,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,8 +32,7 @@ import java.util.List;
 
 public class DatabaseSchema {
   private String name;
-  private List<String> tableOrdered;
-  private List<String> allTables;
+  private DatabaseSchemaTable table;
 
   public String getName() {
     return name;
@@ -44,12 +42,12 @@ public class DatabaseSchema {
     this.name = name;
   }
 
-  public List<String> getTableOrdered() {
-    return tableOrdered;
+  public DatabaseSchemaTable getTable() {
+    return table;
   }
 
-  public void setTableOrdered(List<String> tableOrdered) {
-    this.tableOrdered = tableOrdered;
+  public void setTable(DatabaseSchemaTable table) {
+    this.table = table;
   }
 
   private Path getFilePath() {
@@ -61,13 +59,10 @@ public class DatabaseSchema {
 
     try {
       DatabaseMetaData metaData = connection.getMetaData();
+      table.readAllTables(metaData, name);
 
       try (PrintWriter result = new PrintWriter(getFilePath().toFile(), "UTF-8")) {
-        readAllTables(metaData);
-
-        for (String table : allTables) {
-          dumpData(connection, result, name + "." + table);
-        }
+        table.dumpData(connection, result, name);
       }
     } catch (Exception exp) {
       throw new IllegalStateException("Can't create dump for schema: " + this.name, exp);
@@ -89,14 +84,7 @@ public class DatabaseSchema {
   }
 
   void removeData(Connection connection) throws InitialDataException {
-    try (Statement statement = connection.createStatement()) {
-      for (String table : allTables) {
-        String sql = String.format("TRUNCATE %s.%s RESTART IDENTITY CASCADE;", name, table);
-        statement.execute(sql);
-      }
-    } catch (SQLException exp) {
-      throw new InitialDataException(exp);
-    }
+    table.removeData(connection, name);
   }
 
   private void createFile() {
@@ -117,68 +105,6 @@ public class DatabaseSchema {
     } catch (IOException exp) {
       throw new InitialDataException(exp);
     }
-  }
-
-  private void readAllTables(DatabaseMetaData metaData) throws SQLException {
-    List<String> remainingTables = new ArrayList<>();
-
-    try (ResultSet rs = metaData.getTables(null, name, null, null)) {
-      while (rs.next()) {
-        String tableName = rs.getString("TABLE_NAME");
-        String tableType = rs.getString("TABLE_TYPE");
-
-        if (acceptTable(tableType, tableName)) {
-          remainingTables.add(tableName);
-        }
-
-      }
-    }
-
-    remainingTables.removeAll(tableOrdered);
-
-    allTables = new ArrayList<>();
-    allTables.addAll(tableOrdered);
-    allTables.addAll(remainingTables);
-  }
-
-  private boolean acceptTable(String tableType, String tableName) {
-    return "TABLE".equalsIgnoreCase(tableType)
-        && !tableName.startsWith("jv_")
-        && !tableName.equalsIgnoreCase("schema_version");
-  }
-
-  private void dumpData(Connection connection, PrintWriter result, String tableName)
-      throws SQLException {
-    String sql = prepareSql(tableName);
-
-    try (PreparedStatement select = connection.prepareStatement(sql)) {
-      try (ResultSet data = select.executeQuery()) {
-        if (!data.isBeforeFirst()) {
-          return;
-        }
-
-        result
-            .append("INSERT INTO ")
-            .append(tableName)
-            .append("(SELECT * FROM json_populate_recordset(NULL::")
-            .append(tableName)
-            .append(", '[");
-
-        while (data.next()) {
-          result.append(data.getString(1));
-
-          if (!data.isLast()) {
-            result.append(",");
-          }
-        }
-
-        result.append("]'));\n");
-      }
-    }
-  }
-
-  private String prepareSql(String tableName) {
-    return "SELECT row_to_json(x) FROM " + tableName + " AS x";
   }
 
 }
