@@ -818,7 +818,7 @@ Feature: Requisition Tests
     Given I have logged in as administrator
     And I try get a requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
     And I should get response with requisition template
-    And I try to update total column:
+    And I try to update column total:
       | isDisplayed |
       | true        |
     And I should get response that template has been updated

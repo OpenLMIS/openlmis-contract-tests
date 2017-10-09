@@ -417,7 +417,7 @@ public class RequisitionStepDefs {
         .put(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + id);
   }
 
-  @When("^I try to update (.+) column:$")
+  @When("^I try to update column (.+):$")
   public void updateRequisitionTemplate(String name, DataTable data) throws ParseException {
     requisitionTemplateColumnsData.put(name, data);
 
