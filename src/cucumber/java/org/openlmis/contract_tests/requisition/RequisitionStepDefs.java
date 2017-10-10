@@ -34,7 +34,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.openlmis.contract_tests.common.DatabaseManager;
-import org.openlmis.contract_tests.common.InitialDataException;
 
 import cucumber.api.DataTable;
 import cucumber.api.java.Before;
@@ -91,7 +90,7 @@ public class RequisitionStepDefs {
   }
 
   @Before("@RequisitionTests")
-  public void setUp() throws InitialDataException {
+  public void setUp() {
     DATABASE_MANAGER.init();
 
     //Because we have some initial data (bootstrap). We must remove it before loader.

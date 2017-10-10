@@ -17,6 +17,7 @@ package org.openlmis.contract_tests.common;
 
 import static java.sql.DriverManager.getConnection;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,27 +34,27 @@ public class DatabaseSchemata {
     this.schemata = schemata;
   }
 
-  void init(String url, String username, String password) {
+  void init(String url, String username, String password) throws SQLException, IOException {
     try (Connection connection = getConnection(url, username, password)) {
-      schemata.forEach(schema -> schema.init(connection));
-    } catch (SQLException exp) {
-      throw new InitialDataException(exp);
+      for (DatabaseSchema schema : schemata) {
+        schema.init(connection);
+      }
     }
   }
 
-  void removeData(String url, String username, String password) {
+  void removeData(String url, String username, String password) throws SQLException {
     try (Connection connection = getConnection(url, username, password)) {
-      schemata.forEach(schema -> schema.removeData(connection));
-    } catch (SQLException exp) {
-      throw new InitialDataException(exp);
+      for (DatabaseSchema schema : schemata) {
+        schema.removeData(connection);
+      }
     }
   }
 
-  void loadData(String url, String username, String password) {
+  void loadData(String url, String username, String password) throws SQLException, IOException {
     try (Connection connection = getConnection(url, username, password)) {
-      schemata.forEach(schema -> schema.loadData(connection));
-    } catch (SQLException exp) {
-      throw new InitialDataException(exp);
+      for (DatabaseSchema schema : schemata) {
+        schema.loadData(connection);
+      }
     }
   }
 

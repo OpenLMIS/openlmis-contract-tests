@@ -15,9 +15,9 @@
 
 package org.openlmis.contract_tests.common;
 
-class InitialDataException extends RuntimeException {
+class RemoveDataException extends RuntimeException {
 
-  InitialDataException(Throwable cause) {
+  RemoveDataException(Throwable cause) {
     super(cause);
   }
 

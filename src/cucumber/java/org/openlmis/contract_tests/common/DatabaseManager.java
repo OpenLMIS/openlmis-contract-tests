@@ -19,6 +19,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 
 public class DatabaseManager {
   private static final String DATABASE_URL = System.getenv("DATABASE_URL");
@@ -39,12 +40,12 @@ public class DatabaseManager {
 
           try (InputStream stream = classLoader.getResourceAsStream("database_schemas.yml")) {
             schemata = yaml.loadAs(stream, DatabaseSchemata.class);
-          } catch (IOException exp) {
+
+            schemata.init(DATABASE_URL, USER_NAME, PASSWORD);
+            initiated = true;
+          } catch (SQLException | IOException exp) {
             throw new InitialDataException(exp);
           }
-
-          schemata.init(DATABASE_URL, USER_NAME, PASSWORD);
-          initiated = true;
         }
       }
     }
@@ -52,11 +53,19 @@ public class DatabaseManager {
   }
 
   public void removeData() {
-    schemata.removeData(DATABASE_URL, USER_NAME, PASSWORD);
+    try {
+      schemata.removeData(DATABASE_URL, USER_NAME, PASSWORD);
+    } catch (SQLException exp) {
+      throw new RemoveDataException(exp);
+    }
   }
 
   public void loadData() {
-    schemata.loadData(DATABASE_URL, USER_NAME, PASSWORD);
+    try {
+      schemata.loadData(DATABASE_URL, USER_NAME, PASSWORD);
+    } catch (SQLException | IOException exp) {
+      throw new LoadDataException(exp);
+    }
   }
 
 }

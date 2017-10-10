@@ -85,14 +85,12 @@ public class DatabaseSchemaTable {
     }
   }
 
-  void removeData(Connection connection, String schema) throws InitialDataException {
+  void removeData(Connection connection, String schema) throws SQLException {
     try (Statement statement = connection.createStatement()) {
       for (String table : all) {
         String sql = String.format("TRUNCATE %s.%s RESTART IDENTITY CASCADE;", schema, table);
         statement.execute(sql);
       }
-    } catch (SQLException exp) {
-      throw new InitialDataException(exp);
     }
   }
 

@@ -24,11 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseSchema {
   private String name;
@@ -54,22 +51,18 @@ public class DatabaseSchema {
     return Paths.get("/app", "dump", name + ".sql");
   }
 
-  void init(Connection connection) {
+  void init(Connection connection) throws IOException, SQLException {
     createFile();
 
-    try {
-      DatabaseMetaData metaData = connection.getMetaData();
-      table.readAllTables(metaData, name);
+    DatabaseMetaData metaData = connection.getMetaData();
+    table.readAllTables(metaData, name);
 
-      try (PrintWriter result = new PrintWriter(getFilePath().toFile(), "UTF-8")) {
-        table.dumpData(connection, result, name);
-      }
-    } catch (Exception exp) {
-      throw new IllegalStateException("Can't create dump for schema: " + this.name, exp);
+    try (PrintWriter result = new PrintWriter(getFilePath().toFile(), "UTF-8")) {
+      table.dumpData(connection, result, name);
     }
   }
 
-  void loadData(Connection connection) throws InitialDataException {
+  void loadData(Connection connection) throws IOException, SQLException {
     try (Statement statement = connection.createStatement()) {
       try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath().toFile()))) {
         String line;
@@ -78,33 +71,27 @@ public class DatabaseSchema {
           statement.execute(line);
         }
       }
-    } catch (SQLException | IOException exp) {
-      throw new InitialDataException(exp);
     }
   }
 
-  void removeData(Connection connection) throws InitialDataException {
+  void removeData(Connection connection) throws SQLException {
     table.removeData(connection, name);
   }
 
-  private void createFile() {
-    try {
-      Path filePath = getFilePath();
+  private void createFile() throws IOException {
+    Path filePath = getFilePath();
 
-      if (Files.exists(filePath)) {
-        Files.delete(filePath);
-      }
-
-      Path parent = filePath.getParent();
-
-      if (Files.notExists(parent)) {
-        Files.createDirectories(parent);
-      }
-
-      Files.createFile(filePath);
-    } catch (IOException exp) {
-      throw new InitialDataException(exp);
+    if (Files.exists(filePath)) {
+      Files.delete(filePath);
     }
+
+    Path parent = filePath.getParent();
+
+    if (Files.notExists(parent)) {
+      Files.createDirectories(parent);
+    }
+
+    Files.createFile(filePath);
   }
 
 }
