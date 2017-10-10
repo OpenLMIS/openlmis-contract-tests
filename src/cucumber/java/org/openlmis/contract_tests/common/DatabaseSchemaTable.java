@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class contains information about schema tables. Is it possible to set which tables should
+ * This class contains information about schema tables. It is possible to set which tables should
  * be skipped in the process of generating a dump of database. Also for some schema the table
  * order is important and can be set in this class.
  */
