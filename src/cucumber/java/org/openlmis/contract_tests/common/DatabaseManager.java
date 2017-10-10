@@ -21,6 +21,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 
+/**
+ * The {@code DatabaseManager} is responsible for generating dump of current database, removing
+ * data from the database and loading earlier created dump back to database. To create the dump
+ * of database the class uses {@code database_schemas.yml}.
+ *
+ * @see DatabaseSchemata
+ * @see DatabaseSchema
+ * @see DatabaseSchemaTable
+ */
 public class DatabaseManager {
   private static final String DATABASE_URL = System.getenv("DATABASE_URL");
   private static final String USER_NAME = System.getenv("POSTGRES_USER");
@@ -31,6 +40,10 @@ public class DatabaseManager {
 
   private DatabaseSchemata schemata;
 
+  /**
+   * Generates dump of current database. This method can be executed many times but
+   * initialization process will occur only one time.
+   */
   public void init() {
     if (!initiated) {
       synchronized (LOCK) {
@@ -52,6 +65,9 @@ public class DatabaseManager {
 
   }
 
+  /**
+   * Removes data from the database.
+   */
   public void removeData() {
     try {
       schemata.removeData(DATABASE_URL, USER_NAME, PASSWORD);
@@ -60,6 +76,9 @@ public class DatabaseManager {
     }
   }
 
+  /**
+   * Loads data to the database.
+   */
   public void loadData() {
     try {
       schemata.loadData(DATABASE_URL, USER_NAME, PASSWORD);

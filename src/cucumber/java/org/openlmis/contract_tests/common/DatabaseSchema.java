@@ -27,6 +27,11 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * This class contains information about a single database schema.
+ *
+ * @see DatabaseSchemaTable
+ */
 public class DatabaseSchema {
   private String name;
   private DatabaseSchemaTable table;

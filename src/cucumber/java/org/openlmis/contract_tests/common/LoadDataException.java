@@ -15,6 +15,9 @@
 
 package org.openlmis.contract_tests.common;
 
+/**
+ * Unchecked exception thrown when there is a issue with loading data from the dump file.
+ */
 class LoadDataException extends RuntimeException {
 
   LoadDataException(Throwable cause) {

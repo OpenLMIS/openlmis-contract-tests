@@ -15,6 +15,9 @@
 
 package org.openlmis.contract_tests.common;
 
+/**
+ * Unchecked exception thrown when there is a issue with removing data from the dump file.
+ */
 class RemoveDataException extends RuntimeException {
 
   RemoveDataException(Throwable cause) {

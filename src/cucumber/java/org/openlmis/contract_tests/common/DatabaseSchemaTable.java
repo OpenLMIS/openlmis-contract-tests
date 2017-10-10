@@ -10,6 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class contains information about schema tables. Is it possible to set which tables should
+ * be skipped in the process of generating a dump of database. Also for some schema the table
+ * order is important and can be set in this class.
+ */
 public class DatabaseSchemaTable {
   private List<String> excluded;
   private List<String> ordered;
