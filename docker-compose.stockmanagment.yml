@@ -2,7 +2,7 @@ version: "2"
 services:
 
   stockmanagement:
-    image: openlmis/stockmanagement
+    image: openlmis/stockmanagement:2.0.0-SNAPSHOT
     env_file: .env
     environment:
       JAVA_OPTS: '-Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
@@ -11,7 +11,7 @@ services:
     depends_on: [log]
 
   contract_tests:
-    image: openlmis/dev:2
+    image: openlmis/dev:3
     env_file: .env
     volumes:
       - '.:/app'
@@ -40,16 +40,6 @@ services:
       @StockCardsTests,
       @StockReasonsTests,
       @PhysicalInventoriesTests'
-
-  auth:
-    image: openlmis/auth:3.0.4-SNAPSHOT
-    env_file: .env
-    mem_limit: 512m
-    environment:
-      JAVA_OPTS: '-Xmx512m -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
-    volumes:
-      - './logback.xml:/logback.xml'
-    depends_on: [log]
 
 volumes:
   gradlecache:
