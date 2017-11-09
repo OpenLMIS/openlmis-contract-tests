@@ -30,7 +30,7 @@ services:
     depends_on: [log]
 
   auth:
-    image: openlmis/auth:3.1.1-SNAPSHOT
+    image: openlmis/auth:3.1.2-SNAPSHOT
     env_file: .env
     mem_limit: 512m
     environment:
@@ -38,7 +38,6 @@ services:
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
-
 
   db:
     mem_limit: 256m
