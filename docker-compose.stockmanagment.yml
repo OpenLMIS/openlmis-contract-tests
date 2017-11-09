@@ -2,7 +2,7 @@ version: "2"
 services:
 
   stockmanagement:
-    image: openlmis/stockmanagement:2.0.0-SNAPSHOT
+    image: openlmis/stockmanagement:2.0.1-SNAPSHOT
     env_file: .env
     environment:
       JAVA_OPTS: '-Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
