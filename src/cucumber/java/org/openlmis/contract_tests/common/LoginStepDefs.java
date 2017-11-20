@@ -65,4 +65,12 @@ public class LoginStepDefs {
         .when()
         .post(baseUrlOfService("auth") + "/users/logout");
   }
+
+  @Given("^I am not logged$")
+  public void notLogged() {
+    if (null != ACCESS_TOKEN) {
+      tryLogout();
+    }
+  }
+
 }
