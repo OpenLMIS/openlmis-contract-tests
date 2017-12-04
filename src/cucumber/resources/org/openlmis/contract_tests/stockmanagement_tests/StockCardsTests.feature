@@ -1,7 +1,7 @@
 @StockCardsTests
 Feature: Stock Cards Tests
 
-  Scenario: Storeroom manager user should be able to view stock cards
+  Scenario: Storeroom manager user should be able to view and print stock cards
     Given I have logged in as srmanager1
 
     When I try to create a stock event
@@ -45,6 +45,13 @@ Feature: Stock Cards Tests
 
     When I try to get stock card with card id
     Then I should get a stock card with 150 stockOnHand
+
+    When I try to print stock card with card id
+    Then I should get OK response
+
+    When I try to print stock card summaries
+    Then I should get OK response
+
     And I logout
 
     Given I have logged in as srmanager2

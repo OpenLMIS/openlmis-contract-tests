@@ -38,6 +38,7 @@ public class StockCardsStepDefs {
     public static final String URL_OF_STOCK_CARD_SUMMARIES =
             baseUrlOfService("stockmanagement") + "stockCardSummaries";
 
+    private static final String PRINT = "/print";
     private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
     private static final String PROGRAM_PARAM_NAME = "program";
     private static final String FACILITY_PARAM_NAME = "facility";
@@ -58,6 +59,17 @@ public class StockCardsStepDefs {
         stockCardId = idsResponse.jsonPath().getString("content.id[0]");
     }
 
+    @When("^I try to print stock card summaries$")
+    public void iTryToGetStockCardSummaries() {
+        getCardResponse = given()
+                .contentType(ContentType.JSON)
+                .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+                .queryParam(PROGRAM_PARAM_NAME, PROGRAM_ID)
+                .queryParam(FACILITY_PARAM_NAME, FACILITY_ID)
+                .when()
+                .get(URL_OF_STOCK_CARD_SUMMARIES + PRINT);
+    }
+
     @When("^I try to get stock card with card id$")
     public void iTryToGetStockCardWithCardId() {
         getCardResponse = given()
@@ -73,6 +85,22 @@ public class StockCardsStepDefs {
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body("stockOnHand", is(value));
+    }
+
+    @When("^I try to print stock card with card id$")
+    public void iTryToPrintStockCardWithCardId() {
+        getCardResponse = given()
+            .contentType(ContentType.JSON)
+            .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+            .when()
+            .get(URL_OF_STOCK_CARD_MANAGEMENT + stockCardId + PRINT);
+    }
+
+    @Then("^I should get OK response$")
+    public void iShouldGetAStockCardWithSOH() {
+        getCardResponse
+                .then()
+                .statusCode(HttpStatus.SC_OK);
     }
 
     @Then("^I should get response of incorrect user permission of view cards$")
