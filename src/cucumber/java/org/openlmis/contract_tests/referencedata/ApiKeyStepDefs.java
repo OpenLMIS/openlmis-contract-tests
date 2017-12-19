@@ -94,7 +94,7 @@ public class ApiKeyStepDefs {
         .get(resource)
         .then()
         .statusCode(HttpStatus.SC_FORBIDDEN)
-        .body("message", startsWith("You do not have the following right to perform this action"));
+        .body("messageKey", startsWith("referenceData.error.unauthorized"));
   }
 
   @Then("^I should get an error of missing authorization to retrieve the list of ([a-z]+)$")
