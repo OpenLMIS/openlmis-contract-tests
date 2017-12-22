@@ -47,7 +47,7 @@ public class LoginStepDefs {
         .param("username", userName)
         .param("password", passwordOf(userName))
         .when()
-        .post(baseUrlOfService("auth") + "token")
+        .post(baseUrlOfService("oauth") + "token")
         .asString();
 
     ACCESS_TOKEN = from(tokenResponseString).get("access_token");
@@ -63,7 +63,7 @@ public class LoginStepDefs {
     given()
         .queryParam("access_token", ACCESS_TOKEN)
         .when()
-        .post(baseUrlOfService("auth") + "/users/logout");
+        .post(baseUrlOfService("oauth") + "/users/logout");
   }
 
   @Given("^I am not logged$")

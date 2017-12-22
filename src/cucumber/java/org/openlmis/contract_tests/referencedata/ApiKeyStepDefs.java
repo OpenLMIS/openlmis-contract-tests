@@ -26,6 +26,8 @@ import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
 import org.apache.http.HttpStatus;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -36,15 +38,25 @@ import java.util.Map;
 
 public class ApiKeyStepDefs {
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
-  private static final String API_KEY_FIELD = "apiKey";
+  private static final String TOKEN_FIELD = "token";
+
+  private static final String TOKEN_PATH = "/{" + TOKEN_FIELD + "}";
 
   private static final String BASE_URL_OF_REFERENCEDATA_SERVICE = baseUrlOfService("referencedata");
-  private static final String RESOURCE_URL = BASE_URL_OF_REFERENCEDATA_SERVICE
+  private static final String BASE_URL_OF_AUTH_SERVICE = baseUrlOfService("auth");
+
+  private static final String API_KEY_URL = BASE_URL_OF_AUTH_SERVICE + "apiKeys";
+
+  private static final String SERVICE_ACCOUNT_URL = BASE_URL_OF_REFERENCEDATA_SERVICE
       + "serviceAccounts";
-  private static final String DELETE_URL = RESOURCE_URL + "/{" + API_KEY_FIELD + "}";
+
+  private static final String API_KEY_DELETE_URL = API_KEY_URL + TOKEN_PATH;
+  private static final String SERVICE_ACCOUNT_DELETE_URL = SERVICE_ACCOUNT_URL + TOKEN_PATH;
 
   private Response apiKeyResponse;
-  private String apiKey;
+  private Response serviceAccountResponse;
+
+  private String token;
 
   private Map<String, Response> resourceResponses = new HashMap<>();
 
@@ -57,23 +69,42 @@ public class ApiKeyStepDefs {
     apiKeyResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
-        .post(RESOURCE_URL);
+        .post(API_KEY_URL);
+
+    String authResponse = apiKeyResponse
+        .then()
+        .statusCode(HttpStatus.SC_CREATED)
+        .body(TOKEN_FIELD, notNullValue())
+        .extract()
+        .asString();
+
+    token = from(authResponse).get(TOKEN_FIELD);
+
+    JSONObject json = new JSONObject();
+    json.put(TOKEN_FIELD, token);
+
+    serviceAccountResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .contentType("application/json")
+        .when()
+        .body(json.toJSONString())
+        .post(SERVICE_ACCOUNT_URL);
   }
 
   @Then("^I should get response with the new API key$")
   public void shouldGetResponseWithNewApiKey() {
-    apiKeyResponse
+    serviceAccountResponse
         .then()
         .statusCode(HttpStatus.SC_CREATED)
-        .body(API_KEY_FIELD, notNullValue());
+        .body(TOKEN_FIELD, notNullValue());
 
-    apiKey = from(apiKeyResponse.asString()).get(API_KEY_FIELD);
+    token = from(serviceAccountResponse.asString()).get(TOKEN_FIELD);
   }
 
   @When("^I try to retrieve a list of ([a-z]+) by using API key$")
   public void tryToRetrieveListOfResourceByUsingApiKey(String resource) {
     Response response = given()
-        .queryParam(ACCESS_TOKEN_PARAM_NAME, apiKey)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, token)
         .when()
         .get(BASE_URL_OF_REFERENCEDATA_SERVICE + resource);
 
@@ -108,15 +139,25 @@ public class ApiKeyStepDefs {
 
   @When("^I try to remove created API key$")
   public void tryToRemoveCreatedApiKey() {
+    serviceAccountResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .pathParam(TOKEN_FIELD, token)
+        .when()
+        .delete(SERVICE_ACCOUNT_DELETE_URL);
+
     apiKeyResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .pathParam(API_KEY_FIELD, apiKey)
+        .pathParam(TOKEN_FIELD, token)
         .when()
-        .delete(DELETE_URL);
+        .delete(API_KEY_DELETE_URL);
   }
 
   @Then("^I should get response of deleted API key$")
   public void shouldGetResponseOfDeletedApiKey() {
+    serviceAccountResponse
+        .then()
+        .statusCode(HttpStatus.SC_NO_CONTENT);
+
     apiKeyResponse
         .then()
         .statusCode(HttpStatus.SC_NO_CONTENT);
