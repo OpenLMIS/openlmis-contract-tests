@@ -39,13 +39,13 @@ However, the
 
   `git clone https://github.com/OpenLMIS/openlmis-contract-tests.git`
 
-  2. Add an environment file called `.env` to the root folder of the project, with the required
+  2. Add an environment file called `settings.env` to the root folder of the project, with the required
   project settings and credentials. For a starter environment file, you can use [this
   one](https://github.com/OpenLMIS/openlmis-config/blob/master/.env). e.g.
 
    ```shell
    cd openlmis-requisition
-   curl -LO https://raw.githubusercontent.com/OpenLMIS/openlmis-config/master/.env
+   curl -o settings.env -L https://raw.githubusercontent.com/OpenLMIS/openlmis-ref-distro/master/settings-sample.env
    ```
 
   3. Develop w/ Docker by running `docker-compose run contract_tests`

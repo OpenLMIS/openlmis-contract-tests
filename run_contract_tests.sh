@@ -2,6 +2,10 @@
 
 FILENAME=${1}
 
+#Set our environment variables to the values specified within settings.env and export (expose) the BASE_URL one.
+source ./settings.env
+export BASE_URL
+
 #pull all images
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} pull
 

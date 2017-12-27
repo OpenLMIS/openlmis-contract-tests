@@ -12,15 +12,15 @@ services:
       - "53"
 
   nginx:
-    image: openlmis/nginx:4
-    env_file: .env
+    image: openlmis/nginx:${OL_NGINX_VERSION}
+    env_file: settings.env
     links: [consul]
     mem_limit: 128m
     # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
-    image: openlmis/referencedata:10.0.0-SNAPSHOT
-    env_file: .env
+    image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
+    env_file: settings.env
     mem_limit: 1024m
     environment:
       JAVA_OPTS: '-Xmx1024m -Dlogging.config=/logback.xml'
@@ -30,8 +30,8 @@ services:
     depends_on: [log]
 
   auth:
-    image: openlmis/auth:3.2.0-SNAPSHOT
-    env_file: .env
+    image: openlmis/auth:${OL_AUTH_VERSION}
+    env_file: settings.env
     mem_limit: 512m
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
@@ -41,13 +41,13 @@ services:
 
   db:
     mem_limit: 256m
-    image: openlmis/postgres:9.6-postgis
-    env_file: .env
+    image: openlmis/postgres:${OL_POSTGRES_VERSION}
+    env_file: settings.env
     depends_on: [consul]
 
   log:
     mem_limit: 128m
-    image: openlmis/rsyslog:1
+    image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
     volumes:
       - '../logs/requisition:/var/log'
     depends_on: [consul]

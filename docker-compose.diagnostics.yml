@@ -2,9 +2,9 @@ version: "2"
 services:
 
   diagnostics:
-    image: openlmis/diagnostics:1.0.0-SNAPSHOT
+    image: openlmis/diagnostics:${OL_DIAGNOSTICS_VERSION}
     mem_limit: 512m
-    env_file: .env
+    env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
     volumes:
@@ -13,10 +13,10 @@ services:
 
   contract_tests:
     mem_limit: 768m
-    image: openlmis/dev:3
+    image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
       GRADLE_OPTS: '-Xmx256m'
-    env_file: .env
+    env_file: settings.env
     volumes:
       - '.:/app'
       - 'gradlecache:/gradle'

@@ -2,9 +2,9 @@ version: "2"
 services:
 
   requisition:
-    image: openlmis/requisition:5.1.1-SNAPSHOT
+    image: openlmis/requisition:${OL_REQUISITION_VERSION}
     mem_limit: 512m
-    env_file: .env
+    env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
@@ -13,14 +13,14 @@ services:
     depends_on: [log]
 
   reference-ui:
-    image: openlmis/reference-ui:5.0.4-SNAPSHOT
+    image: openlmis/reference-ui:${OL_REFERENCE_UI_VERSION}
     mem_limit: 512m
-    env_file: .env
+    env_file: settings.env
 
   notification:
-    image: openlmis/notification:3.0.5-SNAPSHOT
+    image: openlmis/notification:${OL_NOTIFICATION_VERSION}
     mem_limit: 512m
-    env_file: .env
+    env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
     volumes:
@@ -29,8 +29,8 @@ services:
 
   fulfillment:
     mem_limit: 512m
-    image: openlmis/fulfillment:7.0.0-SNAPSHOT
-    env_file: .env
+    image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
+    env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
     volumes:
@@ -39,8 +39,8 @@ services:
 
   cce:
     mem_limit: 512m
-    image: openlmis/cce:1.0.0-SNAPSHOT
-    env_file: .env
+    image: openlmis/cce:${OL_CCE_VERSION}
+    env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
@@ -50,8 +50,8 @@ services:
 
   stockmanagement:
     mem_limit: 512m
-    image: openlmis/stockmanagement:3.0.0-SNAPSHOT
-    env_file: .env
+    image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
+    env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
     volumes:
@@ -60,10 +60,10 @@ services:
 
   contract_tests:
     mem_limit: 1024m
-    image: openlmis/dev:3
+    image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
       GRADLE_OPTS: '-Xmx256m'
-    env_file: .env
+    env_file: settings.env
     volumes:
       - '.:/app'
       - 'gradlecache:/gradle'
