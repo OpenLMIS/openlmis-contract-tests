@@ -30,38 +30,38 @@ Feature: Shipment tests
       {
         "lot": { "id": "f08d3db1-9132-487c-ba58-15ea12302aee" },
         "orderable": { "id": "9c3bea84-487b-4e22-8759-3fe93f8201d9" },
-        "quantityShipped": 0
+        "quantityShipped": 99
       },
       {
         "lot": { "id": "9d0cd7cb-5739-491b-8d6b-890fd17ec810" },
         "orderable": { "id": "9c3bea84-487b-4e22-8759-3fe93f8201d9" },
-        "quantityShipped": 0
+        "quantityShipped": 38
       },
       {
         "lot": { "id": "f9f9bb7c-7636-40c1-a548-b45e918a512a" },
         "orderable": { "id": "047638fa-92ce-4adf-9bbd-3bcb3216897a" },
-        "quantityShipped": 0
+        "quantityShipped": 557
       },
       {
         "lot": { "id": "06f86552-1aa9-47d6-8857-6b7ad824f805" },
         "orderable": { "id": "047638fa-92ce-4adf-9bbd-3bcb3216897a" },
-        "quantityShipped": 0
+        "quantityShipped": 180
       },
       {
         "orderable": { "id": "047638fa-92ce-4adf-9bbd-3bcb3216897a" },
-        "quantityShipped": 0
+        "quantityShipped": 107
       },
       {
         "orderable": { "id": "a852f785-d82e-4afe-bc6a-04f3236caf90" },
-        "quantityShipped": 0
+        "quantityShipped": 26
       },
       {
         "orderable": { "id": "18223845-4d19-4408-b7c2-971c26014058" },
-        "quantityShipped": 0
+        "quantityShipped": 531
       },
       {
         "orderable": { "id": "b75a88c7-70fa-4bab-9785-3dd980a5ffc3" },
-        "quantityShipped": 0
+        "quantityShipped": 47
       }
     ]
     }

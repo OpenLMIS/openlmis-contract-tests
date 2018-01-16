@@ -55,6 +55,7 @@ public class ShipmentStepDefs {
       baseUrlOfService("stockmanagement") + "stockCards/";
 
   private static final String CONTENT_ID = "content[0].id";
+  private static final String STOCK_ON_HAND = "content[0].stockOnHand";
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   private static final String REQUISITION_ID = "c537e925-a518-4f5b-8aef-6f07fd9aa58c";
   private static final String FACILITY_ID = "c62dea9b-6974-4101-ba39-b09914165967";
@@ -74,7 +75,7 @@ public class ShipmentStepDefs {
         .get(URL_OF_STOCK_CARD_SUMMARIES).andReturn();
 
     stockCardId = stockCardResponse.jsonPath().getString(CONTENT_ID);
-    stockOnHand = stockCardResponse.jsonPath().getInt("content[0].stockOnHand");
+    stockOnHand = stockCardResponse.jsonPath().getInt(STOCK_ON_HAND);
   }
 
   @When("^I try to get stock card with id$")
@@ -91,7 +92,7 @@ public class ShipmentStepDefs {
     stockCardResponse
         .then()
         .statusCode(HttpStatus.SC_OK)
-        .body("content[0].stockOnHand", is(stockOnHand));
+        .body(STOCK_ON_HAND, is(stockOnHand));
   }
 
   @Then("^I should get a stock card with stock on hand subtracted and equal 0$")
@@ -99,7 +100,7 @@ public class ShipmentStepDefs {
     stockCardResponse
         .then()
         .statusCode(HttpStatus.SC_OK)
-        .body("content[0].stockOnHand", is(0));
+        .body(STOCK_ON_HAND, is(0));
   }
 
   @When("^I try to convert requisition$")
