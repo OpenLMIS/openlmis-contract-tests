@@ -1,0 +1,68 @@
+version: "2"
+services:
+
+  fulfillment:
+    image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
+    mem_limit: 512m
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data,refresh-db
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  requisition:
+    image: openlmis/requisition:${OL_REQUISITION_VERSION}
+    mem_limit: 512m
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data,refresh-db
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  stockmanagement:
+    image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  contract_tests:
+    image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
+    env_file: settings.env
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+    - db
+    - log
+    - nginx
+    - consul
+    - auth
+    - fulfillment
+    - referencedata
+    - requisition
+    - stockmanagement
+
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=
+        ${BASE_URL}/auth
+        ,${BASE_URL}/fulfillment
+        ,${BASE_URL}/referencedata
+        ,${BASE_URL}/requisition
+        ,${BASE_URL}/stockmanagement'
+      - 'cucumber'
+      - '-Ptags=
+      @ShipmentTests'
+
+volumes:
+  gradlecache:
+    external: false
