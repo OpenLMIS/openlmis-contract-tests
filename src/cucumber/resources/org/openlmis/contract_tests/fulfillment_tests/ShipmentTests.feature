@@ -3,15 +3,15 @@ Feature: Shipment tests
 
   Scenario: Divo user should be able to finalize shipment
     Given I have logged in as divo1
-    And I have got stock card id for provided program and facility
 
-    When I try to get stock card with card id
-    Then I should get a stock card with stock on hand
+    When I have got stock card id for programId: 418bdc1d-c303-4bd0-b2d3-d8901150a983 and facilityId: c62dea9b-6974-4101-ba39-b09914165967
+    And I try to get stock card with card id
+    Then I should get a stock card
 
-    When I try to convert requisition
+    When I try to convert requisition with requisitionId: c537e925-a518-4f5b-8aef-6f07fd9aa58c and supplyingDepotId: c62dea9b-6974-4101-ba39-b09914165967
     Then I should get response of order created
 
-    When I try to get order by supplying facility
+    When I try to get order by supplying facility: c62dea9b-6974-4101-ba39-b09914165967
     Then I should get response of order found
 
     When I try to finalize shipment
@@ -68,8 +68,8 @@ Feature: Shipment tests
     """
     Then I should get response of shipment created
 
-    When I have got stock card id for provided program and facility
+    When I have got stock card id for programId: 418bdc1d-c303-4bd0-b2d3-d8901150a983 and facilityId: c62dea9b-6974-4101-ba39-b09914165967
     And I try to get stock card with card id
-    Then I should get a stock card with stock on hand subtracted and equal 0
+    Then I should get a stock card with zero stock on hand
 
     And I logout

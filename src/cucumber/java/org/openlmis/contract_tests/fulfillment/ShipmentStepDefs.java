@@ -15,7 +15,6 @@
 
 package org.openlmis.contract_tests.fulfillment;
 
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
@@ -57,20 +56,17 @@ public class ShipmentStepDefs {
   private static final String CONTENT_ID = "content[0].id";
   private static final String STOCK_ON_HAND = "content[0].stockOnHand";
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
-  private static final String REQUISITION_ID = "c537e925-a518-4f5b-8aef-6f07fd9aa58c";
-  private static final String FACILITY_ID = "c62dea9b-6974-4101-ba39-b09914165967";
-  private static final String PROGRAM_ID = "418bdc1d-c303-4bd0-b2d3-d8901150a983";
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
 
-  @Given("^I have got stock card id for provided program and facility$")
-  public void iHaveGotStockCardId() throws Throwable {
+  @Then("^I have got stock card id for programId: (.*) and facilityId: (.*)$")
+  public void iHaveGotStockCardId(String programId, String facilityId) throws Throwable {
     stockCardResponse = given().contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .queryParam("program", PROGRAM_ID)
-        .queryParam("facility", FACILITY_ID)
+        .queryParam("program", programId)
+        .queryParam("facility", facilityId)
         .when()
         .get(URL_OF_STOCK_CARD_SUMMARIES).andReturn();
 
@@ -87,7 +83,7 @@ public class ShipmentStepDefs {
         .get(URL_OF_STOCK_CARD_MANAGEMENT + stockCardId);
   }
 
-  @Then("^I should get a stock card with stock on hand$")
+  @Then("^I should get a stock card$")
   public void iShouldGetAStockCardWithStockOnHand() throws Throwable {
     stockCardResponse
         .then()
@@ -95,7 +91,7 @@ public class ShipmentStepDefs {
         .body(STOCK_ON_HAND, is(stockOnHand));
   }
 
-  @Then("^I should get a stock card with stock on hand subtracted and equal 0$")
+  @Then("^I should get a stock card with zero stock on hand$")
   public void iShouldGetAStockCardWithStockOnHandSubstracted() throws Throwable {
     stockCardResponse
         .then()
@@ -103,11 +99,11 @@ public class ShipmentStepDefs {
         .body(STOCK_ON_HAND, is(0));
   }
 
-  @When("^I try to convert requisition$")
-  public void iTryToConvertRequisition() throws Throwable {
+  @When("^I try to convert requisition with requisitionId: (.*) and supplyingDepotId: (.*)$")
+  public void iTryToConvertRequisition(String requisitionId, String suppylyingDepotId) throws Throwable {
     requisitionResponse = given().contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .body(createBodyForConvertToOrder())
+        .body(createBodyForConvertToOrder(requisitionId, suppylyingDepotId))
         .when()
         .post(URL_OF_REQUISITION_CONVERT);
   }
@@ -118,11 +114,11 @@ public class ShipmentStepDefs {
         .statusCode(SC_CREATED);
   }
 
-  @When("^I try to get order by supplying facility$")
-  public void iShouldGetOrderBySupplyingFacility() throws Throwable {
+  @When("^I try to get order by supplying facility: (.*)$")
+  public void iShouldGetOrderBySupplyingFacility(String supplyingFacilityId) throws Throwable {
     orderResponse = given().contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .queryParam("supplyingFacility", FACILITY_ID)
+        .queryParam("supplyingFacility", supplyingFacilityId)
         .when()
         .get(URL_OF_ORDERS_SEARCH).andReturn();
 
@@ -159,10 +155,10 @@ public class ShipmentStepDefs {
     return jsonObject;
   }
 
-  private JSONArray createBodyForConvertToOrder() {
+  private JSONArray createBodyForConvertToOrder(String requisitionId, String supplyingDepotId) {
     JSONObject json = new JSONObject();
-    json.put("requisitionId", REQUISITION_ID);
-    json.put("supplyingDepotId", FACILITY_ID);
+    json.put("requisitionId", requisitionId);
+    json.put("supplyingDepotId", supplyingDepotId);
     JSONArray array = new JSONArray();
     array.add(json);
     return array;
