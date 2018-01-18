@@ -46,7 +46,7 @@ class ProcessingPeriodUtils {
         .statusCode(200)
         .extract();
     JSONParser parser = new JSONParser();
-    return (JSONArray) parser.parse(periods.asString());
+    return (JSONArray) ((JSONObject) parser.parse(periods.asString())).get("content");
   }
 
 }
