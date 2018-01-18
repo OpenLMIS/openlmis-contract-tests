@@ -41,7 +41,7 @@ class ProcessingPeriodUtils {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam("processingScheduleId", scheduleId)
         .when()
-        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/searchByScheduleAndDate")
+        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/")
         .then()
         .statusCode(200)
         .extract();
