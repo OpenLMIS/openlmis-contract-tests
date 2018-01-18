@@ -293,13 +293,14 @@ public class RequisitionStepDefs {
         .queryParam("programId", programId)
         .queryParam("facilityId", facilityId)
         .when()
-        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/search");
+        .get(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/");
   }
 
   @When("^I try to delete current period")
   public void tryDeletePeriod() throws ParseException {
     JSONParser parser = new JSONParser();
-    JSONArray periods = (JSONArray) parser.parse(periodResponse.asString());
+    JSONObject page = (JSONObject) parser.parse(periodResponse.asString());
+    JSONArray periods = (JSONArray) page.get("content");
     String id = ProcessingPeriodUtils.findPeriodByDate(periods, LocalDate.now());
 
     periodResponse = given()
