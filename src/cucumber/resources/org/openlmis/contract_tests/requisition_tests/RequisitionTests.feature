@@ -891,3 +891,48 @@ Feature: Requisition Tests
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 11    |
+
+  Scenario: A requisition should be automatically converted to an order after it goes through final approval
+    Given I have logged in as vsrmanager1
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | 418bdc1d-c303-4bd0-b2d3-d8901150a983 | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | 418bdc1d-c303-4bd0-b2d3-d8901150a983 | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | stockOnHand |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5           |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | stockOnHand |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5           |
+
+    When I try to submit a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "SUBMITTED" status
+
+    When I try to authorize a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "AUTHORIZED" status
+    And I logout
+
+    When I have logged in as divo1
+    And I try update fields in requisition:
+      | approvedQuantity |
+      | 4                |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | approvedQuantity |
+      | 4                |
+
+    When I try to approve a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "RELEASED" status
+    And I logout
