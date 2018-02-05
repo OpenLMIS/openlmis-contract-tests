@@ -77,5 +77,8 @@ schemata:
         - order_number_configurations
         - orders
         - order_line_items
+        - shipments
+        - shipment_line_items
         - proof_of_deliveries
+        - proof_od_delivery_line_items
         - templates
