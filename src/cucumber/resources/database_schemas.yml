@@ -80,5 +80,5 @@ schemata:
         - shipments
         - shipment_line_items
         - proof_of_deliveries
-        - proof_od_delivery_line_items
+        - proof_of_delivery_line_items
         - templates
