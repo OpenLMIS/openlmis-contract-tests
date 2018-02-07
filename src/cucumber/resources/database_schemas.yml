@@ -19,6 +19,8 @@ schemata:
         - processing_periods
         - commodity_types
         - orderable_display_categories
+        - dispensables
+        - dispensable_attributes
         - orderables
         - programs
         - program_orderables
