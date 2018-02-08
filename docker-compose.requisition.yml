@@ -12,11 +12,6 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
-  reference-ui:
-    image: openlmis/reference-ui:${OL_REFERENCE_UI_VERSION}
-    mem_limit: 512m
-    env_file: settings.env
-
   notification:
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
     mem_limit: 512m
@@ -33,17 +28,6 @@ services:
     env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
-    volumes:
-      - './logback.xml:/logback.xml'
-    depends_on: [log]
-
-  cce:
-    mem_limit: 512m
-    image: openlmis/cce:${OL_CCE_VERSION}
-    env_file: settings.env
-    environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
-      spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -74,11 +58,9 @@ services:
     - consul
     - auth
     - requisition
-    - reference-ui
     - referencedata
     - notification
     - fulfillment
-    - cce
     - stockmanagement
 
     entrypoint:
@@ -87,6 +69,7 @@ services:
       - 'waitFor'
       - '-Pcontainers=
         ${BASE_URL}/auth
+        ,${BASE_URL}/notification
         ,${BASE_URL}/requisition
         ,${BASE_URL}/referencedata
         ,${BASE_URL}/stockmanagement

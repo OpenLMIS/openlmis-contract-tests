@@ -27,6 +27,8 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import com.google.gson.JsonObject;
+
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
 import org.json.simple.JSONArray;
@@ -66,6 +68,7 @@ public class RequisitionStepDefs {
   private JSONObject requisition;
 
   private String requisitionTemplateProgram;
+  private String requisitionTemplate;
   private DataTable requisitionTemplateUpdateData;
   private Map<String, DataTable> requisitionTemplateColumnsData = new HashMap<>();
 
@@ -378,22 +381,35 @@ public class RequisitionStepDefs {
   }
 
   @When("^I try get a requisition template for a program (.*)$")
-  public void getRequisitionTemplateForProgram(String program) {
+  public void tryGetRequisitionTemplateForProgram(String program) {
     requisitionTemplateProgram = program;
 
     requisitionTemplateResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .queryParam("program", requisitionTemplateProgram)
         .when()
-        .get(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + "search");
+        .get(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE);
   }
 
   @Then("^I should get response with requisition template$")
-  public void getRequisitionTemplateForProgram() {
+  public void shouldGetRequisitionTemplateForProgram() throws ParseException {
     requisitionTemplateResponse
         .then()
         .statusCode(200)
-        .body("programId", is(requisitionTemplateProgram));
+        .body("$.isEmpty()", is(false));
+
+    JSONParser parser = new JSONParser();
+    JSONArray templates = (JSONArray) parser.parse(requisitionTemplateResponse.asString());
+    for (Object element : templates) {
+      JSONObject template = (JSONObject) element;
+      JSONObject program = (JSONObject) template.get("program");
+
+      if (requisitionTemplateProgram.equals(program.get("id").toString())) {
+        requisitionTemplate = template.toString();
+        break;
+      }
+    }
+
+    assertThat(requisitionTemplate, is(notNullValue()));
   }
 
   @When("^I try to update a requisition template:$")
@@ -401,7 +417,7 @@ public class RequisitionStepDefs {
     requisitionTemplateUpdateData = data;
 
     JSONParser parser = new JSONParser();
-    JSONObject template = (JSONObject) parser.parse(requisitionTemplateResponse.asString());
+    JSONObject template = (JSONObject) parser.parse(requisitionTemplate);
     String id = template.get("id").toString();
 
     requisitionTemplateUpdateData
@@ -422,7 +438,7 @@ public class RequisitionStepDefs {
     requisitionTemplateColumnsData.put(name, data);
 
     JSONParser parser = new JSONParser();
-    JSONObject template = (JSONObject) parser.parse(requisitionTemplateResponse.asString());
+    JSONObject template = (JSONObject) parser.parse(requisitionTemplate);
     String id = template.get("id").toString();
 
     JSONObject columnMaps = (JSONObject) template.get("columnsMap");
