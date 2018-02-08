@@ -4,12 +4,13 @@ Feature: Ideal Stock Amount Tests
   Scenario: User should be able to upload, download and retrieve ISAs
     Given I have logged in as administrator
 
-    When I try to upload ISA CSV
+    When I try to upload ISA CSV from org/openlmis/contract_tests/referencedata_tests/csv/isa.csv
     Then I should get response with a number of rows uploaded
     And The number of rows uploaded should be 7000
 
     When I try to download ISA CSV
     Then I should get response with non-empty CSV file
+    And The number of entries in the file should be 7000
 
     When I try to get ISA for
       | facilityId                           | commodityTypeId                      | processingPeriodId                   |

@@ -39,18 +39,17 @@ import io.restassured.response.Response;
 
 import java.io.File;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class IdealStockAmountStepDefs {
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   private static final String AMOUNT_FIELD = "amount";
 
   private static final String BASE_URL_OF_REFERENCEDATA_SERVICE = baseUrlOfService("referencedata");
-  private static final String BASE_URL_OF_AUTH_SERVICE = baseUrlOfService("auth");
 
   private static final String ISA_URL = BASE_URL_OF_REFERENCEDATA_SERVICE
       + "idealStockAmounts";
-  private static final String ISA_CSV_PATH =
-      "org/openlmis/contract_tests/referencedata_tests/csv/isa.csv";
 
   private static final String ID = "id";
   private static final String CONTENT = "content";
@@ -74,10 +73,10 @@ public class IdealStockAmountStepDefs {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
 
-  @When("^I try to upload ISA CSV$")
-  public void tryToUploadIsaCsv() {
+  @When("^I try to upload ISA CSV from (\\S+)$")
+  public void tryToUploadIsaCsv(String path) {
     ClassLoader classLoader = getClass().getClassLoader();
-    File isaCsvFile = new File(classLoader.getResource(ISA_CSV_PATH).getFile());
+    File isaCsvFile = new File(classLoader.getResource(path).getFile());
 
     isaUploadResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -123,6 +122,19 @@ public class IdealStockAmountStepDefs {
 
     assertNotNull(downloadedIsaFile);
     assertTrue(downloadedIsaFile.length > 0);
+  }
+
+  @Then("^The number of entries in the file should be (\\d+)$")
+  public void numberOfEntriesInFileShouldBe(int expected) {
+    String csvDownload = isaDownloadResponse.asString();
+    Matcher m = Pattern.compile("\r\n|\r|\n").matcher(csvDownload);
+    int lines = 0;
+    while (m.find()) {
+      lines ++;
+    }
+
+    // We subtract one from lines count, to ignore header line
+    assertEquals(expected, lines - 1);
   }
 
   @When("^I try to get ISA for$")
