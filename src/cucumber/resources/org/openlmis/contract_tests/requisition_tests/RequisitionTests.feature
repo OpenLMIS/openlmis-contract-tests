@@ -606,8 +606,8 @@ Feature: Requisition Tests
 
   Scenario Outline: Average consumption should be calculated properly (Number of periods to average: <periods>)
     Given I have logged in as administrator
-    And I try get a requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
-    And I should get response with requisition template
+    And I try get a requisition templates
+    And I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
     And I try to update a requisition template:
       | numberOfPeriodsToAverage |
       | <periods>                |
@@ -816,8 +816,8 @@ Feature: Requisition Tests
 
   Scenario: Total should be calculated properly
     Given I have logged in as administrator
-    And I try get a requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
-    And I should get response with requisition template
+    And I try get a requisition templates
+    And I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
     And I try to update column total:
       | isDisplayed |
       | true        |

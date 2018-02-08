@@ -67,7 +67,6 @@ public class RequisitionStepDefs {
   private String periodId;
   private JSONObject requisition;
 
-  private String requisitionTemplateProgram;
   private String requisitionTemplate;
   private DataTable requisitionTemplateUpdateData;
   private Map<String, DataTable> requisitionTemplateColumnsData = new HashMap<>();
@@ -380,18 +379,16 @@ public class RequisitionStepDefs {
         .post(BASE_URL_OF_REQUISITION_SERVICE + "convertToOrder");
   }
 
-  @When("^I try get a requisition template for a program (.*)$")
-  public void tryGetRequisitionTemplateForProgram(String program) {
-    requisitionTemplateProgram = program;
-
+  @When("^I try get a requisition templates$")
+  public void tryGetRequisitionTemplates() {
     requisitionTemplateResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .get(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE);
   }
 
-  @Then("^I should get response with requisition template$")
-  public void shouldGetRequisitionTemplateForProgram() throws ParseException {
+  @Then("^I should get response with requisition template for a program (.*)$")
+  public void shouldGetRequisitionTemplateForProgram(String programId) throws ParseException {
     requisitionTemplateResponse
         .then()
         .statusCode(200)
@@ -403,7 +400,7 @@ public class RequisitionStepDefs {
       JSONObject template = (JSONObject) element;
       JSONObject program = (JSONObject) template.get("program");
 
-      if (requisitionTemplateProgram.equals(program.get("id").toString())) {
+      if (programId.equals(program.get("id").toString())) {
         requisitionTemplate = template.toString();
         break;
       }
