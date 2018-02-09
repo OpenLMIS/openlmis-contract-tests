@@ -176,8 +176,15 @@ public class StockReasonsStepDefs {
 
   private JSONObject createValidReasonJson() {
     JSONObject json = new JSONObject();
-    json.put("programId", PROGRAM);
-    json.put("facilityTypeId", FACILITY_TYPE);
+
+    JSONObject program = new JSONObject();
+    program.put("id", PROGRAM);
+    json.put(PROGRAM_PARAM_NAME, program);
+
+    JSONObject facilityType = new JSONObject();
+    facilityType.put("id", FACILITY_TYPE);
+    json.put(FACILITY_TYPE_PARAM_NAME, facilityType);
+
     JSONObject reason = new JSONObject();
     reason.put("id", createdReasonId);
     json.put("reason", reason);
