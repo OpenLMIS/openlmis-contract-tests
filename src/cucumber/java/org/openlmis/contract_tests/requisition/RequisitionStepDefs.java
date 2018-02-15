@@ -58,6 +58,7 @@ import java.util.UUID;
 
 public class RequisitionStepDefs {
   private static final DatabaseManager DATABASE_MANAGER = new DatabaseManager();
+  private static final String REQUISITION_LINE_ITEMS = "requisitionLineItems";
 
   private Response requisitionTemplateResponse;
   private Response requisitionResponse;
@@ -174,13 +175,40 @@ public class RequisitionStepDefs {
         .statusCode(200);
   }
 
+  @When("^I try to add products to requisition:$")
+  public void tryAddProductsToRequisition(DataTable argsList) throws Throwable {
+    if (requisition == null || !requisition.get("id").equals(requisitionId)) {
+      JSONParser parser = new JSONParser();
+      requisition = (JSONObject) parser.parse(requisitionResponse.asString());
+    }
+    if (supervisoryNodeId != null) {
+      requisition.replace("supervisoryNode", null, supervisoryNodeId);
+    }
+
+    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+
+    addProducts(requisition);
+
+    data.forEach(map -> map.forEach((key, value) ->
+        updateFieldInRequisitionLineItem(requisition, key, value)));
+
+    given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .contentType(ContentType.JSON)
+        .body(requisition.toJSONString())
+        .when()
+        .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId)
+        .then()
+        .statusCode(200);
+  }
+
   @Then("^I should get a updated requisition with:$")
   public void shouldGetUpdatedRequisition(DataTable argsList) throws ParseException {
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
     JSONParser parser = new JSONParser();
     JSONObject root = (JSONObject) parser.parse(requisitionResponse.asString());
-    JSONArray lineItems = (JSONArray) root.get("requisitionLineItems");
+    JSONArray lineItems = (JSONArray) root.get(REQUISITION_LINE_ITEMS);
 
     data.forEach(map -> lineItems.forEach(line -> {
       JSONObject item = (JSONObject) line;
@@ -195,7 +223,7 @@ public class RequisitionStepDefs {
   public void shouldGetUpdatedRequisitionWithProperTotalCost() throws ParseException {
     JSONParser parser = new JSONParser();
     JSONObject requisition = (JSONObject) parser.parse(requisitionResponse.asString());
-    JSONArray requisitionLines = (JSONArray) requisition.get("requisitionLineItems");
+    JSONArray requisitionLines = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
 
     for (Object requisitionLineObject : requisitionLines) {
       JSONObject requisitionLine = (JSONObject) requisitionLineObject;
@@ -482,9 +510,23 @@ public class RequisitionStepDefs {
     }
   }
 
+  private void addProducts(JSONObject requisition) {
+    JSONArray fullSupplyProducts = (JSONArray) requisition.get("availableFullSupplyProducts");
+    JSONArray lineItems = new JSONArray();
+
+    for (Object product : fullSupplyProducts) {
+      JSONObject lineItem = new JSONObject();
+      lineItem.put("orderable", product);
+
+      lineItems.add(lineItem);
+    }
+
+    requisition.put(REQUISITION_LINE_ITEMS, lineItems);
+  }
+
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
                                                 String keyToUpdate, Object newValue) {
-    JSONArray requisitionLineItems = (JSONArray) requisition.get("requisitionLineItems");
+    JSONArray requisitionLineItems = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
 
     for (Object requisitionLine : requisitionLineItems) {
       JSONObject requisitionLineAsJson = (JSONObject) requisitionLine;

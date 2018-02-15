@@ -169,7 +169,7 @@ Feature: Requisition Tests
       | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | true      |
     And I should get a requisition with "INITIATED" status
 
-    When I try update fields in requisition:
+    When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
       | 15                    | 15               | 6                 | 7                 | test                         | 30                    | 2017-08-15 |
     And I try to get requisition with id
@@ -222,7 +222,7 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
     And I should get a requisition without supervisoryNode
 
-    When I try update fields in requisition:
+    When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
       | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 2017-08-15 |
     And I try to get requisition with id
@@ -269,7 +269,7 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
     And I should get a requisition without supervisoryNode
 
-    When I try update fields in requisition:
+    When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
       | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
     And I try to get requisition with id
@@ -316,7 +316,7 @@ Feature: Requisition Tests
     Then I should get response with the initiated requisition's id
     And I should get a requisition with "INITIATED" status
 
-    When I try update fields in requisition:
+    When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
       | 1                     | 1                | 16                | 17                | test                         | 2                     | 2017-08-15 |
     And I try to get requisition with id
@@ -356,7 +356,7 @@ Feature: Requisition Tests
     Then I should get response with the initiated requisition's id
     And I should get a requisition with "INITIATED" status
 
-    When I try update fields in requisition:
+    When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
       | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 2017-08-15 |
     And I try to get requisition with id
@@ -520,7 +520,7 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
     And I should get a requisition without supervisoryNode
 
-    When I try update fields in requisition:
+    When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
       | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15 |
     And I try to get requisition with id
