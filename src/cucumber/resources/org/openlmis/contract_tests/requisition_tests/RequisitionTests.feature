@@ -907,12 +907,12 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | stockOnHand |
-      | 2                     | 3                | 1                 | 2                 | test                         | 5           |
+      | requestedQuantity | requestedQuantityExplanation |
+      | 2                 | test                         |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | stockOnHand |
-      | 2                     | 3                | 1                 | 2                 | test                         | 5           |
+      | requestedQuantity | requestedQuantityExplanation |
+      | 2                 | test                         |
 
     When I try to submit a requisition
     And I try to get requisition with id
