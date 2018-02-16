@@ -399,7 +399,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(200);
+        .statusCode(204);
   }
 
   @Then("^I should get response of deleted requisition$")
@@ -427,7 +427,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(200);
+        .statusCode(201);
   }
 
   @When("^I try get a requisition templates$")
