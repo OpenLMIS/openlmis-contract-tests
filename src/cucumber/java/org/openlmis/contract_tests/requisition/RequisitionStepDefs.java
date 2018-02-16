@@ -246,6 +246,10 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/submit");
+
+    requisitionResponse
+        .then()
+        .statusCode(200);
   }
 
   @Then("^I should get a requisition with \"([^\"]*)\" ([a-zA-Z]+)$")
@@ -261,6 +265,10 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/authorize");
+
+    requisitionResponse
+        .then()
+        .statusCode(200);
 
     supervisoryNodeId = from(requisitionResponse.asString()).get("supervisoryNode");
   }
@@ -282,10 +290,9 @@ public class RequisitionStepDefs {
         .when()
         .post(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/approve");
 
-    if (requisitionResponse.statusCode() > 200) {
-      System.out.println("Received response: " + requisitionResponse.statusCode());
-      System.out.println(requisitionResponse.body().print());
-    }
+    requisitionResponse
+        .then()
+        .statusCode(200);
   }
 
   @When("^I try to skip initiated requisition$")
@@ -294,6 +301,10 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/skip");
+
+    requisitionResponse
+        .then()
+        .statusCode(200);
   }
 
   @When("^I try to reject authorized requisition$")
@@ -302,6 +313,10 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId + "/reject");
+
+    requisitionResponse
+        .then()
+        .statusCode(200);
   }
 
   @When("^I try to get period with id:$")
@@ -381,6 +396,10 @@ public class RequisitionStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .delete(BASE_URL_OF_REQUISITION_SERVICE + requisitionId);
+
+    requisitionResponse
+        .then()
+        .statusCode(200);
   }
 
   @Then("^I should get response of deleted requisition$")
@@ -405,6 +424,10 @@ public class RequisitionStepDefs {
         .contentType(ContentType.JSON)
         .body(createBodyForConvertToOrder())
         .post(BASE_URL_OF_REQUISITION_SERVICE + "convertToOrder");
+
+    requisitionResponse
+        .then()
+        .statusCode(200);
   }
 
   @When("^I try get a requisition templates$")
