@@ -60,8 +60,7 @@ services:
         ,${BASE_URL}/requisition
         ,${BASE_URL}/stockmanagement'
       - 'cucumber'
-      - '-Ptags=
-      @ShipmentTests'
+      - '-Ptags=@FulfillmentTests'
 
 volumes:
   gradlecache:
