@@ -19,21 +19,17 @@ import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfVali
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import com.google.gson.JsonObject;
-
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.junit.Assert;
 
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
@@ -49,6 +45,7 @@ import java.util.Map;
 
 public class FulfillmentStepDefs {
 
+  private static final Integer REMAINDER = 1;
   private Response shipmentResponse;
   private Response orderResponse;
   private Response requisitionResponse;
@@ -123,7 +120,7 @@ public class FulfillmentStepDefs {
     stockCardResponse
         .then()
         .statusCode(HttpStatus.SC_OK)
-        .body(STOCK_ON_HAND, is(0));
+        .body(STOCK_ON_HAND, is(REMAINDER));
   }
 
   @When("^I try to convert requisition with:$")
