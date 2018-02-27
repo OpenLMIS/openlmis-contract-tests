@@ -43,7 +43,7 @@ Feature: Fulfillment Tests
 
     When I try to get order by:
       | supplyingFacilityId                  | requestingFacilityId                 | programId                            | processingPeriodId                   |
-      | c62dea9b-6974-4101-ba39-b09914165967 | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | 418bdc1d-c303-4bd0-b2d3-d8901150a983 | 516ac930-0d28-49f5-a178-64764e22b236 |
+      | c62dea9b-6974-4101-ba39-b09914165967 | a205764b-3998-4c89-afac-2bc9d737c8d3 | 418bdc1d-c303-4bd0-b2d3-d8901150a983 | 516ac930-0d28-49f5-a178-64764e22b236 |
     Then I should get response of order found
 
     When I try to get shipment by order id
