@@ -51,6 +51,7 @@ public class FulfillmentStepDefs {
   private Response requisitionResponse;
   private Response stockCardResponse;
   private Response proofOfDeliveryResponse;
+  private Response printProofOfDeliveryResponse;
 
   private String orderId;
   private String shipmentId;
@@ -64,7 +65,7 @@ public class FulfillmentStepDefs {
   private static final String URL_OF_ORDERS =
       baseUrlOfService("fulfillment") + "orders";
   private static final String URL_OF_PODS =
-      baseUrlOfService("fulfillment") + "proofsOfDelivery";
+      baseUrlOfService("fulfillment") + "proofsOfDelivery/";
   private static final String URL_OF_REQUISITION_CONVERT =
       baseUrlOfService("requisition") + "requisitions/convertToOrder";
   private static final String URL_OF_STOCK_CARD_SUMMARIES =
@@ -107,6 +108,32 @@ public class FulfillmentStepDefs {
         .get(URL_OF_STOCK_CARD_MANAGEMENT + stockCardId);
   }
 
+  @When("^I try to find any proof of delivery$")
+  public void tryToGetAnyProofOfDelivery() {
+    proofOfDeliveryResponse = given()
+        .contentType(ContentType.JSON)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .get(URL_OF_PODS);
+  }
+
+  @When("^I try to print proof of delivery with id$")
+  public void tryToPrintProofOfDeliveryWithId() {
+    printProofOfDeliveryResponse = given()
+        .contentType(ContentType.JSON)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .get(URL_OF_PODS + proofOfDeliveryId + "/print");
+  }
+
+  @Then("^I should get correct pdf response$")
+  public void shouldGetCorrectPdfResponse() {
+    printProofOfDeliveryResponse
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .header("Content-Type", "application/pdf;charset=UTF-8");
+  }
+
   @Then("^I should get a stock card$")
   public void shouldGetAStockCardWithStockOnHand() {
     stockCardResponse
@@ -145,9 +172,9 @@ public class FulfillmentStepDefs {
     RequestSpecification request = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN);
-    
+
     data.forEach(request::queryParam);
-    
+
     orderResponse = request
         .when()
         .get(URL_OF_ORDERS)
@@ -162,7 +189,7 @@ public class FulfillmentStepDefs {
 
     orderId = orderResponse.jsonPath().getString(CONTENT_ID);
   }
-  
+
   @When("^I try to get shipment by order id$")
   public void tryToGetShipmentByOrderId() {
     shipmentResponse = given()
@@ -173,7 +200,7 @@ public class FulfillmentStepDefs {
         .get(URL_OF_SHIPMENTS)
         .andReturn();
   }
-  
+
   @Then("^I should get response of shipment found$")
   public void shouldGetResponseOfShipmentFound() {
     shipmentResponse
@@ -252,7 +279,7 @@ public class FulfillmentStepDefs {
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .body(body)
         .when()
-        .put(URL_OF_PODS + '/' + proofOfDeliveryId)
+        .put(URL_OF_PODS + proofOfDeliveryId)
         .andReturn();
   }
 

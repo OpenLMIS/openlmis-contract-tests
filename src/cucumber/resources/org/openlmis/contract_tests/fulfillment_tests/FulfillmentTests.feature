@@ -27,6 +27,16 @@ Feature: Fulfillment Tests
     Then I should get response of proof of delivery confirmation success
     And I logout
 
+  Scenario: Administrator should be able to print Proof of Delivery
+    Given I have logged in as administrator
+
+    When I try to find any proof of delivery
+    Then I should get response of proof of delivery found
+
+    When I try to print proof of delivery with id
+    Then I should get correct pdf response
+    And I logout
+
   Scenario: Divo user should be able to confirm Proof of Delivery (Local Order Path)
     Given I have logged in as divo1
 
