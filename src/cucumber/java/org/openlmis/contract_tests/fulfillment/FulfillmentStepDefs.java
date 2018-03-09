@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class FulfillmentStepDefs {
 
-  private static final Integer REMAINDER = 1;
+  private static final Integer REMAINDER = 50;
   private Response shipmentResponse;
   private Response orderResponse;
   private Response requisitionResponse;
