@@ -916,10 +916,6 @@ Feature: Requisition Tests
 
     When I try to submit a requisition
     And I try to get requisition with id
-    Then I should get a requisition with "SUBMITTED" status
-
-    When I try to authorize a requisition
-    And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I logout
 
