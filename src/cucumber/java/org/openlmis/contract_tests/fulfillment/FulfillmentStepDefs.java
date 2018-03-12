@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class FulfillmentStepDefs {
 
-  private static final Integer REMAINDER = 50;
+  private static final Integer REMAINDER = 1;
   private Response shipmentResponse;
   private Response orderResponse;
   private Response requisitionResponse;
@@ -60,12 +60,13 @@ public class FulfillmentStepDefs {
 
   private int stockOnHand;
 
+  private static final String FULFILLMENT = "fulfillment";
   private static final String URL_OF_SHIPMENTS =
-      baseUrlOfService("fulfillment") + "shipments";
+      baseUrlOfService(FULFILLMENT) + "shipments";
   private static final String URL_OF_ORDERS =
-      baseUrlOfService("fulfillment") + "orders";
+      baseUrlOfService(FULFILLMENT) + "orders";
   private static final String URL_OF_PODS =
-      baseUrlOfService("fulfillment") + "proofsOfDelivery/";
+      baseUrlOfService(FULFILLMENT) + "proofsOfDelivery/";
   private static final String URL_OF_REQUISITION_CONVERT =
       baseUrlOfService("requisition") + "requisitions/convertToOrder";
   private static final String URL_OF_STOCK_CARD_SUMMARIES =
@@ -76,6 +77,7 @@ public class FulfillmentStepDefs {
   private static final String CONTENT_ID = "content[0].id";
   private static final String STOCK_ON_HAND = "content[0].stockOnHand";
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
+  private static final String LOT_ID = "lotId";
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
@@ -261,7 +263,7 @@ public class FulfillmentStepDefs {
         JSONObject lot = (JSONObject) obj.get("lot");
 
         boolean orderableMatch = map.get("orderableId").equals(orderable.get("id"));
-        boolean lotMatch = null == lot || map.get("lotId").equals(lot.get("id"));
+        boolean lotMatch = null == lot || map.get(LOT_ID).equals(lot.get("id"));
 
         if (orderableMatch && lotMatch) {
           obj.put("quantityAccepted", map.get("quantityAccepted"));
@@ -304,8 +306,8 @@ public class FulfillmentStepDefs {
       JSONObject json = new JSONObject();
       json.put("orderable", createObjectReference(map.get("orderableId")));
 
-      if (map.containsKey("lotId")) {
-        json.put("lot", createObjectReference(map.get("lotId")));
+      if (map.containsKey(LOT_ID)) {
+        json.put("lot", createObjectReference(map.get(LOT_ID)));
       }
 
       json.put("quantityShipped", map.get("quantityShipped"));
