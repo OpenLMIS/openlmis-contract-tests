@@ -19,9 +19,12 @@ package org.openlmis.contract_tests.referencedata;
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
@@ -124,8 +127,8 @@ public class IdealStockAmountStepDefs {
     assertTrue(downloadedIsaFile.length > 0);
   }
 
-  @Then("^The number of entries in the file should be (\\d+)$")
-  public void numberOfEntriesInFileShouldBe(int expected) {
+  @Then("^The number of entries in the file should be at least (\\d+)$")
+  public void numberOfEntriesInFileShouldBeAtleast(int expected) {
     String csvDownload = isaDownloadResponse.asString();
     Matcher m = Pattern.compile("\r\n|\r|\n").matcher(csvDownload);
     int lines = 0;
@@ -134,7 +137,7 @@ public class IdealStockAmountStepDefs {
     }
 
     // We subtract one from lines count, to ignore header line
-    assertEquals(expected, lines - 1);
+    assertThat(lines - 1, is(greaterThanOrEqualTo(expected)));
   }
 
   @When("^I try to get ISA for$")
@@ -188,13 +191,13 @@ public class IdealStockAmountStepDefs {
         .get(ISA_URL);
   }
 
-  @Then("^I should get a page with total elements set to (\\d+)$")
+  @Then("^I should get a page that have at least (\\d+) elements$")
   public void getPageWithTotalElements(Long expectedTotal) throws ParseException {
     JSONParser parser = new JSONParser();
     JSONObject object = (JSONObject) parser.parse(isaGetAllResponse.asString());
 
     Long totalElements = (Long) object.get("totalElements");
-    assertEquals(expectedTotal, totalElements);
+    assertThat(totalElements, is(greaterThanOrEqualTo(expectedTotal)));
   }
 
 

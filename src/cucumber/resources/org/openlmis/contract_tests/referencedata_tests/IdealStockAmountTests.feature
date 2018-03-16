@@ -10,7 +10,7 @@ Feature: Ideal Stock Amount Tests
 
     When I try to download ISA CSV
     Then I should get response with non-empty CSV file
-    And The number of entries in the file should be 7000
+    And The number of entries in the file should be at least 7000
 
     When I try to get ISA for
       | facilityId                           | commodityTypeId                      | processingPeriodId                   |
@@ -20,6 +20,6 @@ Feature: Ideal Stock Amount Tests
       | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | 99ccf663-3304-44ae-b2e0-a67fd5511e2a | 516ac930-0d28-49f5-a178-64764e22b236 | 19300  |
 
     When I try to get all ISA
-    Then I should get a page with total elements set to 7000
+    Then I should get a page that have at least 7000 elements
 
     And I logout
