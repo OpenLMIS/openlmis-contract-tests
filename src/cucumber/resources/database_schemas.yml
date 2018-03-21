@@ -65,6 +65,8 @@ schemata:
         - jv_snapshot
       ordered:
         - auth_users
+        - oauth_client_details
+        - api_keys
   - name: fulfillment
     table:
       excluded:
