@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
-import static org.openlmis.contract_tests.requisition.RequisitionStepDefs.ACCESS_TOKEN_PARAM_NAME;
+import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN_PARAM_NAME;
 import static org.openlmis.contract_tests.requisition.RequisitionStepDefs.BASE_URL_OF_REFERENCEDATA_SERVICE;
 
 class ProcessingPeriodUtils {

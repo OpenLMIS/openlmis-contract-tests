@@ -932,3 +932,49 @@ Feature: Requisition Tests
     And I try to get requisition with id
     Then I should get a requisition with "RELEASED" status
     And I logout
+
+  Scenario: Search should return correct requisitions for convert
+    Given I have logged in as divo1
+
+    When I try to find requisition for convert without request parameters
+    Then I should get a page with 3 requisitions
+
+    When I try to find requisition for convert with request parameters:
+      | filterBy     | facilityCode |
+      | filterValue  | N008         |
+    Then I should get a page with 1 requisitions
+    And I should get requisitions with facility "N008"
+    And I should get requisitions with program "EPI"
+
+    When I try to find requisition for convert with request parameters:
+      | filterBy     | facilityName |
+      | filterValue  | Macaue-2     |
+    Then I should get a page with 1 requisitions
+    And I should get requisitions with facility "N008"
+    And I should get requisitions with program "EPI"
+
+    When I try to find requisition for convert with request parameters:
+      | filterBy     | program |
+      | filterValue  | EPI     |
+    Then I should get a page with 3 requisitions
+    And I should get requisitions with program "EPI"
+
+    When I try to find requisition for convert with request parameters:
+      | filterBy     | all           |
+      | filterValue  | Macaue-2,N008 |
+    Then I should get a page with 1 requisitions
+    And I should get requisitions with facility "N008"
+    And I should get requisitions with program "EPI"
+
+    When I try to find requisition for convert with request parameters:
+      | filterBy     | all        |
+      | filterValue  | Lurio,N008 |
+    Then I should get a page with 2 requisitions
+    And I should get requisitions with program "EPI"
+    And I should get requisitions with facilities "N007,N008"
+
+    When I try to find requisition for convert with request parameters:
+      | filterBy     | all      |
+      | filterValue  | EPI,N008 |
+    Then I should get a page with 3 requisitions
+    And I should get requisitions with program "EPI"

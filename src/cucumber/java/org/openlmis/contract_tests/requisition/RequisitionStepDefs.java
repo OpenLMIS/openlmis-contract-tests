@@ -23,19 +23,12 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
+import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN_PARAM_NAME;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
-
-import com.google.gson.JsonObject;
-
-import org.apache.http.HttpStatus;
-import org.hamcrest.Matcher;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.openlmis.contract_tests.common.DatabaseManager;
 
 import cucumber.api.DataTable;
 import cucumber.api.java.Before;
@@ -45,20 +38,39 @@ import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import org.apache.http.HttpStatus;
+import org.hamcrest.Matcher;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.openlmis.contract_tests.common.DatabaseManager;
+import org.openlmis.contract_tests.common.LoginStepDefs;
 
 public class RequisitionStepDefs {
+
+  static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
+      baseUrlOfService("referencedata");
   private static final DatabaseManager DATABASE_MANAGER = new DatabaseManager();
   private static final String REQUISITION_LINE_ITEMS = "requisitionLineItems";
+  private static final String REQUISITIONS_FOR_CONVERT = "requisitionsForConvert/";
+  private static final String BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE =
+      baseUrlOfService("requisition") + "requisitionTemplates/";
+  private static final String BASE_URL_OF_REQUISITION_SERVICE =
+      baseUrlOfService("requisition") + "requisitions/";
+  private static final String INCORRECT_PERIOD_ERROR =
+      "Error occurred while initiating requisition - incorrect suggested period.";
+  private static final int FOUR_MONTHS = 4;
 
   private Response requisitionTemplateResponse;
   private Response requisitionResponse;
@@ -67,26 +79,12 @@ public class RequisitionStepDefs {
   private String supervisoryNodeId;
   private String periodId;
   private JSONObject requisition;
+  private int numberOfElements;
 
   private String requisitionTemplate;
   private DataTable requisitionTemplateUpdateData;
   private Map<String, DataTable> requisitionTemplateColumnsData = new HashMap<>();
 
-  public static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
-
-  public static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
-      baseUrlOfService("referencedata");
-
-  private static final String BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE =
-      baseUrlOfService("requisition") + "requisitionTemplates/";
-
-  private static final String BASE_URL_OF_REQUISITION_SERVICE =
-      baseUrlOfService("requisition") + "requisitions/";
-
-  private static final String INCORRECT_PERIOD_ERROR =
-      "Error occurred while initiating requisition - incorrect suggested period.";
-
-  private static final int FOUR_MONTHS = 4;
 
   static {
     enableLoggingOfRequestAndResponseIfValidationFails();
@@ -530,6 +528,66 @@ public class RequisitionStepDefs {
                 (key, value) -> validatableResponse.body(prefix + key, is(hasToString(value)))
             ));
       }
+    }
+  }
+
+  @When("^I try to find requisition for convert without request parameters$")
+  public void tryToGetRequisitionsForConvert() {
+    requisitionResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .get(BASE_URL_OF_REQUISITION_SERVICE + REQUISITIONS_FOR_CONVERT);
+  }
+
+  @When("^I try to find requisition for convert with request parameters")
+  public void tryToGetRequisitionsForConvert(DataTable argsList) {
+    Map<String, String> data = argsList.asMap(String.class, String.class);
+
+    String filterValue = data.get("filterValue");
+    requisitionResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .queryParam("filterBy", data.get("filterBy"))
+        .queryParam("filterValue", Arrays.asList(filterValue.split(",")))
+        .when()
+        .get(BASE_URL_OF_REQUISITION_SERVICE + REQUISITIONS_FOR_CONVERT);
+  }
+
+  @Then("^I should get a page with ([0-9]+) requisitions$")
+  public void shouldGetPageWithRequisitions(String number) {
+    int intNumber = Integer.parseInt(number);
+    requisitionResponse
+        .then()
+        .body("numberOfElements", is(intNumber));
+
+    numberOfElements = intNumber;
+  }
+
+  @Then("^I should get requisitions with program \"([^\"]*)\"$")
+  public void shouldGetRequisitionsWithProgram(String program) {
+    for (int i = 0; i < numberOfElements; i++) {
+      requisitionResponse
+          .then()
+          .body("content[" + i + "].requisition.program.name", is(program));
+    }
+  }
+
+  @Then("^I should get requisitions with facility \"([^\"]*)\"$")
+  public void shouldGetRequisitionsWithFacility(String facility) {
+    for (int i = 0; i < numberOfElements; i++) {
+      requisitionResponse
+          .then()
+          .body("content[" + i + "].requisition.facility.code", is(facility));
+    }
+  }
+
+  @Then("^I should get requisitions with facilities \"([^\"]*)\"$")
+  public void shouldGetRequisitionsWithFacilitis(String facilities) {
+    List<String> facilityList = Arrays.asList(facilities.split(","));
+
+    for (int i = 0; i < numberOfElements; i++) {
+      String code = from(requisitionResponse.asString()).get("content[" + i + "].requisition.facility.code");
+      assertNotNull(code);
+      assertTrue(facilityList.contains(code));
     }
   }
 

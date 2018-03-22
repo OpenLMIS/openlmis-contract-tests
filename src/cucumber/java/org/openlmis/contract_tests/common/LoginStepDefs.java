@@ -30,6 +30,7 @@ import cucumber.api.java.en.Given;
 
 public class LoginStepDefs {
 
+  public static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   public static String ACCESS_TOKEN;
 
   @Given("^I have logged in as (.*)$")
