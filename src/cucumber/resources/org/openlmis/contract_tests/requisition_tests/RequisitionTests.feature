@@ -979,3 +979,11 @@ Feature: Requisition Tests
     Then I should get a page with 3 requisitions
     And I should get requisitions with program "EPI"
     And I logout
+
+    When I have logged in as administrator
+    When I try to find requisitions for convert with request parameters:
+      | filterBy     | all             |
+      | filterValue  | Family Planning |
+    Then I should get a page with 1 requisitions
+    And I should get requisitions with program "Family Planning"
+    And I logout
