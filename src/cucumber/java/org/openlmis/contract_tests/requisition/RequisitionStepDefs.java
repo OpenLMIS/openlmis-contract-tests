@@ -531,7 +531,7 @@ public class RequisitionStepDefs {
     }
   }
 
-  @When("^I try to find requisition for convert without request parameters$")
+  @When("^I try to find requisitions for convert without request parameters$")
   public void tryToGetRequisitionsForConvert() {
     requisitionResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -539,7 +539,7 @@ public class RequisitionStepDefs {
         .get(BASE_URL_OF_REQUISITION_SERVICE + REQUISITIONS_FOR_CONVERT);
   }
 
-  @When("^I try to find requisition for convert with request parameters")
+  @When("^I try to find requisitions for convert with request parameters")
   public void tryToGetRequisitionsForConvert(DataTable argsList) {
     Map<String, String> data = argsList.asMap(String.class, String.class);
 
