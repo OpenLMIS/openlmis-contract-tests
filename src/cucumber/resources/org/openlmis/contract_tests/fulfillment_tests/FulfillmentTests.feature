@@ -6,12 +6,12 @@ Feature: Fulfillment Tests
 
     When I try to convert requisition with:
       | requisitionId                        | supplyingDepotId                     |
-      | 21d138bc-f2c2-4188-adf3-a3aae381abde | 19121381-9f3d-4e77-b9e5-d3f59fc1639e |
+      | 17542db8-7912-4b9f-a922-0b111e1565c8 | dd343fe4-ec0c-4a58-831a-68ccf9f19316 |
     Then I should get response of order created
 
     When I try to get order by:
       | supplyingFacilityId                  | requestingFacilityId                 | programId                            | periodStartDate | periodEndDate |
-      | 19121381-9f3d-4e77-b9e5-d3f59fc1639e | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 2017-07-01      | 2017-09-30    |
+      | dd343fe4-ec0c-4a58-831a-68ccf9f19316 | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | 2017-04-01      | 2017-06-30    |
     Then I should get response of order found
 
     When I try to get shipment by order id
@@ -22,8 +22,9 @@ Feature: Fulfillment Tests
 
     When I try to confirm the proof of delivery
       | orderableId                          | lotId | quantityAccepted |
-      | 7b9b66e0-f008-4c38-93ec-7a5f4868cca9 |       | 0                |
-      | bfde33c3-83f1-4feb-a27c-842852f66b71 |       | 0                |
+      | 2400e410-b8dd-4954-b1c0-80d8a8e785fc |       | 1000             |
+      | 6be94307-c7f4-4782-ba83-45f496c8ac42 |       | 2000             |
+      | c9e65f02-f84f-4ba2-85f7-e2cb6f0989af |       | 3000             |
     Then I should get response of proof of delivery confirmation success
     And I logout
 
