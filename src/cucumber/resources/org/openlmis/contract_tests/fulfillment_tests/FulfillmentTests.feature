@@ -6,12 +6,12 @@ Feature: Fulfillment Tests
 
     When I try to convert requisition with:
       | requisitionId                        | supplyingDepotId                     |
-      | 17542db8-7912-4b9f-a922-0b111e1565c8 | dd343fe4-ec0c-4a58-831a-68ccf9f19316 |
+      | 17542db8-7912-4b9f-a922-0b111e1565c8 | 9318b2ea-9ae0-42b2-a7e1-353683f54000 |
     Then I should get response of order created
 
     When I try to get order by:
       | supplyingFacilityId                  | requestingFacilityId                 | programId                            | periodStartDate | periodEndDate |
-      | dd343fe4-ec0c-4a58-831a-68ccf9f19316 | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | 2017-04-01      | 2017-06-30    |
+      | 9318b2ea-9ae0-42b2-a7e1-353683f54000 | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | 2017-04-01      | 2017-06-30    |
     Then I should get response of order found
 
     When I try to get shipment by order id
