@@ -22,9 +22,9 @@ Feature: Fulfillment Tests
 
     When I try to confirm the proof of delivery
       | orderableId                          | lotId | quantityAccepted |
-      | 2400e410-b8dd-4954-b1c0-80d8a8e785fc |       | 1000             |
-      | 6be94307-c7f4-4782-ba83-45f496c8ac42 |       | 2000             |
-      | c9e65f02-f84f-4ba2-85f7-e2cb6f0989af |       | 3000             |
+      | 2400e410-b8dd-4954-b1c0-80d8a8e785fc |       | 62               |
+      | 6be94307-c7f4-4782-ba83-45f496c8ac42 |       | 400              |
+      | c9e65f02-f84f-4ba2-85f7-e2cb6f0989af |       | 600              |
     Then I should get response of proof of delivery confirmation success
     And I logout
 
