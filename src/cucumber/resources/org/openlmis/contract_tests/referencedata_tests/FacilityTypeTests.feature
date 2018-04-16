@@ -1,5 +1,5 @@
-@admin
-Feature: facilityType
+@FacilityTypeTests
+Feature: FacilityType tests
 
   Scenario: Admin should be able to create faciltyType
     Given I have logged in as admin

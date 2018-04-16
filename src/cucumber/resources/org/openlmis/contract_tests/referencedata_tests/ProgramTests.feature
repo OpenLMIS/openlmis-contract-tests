@@ -1,5 +1,5 @@
-@admin
-Feature: Admin
+@ProgramTests
+Feature: Program tests
 
   Scenario: Admin user should be able to create programs
     Given I have logged in as admin
