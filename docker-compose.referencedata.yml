@@ -38,7 +38,7 @@ services:
         ,${BASE_URL}/notification
         ,${BASE_URL}/referencedata'
       - 'cucumber'
-      - '-Ptags=@UserTests,@ApiKeyTests,@IdealStockAmountTests,@FacilityTypeTests,@ProgramTests'
+      - '-Ptags=@UserTests,@ApiKeyTests,@IdealStockAmountTests,@FacilityTypeTests,@ProgramTests,@SupervisoryNodeTests'
       - '--stacktrace'
 
 volumes:
