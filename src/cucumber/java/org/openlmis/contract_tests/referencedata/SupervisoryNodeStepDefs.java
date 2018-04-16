@@ -18,6 +18,7 @@ package org.openlmis.contract_tests.referencedata;
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.jglue.fluentjson.JsonBuilderFactory.buildObject;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
@@ -35,7 +36,8 @@ import org.jglue.fluentjson.JsonObjectBuilder;
 
 public class SupervisoryNodeStepDefs {
 
-  private Response response;
+  private Response createSupervisoryNodeResponse;
+  private Response getSupervisoryNodeResponse;
   private String id;
 
   static {
@@ -46,7 +48,7 @@ public class SupervisoryNodeStepDefs {
   public void tryToCreateSupervisoryNodeWith(DataTable argsList) {
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
     for (Map<String, String> map : data) {
-      response = given()
+      createSupervisoryNodeResponse = given()
           .contentType(ContentType.JSON)
           .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
           .body(buildSupervisoryNode(map)
@@ -57,16 +59,36 @@ public class SupervisoryNodeStepDefs {
   }
 
   @Then("^I should get response with the created supervisoryNode's id$")
-  public void IShouldGetResponseWithTheCreatedSupervisoryNodeId() throws Throwable {
-    response
+  public void shouldGetResponseWithTheCreatedSupervisoryNodeId() throws Throwable {
+    createSupervisoryNodeResponse
         .then()
         .body("id", notNullValue());
-    id = from(response.asString()).get("id");
+    id = from(createSupervisoryNodeResponse.asString()).get("id");
+  }
+
+  @When("^I try to get supervisoryNode with id$")
+  public void tryToGetSupervisoryNodeWithId() throws Throwable {
+    getSupervisoryNodeResponse = given()
+        .param("access_token", ACCESS_TOKEN)
+        .when()
+        .get(baseUrlOfService("referencedata") + "supervisoryNodes/" + id);
+  }
+
+  @Then("^I should get supervisoryNode with:$")
+  public void shouldGetProgramWith(DataTable argsList) throws Throwable {
+    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    for (Map<String, String> map : data) {
+      getSupervisoryNodeResponse
+          .then()
+          .body("code", is(map.get("code")))
+          .body("name", is(map.get("name")))
+          .body("facility.id", is(map.get("facilityId")));
+    }
   }
 
   private JsonObjectBuilder buildSupervisoryNode(Map<String, String> data) {
     JsonObjectBuilder facility = buildObject()
-        .add("id", data.get("facility"));
+        .add("id", data.get("facilityId"));
     return buildObject()
         .add("code", (String) data.get("code"))
         .add("facility", facility)
