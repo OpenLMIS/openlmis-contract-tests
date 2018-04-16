@@ -32,12 +32,14 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.Map;
+import org.apache.http.HttpStatus;
 import org.jglue.fluentjson.JsonObjectBuilder;
 
 public class SupervisoryNodeStepDefs {
 
   private Response createSupervisoryNodeResponse;
   private Response getSupervisoryNodeResponse;
+  private Response deleteSupervisoryNodeResponse;
   private String id;
 
   static {
@@ -84,6 +86,28 @@ public class SupervisoryNodeStepDefs {
           .body("name", is(map.get("name")))
           .body("facility.id", is(map.get("facilityId")));
     }
+  }
+
+  @When("^I try to delete a supervisoryNode with id$")
+  public void tryDeleteSupervisoryNode() {
+    deleteSupervisoryNodeResponse = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .delete(baseUrlOfService("referencedata") + "supervisoryNodes/" + id);
+  }
+
+  @Then("^I should get no content response")
+  public void shouldGetNoContentResponse() {
+    deleteSupervisoryNodeResponse
+        .then()
+        .statusCode(HttpStatus.SC_NO_CONTENT);
+  }
+
+  @Then("^I should get not found response$")
+  public void shouldGetNotFoundResponse() {
+    getSupervisoryNodeResponse
+        .then()
+        .statusCode(HttpStatus.SC_NOT_FOUND);
   }
 
   private JsonObjectBuilder buildSupervisoryNode(Map<String, String> data) {
