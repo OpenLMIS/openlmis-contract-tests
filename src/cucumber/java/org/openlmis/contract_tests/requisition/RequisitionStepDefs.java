@@ -55,7 +55,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.openlmis.contract_tests.common.DatabaseManager;
-import org.openlmis.contract_tests.common.LoginStepDefs;
 
 public class RequisitionStepDefs {
 
@@ -173,6 +172,24 @@ public class RequisitionStepDefs {
         .statusCode(200);
   }
 
+  @When("^I try to update fields for product id (.+):$")
+  public void tryUpdateFieldInRequisition(String product, DataTable argsList) throws Throwable {
+    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+
+    data.forEach(map -> map.forEach((key, value) ->
+        updateFieldInRequisitionLineItem(requisition, key, value, product)
+    ));
+
+    given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .contentType(ContentType.JSON)
+        .body(requisition.toJSONString())
+        .when()
+        .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId)
+        .then()
+        .statusCode(200);
+  }
+
   @When("^I try to add products to requisition:$")
   public void tryAddProductsToRequisition(DataTable argsList) throws Throwable {
     if (requisition == null || !requisition.get("id").equals(requisitionId)) {
@@ -215,6 +232,26 @@ public class RequisitionStepDefs {
           item.toJSONString(), Objects.toString(item.get(entry.getKey())), is(entry.getValue()))
       );
     }));
+  }
+
+  @Then("^I should get updated requisition with product id (.+):$")
+  public void shouldGetUpdatedRequisition(String product, DataTable argsList) throws ParseException {
+    Map<String, String> fieldMap = argsList.asMaps(String.class, String.class).get(0);
+
+    JSONParser parser = new JSONParser();
+    JSONObject root = (JSONObject) parser.parse(requisitionResponse.asString());
+    JSONArray lineItems = (JSONArray) root.get(REQUISITION_LINE_ITEMS);
+
+    lineItems.forEach(line -> {
+      JSONObject item = (JSONObject) line;
+      JSONObject orderable = (JSONObject) item.get("orderable");
+      String id = (String) orderable.get("id");
+
+      if (product.equals(id)) {
+        fieldMap.forEach((key, value) -> assertThat(
+            item.toJSONString(), Objects.toString(item.get(key)), is(value)));
+      }
+    });
   }
 
   @Then("^I should get updated requisition with proper total cost$")
@@ -612,6 +649,21 @@ public class RequisitionStepDefs {
     for (Object requisitionLine : requisitionLineItems) {
       JSONObject requisitionLineAsJson = (JSONObject) requisitionLine;
       requisitionLineAsJson.put(keyToUpdate, newValue);
+    }
+  }
+
+  private void updateFieldInRequisitionLineItem(JSONObject requisition,
+      String keyToUpdate, Object newValue, String productId) {
+    JSONArray requisitionLineItems = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
+
+    for (Object requisitionLine : requisitionLineItems) {
+      JSONObject requisitionLineAsJson = (JSONObject) requisitionLine;
+      JSONObject orderable = (JSONObject) requisitionLineAsJson.get("orderable");
+      String id = (String) orderable.get("id");
+
+      if (productId.equals(id)) {
+        requisitionLineAsJson.put(keyToUpdate, newValue);
+      }
     }
   }
 
