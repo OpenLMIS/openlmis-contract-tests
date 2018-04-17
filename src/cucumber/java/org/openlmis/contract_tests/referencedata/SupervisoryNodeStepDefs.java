@@ -63,6 +63,20 @@ public class SupervisoryNodeStepDefs {
     }
   }
 
+  @When("^I try to update a supervisoryNode with:$")
+  public void tryToUpdateSupervisoryNodeWith(DataTable argsList) {
+    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    for (Map<String, String> map : data) {
+      given()
+          .contentType(ContentType.JSON)
+          .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+          .body(buildSupervisoryNode(map)
+              .getJson().toString())
+          .when()
+          .put(SUPERVISORY_NODE_URL + id);
+    }
+  }
+
   @Then("^I should get response with the created supervisoryNode's id$")
   public void shouldGetResponseWithTheCreatedSupervisoryNodeId() throws Throwable {
     createSupervisoryNodeResponse
