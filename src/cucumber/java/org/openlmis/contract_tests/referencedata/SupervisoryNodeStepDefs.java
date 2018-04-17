@@ -37,6 +37,9 @@ import org.jglue.fluentjson.JsonObjectBuilder;
 
 public class SupervisoryNodeStepDefs {
 
+  private static final String SUPERVISORY_NODE_URL = baseUrlOfService("referencedata")
+      + "supervisoryNodes/";
+
   private Response createSupervisoryNodeResponse;
   private Response getSupervisoryNodeResponse;
   private Response deleteSupervisoryNodeResponse;
@@ -56,7 +59,7 @@ public class SupervisoryNodeStepDefs {
           .body(buildSupervisoryNode(map)
               .getJson().toString())
           .when()
-          .post(baseUrlOfService("referencedata") + "supervisoryNodes");
+          .post(SUPERVISORY_NODE_URL);
     }
   }
 
@@ -73,7 +76,7 @@ public class SupervisoryNodeStepDefs {
     getSupervisoryNodeResponse = given()
         .param("access_token", ACCESS_TOKEN)
         .when()
-        .get(baseUrlOfService("referencedata") + "supervisoryNodes/" + id);
+        .get(SUPERVISORY_NODE_URL + id);
   }
 
   @Then("^I should get supervisoryNode with:$")
@@ -93,7 +96,7 @@ public class SupervisoryNodeStepDefs {
     deleteSupervisoryNodeResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
-        .delete(baseUrlOfService("referencedata") + "supervisoryNodes/" + id);
+        .delete(SUPERVISORY_NODE_URL + id);
   }
 
   @Then("^I should get no content response")
