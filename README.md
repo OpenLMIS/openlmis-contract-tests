@@ -61,6 +61,20 @@ Such as: `./run_contract_tests.sh TBD.yml -v`
 
 Script automatically pull actual images before contract tests.
 
+## Running locally
+
+Run with a script: "run_local.sh".
+Such as: `./run_local.sh TBD.yml pull`
+
+"TBD.yml" - parameter -> run with specific file name (e.g., "docker-compose.requisition.yml" OR "docker-compose.stockmanagment.yml").
+
+"pull" - parameter ->  pull actual images for docker compose file. This is optional.
+
+Output:
+1. `build/logs` contains output from docker compose
+2. `build/nginx.conf` contains nginx configuration
+3. `../logs/` contains logs for every service
+
 ## Principle
 
 applies for more complex situations as well:

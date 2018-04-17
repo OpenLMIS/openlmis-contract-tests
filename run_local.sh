@@ -9,8 +9,20 @@ export BASE_URL
 
 #pull all images
 if [ "$PULL_IMAGES" = "pull" ]; then
-/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} pull
+docker-compose -f docker-compose.yml -f ${FILENAME} pull
 fi
 
 #run docker file
-/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} run contract_tests
+docker-compose -f docker-compose.yml -f ${FILENAME} run contract_tests
+contract_test_result=$?
+
+#save logs
+docker-compose logs > build/logs
+docker-compose exec nginx cat /etc/nginx/conf.d/default.conf > build/nginx.conf
+
+#cleaning after tests
+docker-compose -f docker-compose.yml -f ${FILENAME} down -v
+
+#this line makes sure when jenkins runs this script
+#the build success/failure result is determined by contract test run not by the clean up run
+exit ${contract_test_result}
