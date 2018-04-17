@@ -541,6 +541,70 @@ Feature: Requisition Tests
     And I logout
 
 
+  Scenario: Maximum stock quantity should be calculated properly and not change after status changes
+    Given I have logged in as administrator
+    And I try get a requisition templates
+    And I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
+    And I try to update column maximumStockQuantity:
+      | isDisplayed |
+      | true        |
+    And I should get response that template has been updated
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
+      | 9                     | 2                | 0                 | 432               | test                         | 11                    | 2017-08-15 |
+    And I try to get requisition with id
+    And I should get updated requisition with proper maximum stock quantity
+
+    When I try to submit a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "SUBMITTED" status
+    And I should get updated requisition with proper maximum stock quantity
+    And I logout
+
+    When I have logged in as smanager1
+    When I try to authorize a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "AUTHORIZED" status
+    And I should get updated requisition with proper maximum stock quantity
+    And I logout
+
+    When I have logged in as psupervisor
+    When I try update fields in requisition:
+      | approvedQuantity |
+      | 430              |
+    And I try to get requisition with id
+    And I should get updated requisition with proper maximum stock quantity
+
+    When I try to approve a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "APPROVED" status
+    And I should get updated requisition with proper maximum stock quantity
+    And I logout
+
+    When I have logged in as wclerk1
+    And I try to convert requisition to order
+    Then I logout
+
+    When I have logged in as srmanager1
+    And I try to get requisition with id
+    Then I should get a requisition with "RELEASED" status
+    And I should get updated requisition with proper maximum stock quantity
+    And I logout
+
+
   Scenario: Total cost should be calculated properly and not change after status changes
     Given I have logged in as srmanager1
 

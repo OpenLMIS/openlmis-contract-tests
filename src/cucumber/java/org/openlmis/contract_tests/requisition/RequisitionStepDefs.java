@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import javax.swing.ButtonGroup;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
 import org.json.simple.JSONArray;
@@ -272,6 +273,27 @@ public class RequisitionStepDefs {
           pricePerPack).setScale(2, RoundingMode.HALF_UP);
 
       assertEquals(calculatedTotalCost, totalCost);
+    }
+  }
+
+  @Then("^I should get updated requisition with proper maximum stock quantity$")
+  public void shouldGetUpdatedRequisitionWithProperMaximumStockQuantity() throws ParseException {
+    JSONParser parser = new JSONParser();
+    JSONObject requisition = (JSONObject) parser.parse(requisitionResponse.asString());
+    JSONArray requisitionLines = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
+
+    for (Object requisitionLineObject : requisitionLines) {
+      JSONObject requisitionLine = (JSONObject) requisitionLineObject;
+      BigDecimal averageConsumption = new BigDecimal((Long) requisitionLine.get("averageConsumption"));
+      BigDecimal maxPeriodsOfStock = new BigDecimal((Double) requisitionLine.get("maxPeriodsOfStock"));
+
+      BigDecimal max = new BigDecimal((Long) requisitionLine.get("maximumStockQuantity")).setScale(
+          0, RoundingMode.HALF_UP);
+
+      BigDecimal calculatedMaximumStockQuantity = averageConsumption.multiply(
+          maxPeriodsOfStock).setScale(0, BigDecimal.ROUND_HALF_UP);
+
+      assertEquals(calculatedMaximumStockQuantity, max);
     }
   }
 
