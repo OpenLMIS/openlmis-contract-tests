@@ -1084,7 +1084,8 @@ Feature: Requisition Tests
     And I try to update fields for product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
       | skipped |
       | true    |
-    And I try to get requisition with id
+    Then I should get requisition response with status 200
+    When I try to get requisition with id
     Then I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | true    |
@@ -1102,7 +1103,8 @@ Feature: Requisition Tests
     When I try to update fields for product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
       | skipped  |
       | false    |
-    And I try to get requisition with id
+    Then I should get requisition response with status 200
+    When I try to get requisition with id
     Then I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
@@ -1110,7 +1112,8 @@ Feature: Requisition Tests
     When I try to update fields for product id 23819693-0670-4c4b-b400-28e009b86b51:
       | skipped |
       | true    |
-    And I try to get requisition with id
+    Then I should get requisition response with status 200
+    When I try to get requisition with id
     Then I should get updated requisition with product id 23819693-0670-4c4b-b400-28e009b86b51:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | true    |
@@ -1142,3 +1145,28 @@ Feature: Requisition Tests
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
     And I logout
+
+  Scenario: Storeroom Manager user should be not able to skip / unskip line items when column is disabled
+    Given I have logged in as administrator
+    When I try get a requisition templates
+    Then I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility type ac1d268b-ce10-455f-bf87-9c667da8f060
+    When I try to update column skipped:
+      | isDisplayed |
+      | false       |
+    Then I should get response that template has been updated
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try to update fields for product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+      | skipped |
+      | true    |
+    Then I should get requisition response with status 400

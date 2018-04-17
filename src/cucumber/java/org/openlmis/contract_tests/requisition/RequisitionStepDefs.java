@@ -144,13 +144,7 @@ public class RequisitionStepDefs {
 
   @When("^I try update fields in requisition:$")
   public void tryUpdateFieldsInRequisition(DataTable argsList) throws Throwable {
-    if (requisition == null || !requisition.get("id").equals(requisitionId)) {
-      JSONParser parser = new JSONParser();
-      requisition = (JSONObject) parser.parse(requisitionResponse.asString());
-    }
-    if (supervisoryNodeId != null) {
-      requisition.replace("supervisoryNode", null, supervisoryNodeId);
-    }
+    updateRequisition();
 
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
@@ -174,31 +168,25 @@ public class RequisitionStepDefs {
 
   @When("^I try to update fields for product id (.+):$")
   public void tryUpdateFieldInRequisition(String product, DataTable argsList) throws Throwable {
+    updateRequisition();
+
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
     data.forEach(map -> map.forEach((key, value) ->
         updateFieldInRequisitionLineItem(requisition, key, value, product)
     ));
 
-    given()
+    requisitionResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .contentType(ContentType.JSON)
         .body(requisition.toJSONString())
         .when()
-        .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId)
-        .then()
-        .statusCode(200);
+        .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId);
   }
 
   @When("^I try to add products to requisition:$")
   public void tryAddProductsToRequisition(DataTable argsList) throws Throwable {
-    if (requisition == null || !requisition.get("id").equals(requisitionId)) {
-      JSONParser parser = new JSONParser();
-      requisition = (JSONObject) parser.parse(requisitionResponse.asString());
-    }
-    if (supervisoryNodeId != null) {
-      requisition.replace("supervisoryNode", null, supervisoryNodeId);
-    }
+    updateRequisition();
 
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
 
@@ -215,6 +203,12 @@ public class RequisitionStepDefs {
         .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId)
         .then()
         .statusCode(200);
+  }
+
+  @Then("^I should get requisition response with status ([0-9]+)$")
+  public void tryUpdateFieldInRequisition(String status) throws Throwable {
+    requisitionResponse.then()
+        .statusCode(Integer.parseInt(status));
   }
 
   @Then("^I should get a updated requisition with:$")
@@ -734,5 +728,15 @@ public class RequisitionStepDefs {
     period = (JSONObject) parser.parse(periodResponse.asString());
 
     return (String) period.get("id");
+  }
+
+  private void updateRequisition() throws ParseException {
+    if (requisition == null || !requisition.get("id").equals(requisitionId)) {
+      JSONParser parser = new JSONParser();
+      requisition = (JSONObject) parser.parse(requisitionResponse.asString());
+    }
+    if (supervisoryNodeId != null) {
+      requisition.replace("supervisoryNode", null, supervisoryNodeId);
+    }
   }
 }
