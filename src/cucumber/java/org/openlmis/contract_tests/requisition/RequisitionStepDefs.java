@@ -275,27 +275,6 @@ public class RequisitionStepDefs {
     }
   }
 
-  @Then("^I should get updated requisition with proper maximum stock quantity$")
-  public void shouldGetUpdatedRequisitionWithProperMaximumStockQuantity() throws ParseException {
-    JSONParser parser = new JSONParser();
-    JSONObject requisition = (JSONObject) parser.parse(requisitionResponse.asString());
-    JSONArray requisitionLines = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
-
-    for (Object requisitionLineObject : requisitionLines) {
-      JSONObject requisitionLine = (JSONObject) requisitionLineObject;
-      BigDecimal averageConsumption = new BigDecimal((Long) requisitionLine.get("averageConsumption"));
-      BigDecimal maxPeriodsOfStock = new BigDecimal((Double) requisitionLine.get("maxPeriodsOfStock"));
-
-      BigDecimal max = new BigDecimal((Long) requisitionLine.get("maximumStockQuantity")).setScale(
-          0, RoundingMode.HALF_UP);
-
-      BigDecimal calculatedMaximumStockQuantity = averageConsumption.multiply(
-          maxPeriodsOfStock).setScale(0, BigDecimal.ROUND_HALF_UP);
-
-      assertEquals(calculatedMaximumStockQuantity, max);
-    }
-  }
-
   @When("^I try to submit a requisition$")
   public void trySubmitRequisition() {
     requisitionResponse = given()
@@ -494,8 +473,8 @@ public class RequisitionStepDefs {
         .get(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE);
   }
 
-  @Then("^I should get response with requisition template for a program (.*)$")
-  public void shouldGetRequisitionTemplateForProgram(String programId) throws ParseException {
+  @Then("^I should get response with requisition template for a program (.*) and facility type (.*)$")
+  public void shouldGetRequisitionTemplateForProgram(String programId, String facilityTypeId) throws ParseException {
     requisitionTemplateResponse
         .then()
         .statusCode(200)
@@ -506,9 +485,18 @@ public class RequisitionStepDefs {
     for (Object element : templates) {
       JSONObject template = (JSONObject) element;
       JSONObject program = (JSONObject) template.get("program");
+      JSONArray facilityTypes = (JSONArray) template.get("facilityTypes");
 
-      if (programId.equals(program.get("id").toString())) {
-        requisitionTemplate = template.toString();
+      for (Object facilityType : facilityTypes) {
+        JSONObject type = (JSONObject) facilityType;
+        if (programId.equals(program.get("id").toString()) &&
+            facilityTypeId.equals(type.get("id").toString())) {
+          requisitionTemplate = template.toString();
+          break;
+        }
+      }
+
+      if (!requisitionTemplate.isEmpty()) {
         break;
       }
     }

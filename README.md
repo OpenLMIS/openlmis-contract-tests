@@ -96,16 +96,16 @@ The following things should be done:
 
 #### Create cucumber feature file
 This file describes a list of steps that the test should take, in a human readability friendly manner.
-Look at [administration.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/admin/Administration.feature) for example.
+Look at [RequisitionTests.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/requisition_tests/RequisitionTests.feature) for example.
 
 #### Create step definitions
 The step definition file provides the feature file with runnable code.
 Both need to be present for cucumber to run.
-Look at [AdminStepDefs.java](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/java/org/openlmis/contract_tests/admin/AdminStepDefs.java) for example.
+Look at [RequisitionStepDefs.java](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/java/org/openlmis/contract_tests/requisition/RequisitionStepDefs.java) for example.
 
 #### Assign cucumber feature appropriate tag 
 Tags allow us to run different test cases in pipelines of different services.
-Look at the first line of [administration.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/admin/Administration.feature) for example.
+Look at the first line of [RequisitionTests.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/requisition_tests/RequisitionTests.feature) for example.
 
 When tag is defined, it allows us to run:
 `gradle clean cucumber -Ptags=@admin,@otherTag,@yetAnotherTag`

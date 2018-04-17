@@ -543,8 +543,8 @@ Feature: Requisition Tests
 
   Scenario: Maximum stock quantity should be calculated properly and not change after status changes
     Given I have logged in as administrator
-    And I try get a requisition templates
-    And I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
+    When I try get a requisition templates
+    Then I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility type ac1d268b-ce10-455f-bf87-9c667da8f060
     And I try to update column maximumStockQuantity:
       | isDisplayed |
       | true        |
@@ -563,35 +563,45 @@ Feature: Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 9                     | 2                | 0                 | 432               | test                         | 11                    | 2017-08-15 |
-    And I try to get requisition with id
-    And I should get updated requisition with proper maximum stock quantity
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 432               | test                         | 11                    |
+    Then I try to get requisition with id
+    And I should get a updated requisition with:
+      | maxPeriodsOfStock | averageConsumption | maximumStockQuantity |
+      | 3.0               | 11                 | 33                   |
 
     When I try to submit a requisition
     And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
-    And I should get updated requisition with proper maximum stock quantity
+    And I should get a updated requisition with:
+      | maximumStockQuantity |
+      | 33                   |
     And I logout
 
     When I have logged in as smanager1
     When I try to authorize a requisition
     And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get updated requisition with proper maximum stock quantity
+    And I should get a updated requisition with:
+      | maximumStockQuantity |
+      | 33                   |
     And I logout
 
     When I have logged in as psupervisor
-    When I try update fields in requisition:
+    And I try update fields in requisition:
       | approvedQuantity |
       | 430              |
-    And I try to get requisition with id
-    And I should get updated requisition with proper maximum stock quantity
+    Then I try to get requisition with id
+    And I should get a updated requisition with:
+      | maximumStockQuantity |
+      | 33                   |
 
     When I try to approve a requisition
     And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
-    And I should get updated requisition with proper maximum stock quantity
+    And I should get a updated requisition with:
+      | maximumStockQuantity |
+      | 33                   |
     And I logout
 
     When I have logged in as wclerk1
@@ -601,7 +611,9 @@ Feature: Requisition Tests
     When I have logged in as srmanager1
     And I try to get requisition with id
     Then I should get a requisition with "RELEASED" status
-    And I should get updated requisition with proper maximum stock quantity
+    And I should get a updated requisition with:
+      | maximumStockQuantity |
+      | 33                   |
     And I logout
 
 
@@ -671,7 +683,7 @@ Feature: Requisition Tests
   Scenario Outline: Average consumption should be calculated properly (Number of periods to average: <periods>)
     Given I have logged in as administrator
     And I try get a requisition templates
-    And I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
+    Then I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility type ac1d268b-ce10-455f-bf87-9c667da8f060
     And I try to update a requisition template:
       | numberOfPeriodsToAverage |
       | <periods>                |
@@ -881,7 +893,7 @@ Feature: Requisition Tests
   Scenario: Total should be calculated properly
     Given I have logged in as administrator
     And I try get a requisition templates
-    And I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3
+    Then I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility type ac1d268b-ce10-455f-bf87-9c667da8f060
     And I try to update column total:
       | isDisplayed |
       | true        |
