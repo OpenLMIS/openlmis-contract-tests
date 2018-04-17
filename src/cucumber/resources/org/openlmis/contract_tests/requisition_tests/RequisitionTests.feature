@@ -1087,8 +1087,11 @@ Feature: Requisition Tests
     Then I should get requisition response with status 200
     When I try to get requisition with id
     Then I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
-      | 10               | 5                     | 5                      | 2                 | true    |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand | adjustedConsumption |
+      | 10               | 5                     | 5                      | 2                 | true    | null        | null                |
+    Then I should get updated requisition with product id 23819693-0670-4c4b-b400-28e009b86b51:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand | adjustedConsumption |
+      | 10               | 5                     | 5                      | 2                 | false   | 10          | 6                   |
 
     When I try to submit a requisition
     And I try to get requisition with id
