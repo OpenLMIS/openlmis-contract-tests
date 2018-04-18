@@ -517,8 +517,8 @@ Feature: Requisition Tests
     And I should get a requisition without supervisoryNode
 
     When I try update fields in requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15 |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
@@ -529,19 +529,19 @@ Feature: Requisition Tests
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
-    When I have logged in as smanager1
+    Given I have logged in as smanager1
     When I try to authorize a requisition
     And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
-    When I have logged in as psupervisor
+    Given I have logged in as psupervisor
     When I try update fields in requisition:
       | supervisoryNode                      |
       | 9f470265-0770-4dd1-bd5a-cf8fe3734d79 |
     And I try to get requisition with id
-    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    Then I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
 
@@ -565,8 +565,8 @@ Feature: Requisition Tests
     And I should get a requisition without supervisoryNode
 
     When I try to add products to requisition:
-      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 9                     | 2                | 0                 | 5                 | test                         | 11                    | 2017-08-15 |
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 9                     | 2                | 0                 | 5                 | test                         | 11                    |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
@@ -577,19 +577,19 @@ Feature: Requisition Tests
     Then I should get a requisition with "SUBMITTED" status
     And I logout
 
-    When I have logged in as smanager1
+    Given I have logged in as smanager1
     When I try to authorize a requisition
     And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
-    When I have logged in as psupervisor
+    Given I have logged in as psupervisor
     When I try update fields in requisition:
       | supervisoryNode                      |
       | 9f470265-0770-4dd1-bd5a-cf8fe3734d79 |
     And I try to get requisition with id
-    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    Then I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
 
