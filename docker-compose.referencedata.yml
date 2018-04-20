@@ -40,6 +40,7 @@ services:
       - 'cucumber'
       - '-Ptags=@UserTests,@ApiKeyTests,@IdealStockAmountTests,@FacilityTypeTests,@ProgramTests,@SupervisoryNodeTests'
       - '--stacktrace'
+      - '--no-daemon'
 
 volumes:
   gradlecache:
