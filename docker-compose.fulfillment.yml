@@ -61,6 +61,8 @@ services:
         ,${BASE_URL}/stockmanagement'
       - 'cucumber'
       - '-Ptags=@FulfillmentTests'
+      - '--stacktrace'
+      - '--no-daemon'
 
 volumes:
   gradlecache:

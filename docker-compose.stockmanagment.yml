@@ -40,6 +40,8 @@ services:
       @StockCardsTests,
       @StockReasonsTests,
       @PhysicalInventoriesTests'
+      - '--stacktrace'
+      - '--no-daemon'
 
 volumes:
   gradlecache:
