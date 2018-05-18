@@ -8,7 +8,7 @@ pipeline {
         PATH = "/usr/local/bin/:$PATH"
     }
     parameters {
-        string(name: 'serviceName', description: 'Name of the service. Used to determine which contract tests to run.')
+        string(name: 'serviceName', defaultValue: 'none', description: 'Name of the service. Used to determine which contract tests to run.')
         text(name: 'customEnv', defaultValue: '', description: 'A list of environment variables that will be appended to the .env file. This parameter can be used to provide image versions.')
     }
     stages {
