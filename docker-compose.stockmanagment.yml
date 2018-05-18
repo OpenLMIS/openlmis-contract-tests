@@ -5,8 +5,7 @@ services:
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Dlogging.config=/logback.xml'
-      spring_profiles_active: demo-data,refresh-db
+      JAVA_OPTS: '-Dlogging.config=/logback.xml -Dflyway.locations=classpath:db/migration,filesystem:/demo-data'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
