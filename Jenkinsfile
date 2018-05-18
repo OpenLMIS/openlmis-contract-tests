@@ -14,9 +14,6 @@ pipeline {
     stages {
         stage('Preparation') {
             steps {
-                script {
-                    currentBuild.displayName += " - " + params.serviceName
-                }
                 checkout scm
 
                 dir('openlmis-config') {
@@ -29,6 +26,11 @@ pipeline {
 
                 sh "echo \"${params.customEnv}\" >> .env"
             }
+            post {
+                failure {
+                    slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} FAILED (<${env.BUILD_URL}|Open>)"
+                }
+            }
         }
         stage('Contract tests') {
             when {
@@ -38,6 +40,9 @@ pipeline {
                 }
             }
             steps {
+                script {
+                    currentBuild.displayName += " - " + params.serviceName
+                }
                 sh '''
                     sudo rm -rf build
                     # fixed problem with empty test_report.xml on slave (OLMIS-4386)
@@ -50,6 +55,9 @@ pipeline {
                 always {
                     junit healthScaleFactor: 1.0, testResults: 'build/cucumber/junit/**.xml'
                 }
+                failure {
+                    slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} FAILED (<${env.BUILD_URL}|Open>)"
+                }
             }
         }
     }
@@ -59,9 +67,6 @@ pipeline {
                 rm -Rf ./openlmis-config
                 rm -f ./settings.env
             '''
-        }
-        failure {
-            slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} FAILED (<${env.BUILD_URL}|Open>)"
         }
     }
 }
