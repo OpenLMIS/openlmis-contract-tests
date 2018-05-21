@@ -1246,8 +1246,8 @@ Feature: Requisition Tests
     When I try get a requisition templates
     Then I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility type ac1d268b-ce10-455f-bf87-9c667da8f060
     When I try to update column skipped:
-      | isDisplayed |
-      | false       |
+      | isDisplayed | source               |
+      | false       | PREVIOUS_REQUISITION |
     Then I should get response that template has been updated
 
     When I try to initiate a requisition with:
