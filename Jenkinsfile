@@ -14,6 +14,11 @@ pipeline {
     stages {
         stage('Preparation') {
             steps {
+                script {
+                    if (params.serviceName) {
+                        currentBuild.displayName += " - " + params.serviceName
+                    }
+                }
                 checkout scm
 
                 dir('openlmis-config') {
@@ -40,9 +45,6 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    currentBuild.displayName += " - " + params.serviceName
-                }
                 sh '''
                     sudo rm -rf build
                     # fixed problem with empty test_report.xml on slave (OLMIS-4386)
