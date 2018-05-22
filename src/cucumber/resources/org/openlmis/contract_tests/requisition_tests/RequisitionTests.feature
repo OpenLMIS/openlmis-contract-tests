@@ -1265,3 +1265,73 @@ Feature: Requisition Tests
       | skipped |
       | true    |
     Then I should get requisition response with status 400
+
+  Scenario: It should be possible to go through 2-way approval process
+    Given I have logged in as srmanager4
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | 7880be4f-6582-472a-9ea5-a6baed71e6e5 | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | 7880be4f-6582-472a-9ea5-a6baed71e6e5 | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
+      | 2                     | 3                | 1                 | 2                 | test                         | 5                     |
+
+    When I try to submit a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager4
+    And I try to authorize a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "AUTHORIZED" status
+    And I logout
+
+    When I have logged in as dsrmanager
+    And I try update fields in requisition:
+      | approvedQuantity |
+      | 4                |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | approvedQuantity |
+      | 4                |
+
+    When I try to approve a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "IN_APPROVAL" status
+    And I logout
+
+    When I have logged in as psupervisor
+    And I try update fields in requisition:
+      | approvedQuantity |
+      | 8                |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | approvedQuantity |
+      | 8                |
+
+    When I try to approve a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "APPROVED" status
+    And I logout
+
+    When I have logged in as wclerk1
+    And I try to convert requisition to order
+    Then I logout
+
+    When I have logged in as srmanager4
+    And I try to get requisition with id
+    Then I should get a requisition with "RELEASED" status
+    And I logout
