@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         PATH = "/usr/local/bin/:$PATH"
-        COMPOSE_PROJECT_NAME = "${env.JOB_BASE_NAME}-${BRANCH_NAME}"
+        COMPOSE_PROJECT_NAME = "contract-tests-${BRANCH_NAME}"
     }
     parameters {
         string(name: 'serviceName', defaultValue: '', description: 'Name of the service. Used to determine which contract tests to run.')
