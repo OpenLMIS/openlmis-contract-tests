@@ -63,7 +63,7 @@ public class UserStepDefs {
           .when()
           .body(createBodyForUser(map))
           .contentType(ContentType.JSON)
-          .put(BASE_URL_OF_AUTH_SERVICE + "users/auth");
+          .post(BASE_URL_OF_AUTH_SERVICE + "users/auth");
     }
   }
 
