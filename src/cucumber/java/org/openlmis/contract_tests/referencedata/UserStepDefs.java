@@ -45,6 +45,9 @@ public class UserStepDefs {
   private static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
       baseUrlOfService("referencedata");
 
+  private static final String BASE_URL_OF_AUTH_SERVICE =
+      baseUrlOfService("auth");
+
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
   static {
@@ -60,7 +63,7 @@ public class UserStepDefs {
           .when()
           .body(createBodyForUser(map))
           .contentType(ContentType.JSON)
-          .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "users");
+          .put(BASE_URL_OF_AUTH_SERVICE + "users/auth");
     }
   }
 
@@ -129,6 +132,7 @@ public class UserStepDefs {
     json.put("verified", args.get("verified"));
     json.put("active", args.get("active"));
     json.put("loginRestricted", args.get("loginRestricted"));
+    json.put("enabled", "true");
     return json;
   }
 
