@@ -44,6 +44,10 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  redis:
+    image: redis:3.2.12
+    depends_on: [log]
+
   contract_tests:
     mem_limit: 1024m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
@@ -55,6 +59,7 @@ services:
       - 'gradlecache:/gradle'
     links:
     - db
+    - redis
     - log
     - nginx
     - consul
