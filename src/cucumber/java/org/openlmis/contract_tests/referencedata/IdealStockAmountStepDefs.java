@@ -29,13 +29,13 @@ import static org.junit.Assert.assertTrue;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import io.cucumber.datatable.DataTable;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.response.Response;
@@ -142,7 +142,7 @@ public class IdealStockAmountStepDefs {
 
   @When("^I try to get ISA for$")
   public void getIsaFor(DataTable requestTable) {
-    Map<String, String> request = requestTable.asMaps(String.class, String.class).get(0);
+    Map<Object, Object> request = requestTable.asMaps(String.class, String.class).get(0);
 
     isaSearchResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -163,7 +163,7 @@ public class IdealStockAmountStepDefs {
 
     assertNotNull(response);
 
-    Map<String, String> expected = responseTable.asMaps(String.class, String.class).get(0);
+    Map<Object, Object> expected = responseTable.asMaps(String.class, String.class).get(0);
 
     JSONParser parser = new JSONParser();
     JSONObject object = (JSONObject) parser.parse(response);
@@ -180,7 +180,7 @@ public class IdealStockAmountStepDefs {
     assertEquals(expected.get(FACILITY_ID), facilityId);
     assertEquals(expected.get(COMMODITY_TYPE_ID), commodityTypeId);
     assertEquals(expected.get(PROCESSING_PERIOD_ID), processingPeriodId);
-    assertEquals(Long.valueOf(expected.get(AMOUNT)), amount);
+    assertEquals(Long.valueOf(expected.get(AMOUNT).toString()), amount);
   }
 
   @When("^I try to get all ISA$")
@@ -192,12 +192,12 @@ public class IdealStockAmountStepDefs {
   }
 
   @Then("^I should get a page that have at least (\\d+) elements$")
-  public void getPageWithTotalElements(Long expectedTotal) throws ParseException {
+  public void getPageWithTotalElements(Integer expectedTotal) throws ParseException {
     JSONParser parser = new JSONParser();
     JSONObject object = (JSONObject) parser.parse(isaGetAllResponse.asString());
 
     Long totalElements = (Long) object.get("totalElements");
-    assertThat(totalElements, is(greaterThanOrEqualTo(expectedTotal)));
+    assertThat(totalElements, is(greaterThanOrEqualTo(expectedTotal.longValue())));
   }
 
 

@@ -30,11 +30,11 @@ import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN_PARAM_NAME;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import cucumber.api.DataTable;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.cucumber.datatable.DataTable;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -100,7 +100,7 @@ public class RequisitionStepDefs {
 
   @When("^I try to initiate a requisition with:$")
   public void tryToInitiateARequisition(DataTable argsList) {
-    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    List<Map<String, String>> data = argsList.asMaps();
     for (Map map : data) {
       requisitionResponse = given()
           .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -131,7 +131,7 @@ public class RequisitionStepDefs {
 
   @Then("^I should get a requisition with:$")
   public void shouldGetRequisitionWith(DataTable argsList) {
-    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    List<Map<String, String>> data = argsList.asMaps();
     for (Map map : data) {
       requisitionResponse
           .then()
@@ -146,7 +146,7 @@ public class RequisitionStepDefs {
   public void tryUpdateFieldsInRequisition(DataTable argsList) throws Throwable {
     updateRequisition();
 
-    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    List<Map<String, String>> data = argsList.asMaps();
 
     data.forEach(map -> map.entrySet().forEach(entry -> {
           if (Arrays.asList("datePhysicalStockCountCompleted","supervisoryNode")
@@ -171,7 +171,7 @@ public class RequisitionStepDefs {
   public void tryUpdateFieldInRequisition(String product, DataTable argsList) throws Throwable {
     updateRequisition();
 
-    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    List<Map<String, String>> data = argsList.asMaps();
 
     data.forEach(map -> map.forEach((key, value) ->
         updateFieldInRequisitionLineItem(requisition, key, value, product)
@@ -189,7 +189,7 @@ public class RequisitionStepDefs {
   public void tryAddProductsToRequisition(DataTable argsList) throws Throwable {
     updateRequisition();
 
-    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    List<Map<String, String>> data = argsList.asMaps();
 
     addProducts(requisition);
 
@@ -214,7 +214,7 @@ public class RequisitionStepDefs {
 
   @Then("^I should get a updated requisition with:$")
   public void shouldGetUpdatedRequisition(DataTable argsList) throws ParseException {
-    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    List<Map<String, String>> data = argsList.asMaps();
 
     JSONParser parser = new JSONParser();
     JSONObject root = (JSONObject) parser.parse(requisitionResponse.asString());
@@ -231,7 +231,7 @@ public class RequisitionStepDefs {
 
   @Then("^I should get updated requisition with product id (.+):$")
   public void shouldGetUpdatedRequisition(String product, DataTable argsList) throws ParseException {
-    Map<String, String> fieldMap = argsList.asMaps(String.class, String.class).get(0);
+    Map<String, String> fieldMap = argsList.asMaps().get(0);
 
     JSONParser parser = new JSONParser();
     JSONObject root = (JSONObject) parser.parse(requisitionResponse.asString());
@@ -351,7 +351,7 @@ public class RequisitionStepDefs {
 
   @When("^I try to get period with id:$")
   public void tryGetPeriod(DataTable argsList) throws ParseException {
-    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    List<Map<String, String>> data = argsList.asMaps();
     for (Map map : data) {
       periodResponse = given()
           .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -508,7 +508,7 @@ public class RequisitionStepDefs {
     String id = template.get("id").toString();
 
     requisitionTemplateUpdateData
-        .asMaps(String.class, Object.class)
+        .asMaps()
         .forEach(map -> map.forEach(template::replace));
 
     requisitionTemplateResponse = given()
@@ -532,7 +532,7 @@ public class RequisitionStepDefs {
     JSONObject column = (JSONObject) columnMaps.get(name);
 
     data
-        .asMaps(String.class, Object.class)
+        .asMaps()
         .forEach(map -> map.forEach(column::replace));
 
     requisitionTemplateResponse = given()
@@ -552,9 +552,9 @@ public class RequisitionStepDefs {
 
     if (null != requisitionTemplateUpdateData) {
       requisitionTemplateUpdateData
-          .asMaps(String.class, String.class)
+          .asMaps()
           .forEach(map -> map.forEach(
-              (key, value) -> validatableResponse.body(key, is(hasToString(value)))
+              (key, value) -> validatableResponse.body(key.toString(), is(hasToString(value.toString())))
           ));
     }
 
@@ -564,9 +564,9 @@ public class RequisitionStepDefs {
 
         entry
             .getValue()
-            .asMaps(String.class, String.class)
+            .asMaps()
             .forEach(map -> map.forEach(
-                (key, value) -> validatableResponse.body(prefix + key, is(hasToString(value)))
+                (key, value) -> validatableResponse.body(prefix + key, is(hasToString(value.toString())))
             ));
       }
     }
@@ -580,7 +580,7 @@ public class RequisitionStepDefs {
         .get(BASE_URL_OF_REQUISITION_SERVICE + REQUISITIONS_FOR_CONVERT);
   }
 
-  @When("^I try to find requisitions for convert with request parameters")
+  @When("^I try to find requisitions for convert with request parameters$")
   public void tryToGetRequisitionsForConvert(DataTable argsList) {
     Map<String, String> data = argsList.asMap(String.class, String.class);
 
@@ -647,7 +647,7 @@ public class RequisitionStepDefs {
   }
 
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
-                                                String keyToUpdate, Object newValue) {
+                                                Object keyToUpdate, Object newValue) {
     JSONArray requisitionLineItems = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
 
     for (Object requisitionLine : requisitionLineItems) {
@@ -657,7 +657,7 @@ public class RequisitionStepDefs {
   }
 
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
-      String keyToUpdate, Object newValue, String productId) {
+      Object keyToUpdate, Object newValue, String productId) {
     JSONArray requisitionLineItems = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
 
     for (Object requisitionLine : requisitionLineItems) {

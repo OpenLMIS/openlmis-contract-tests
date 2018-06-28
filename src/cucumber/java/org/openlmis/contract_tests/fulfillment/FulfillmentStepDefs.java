@@ -25,13 +25,14 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import io.cucumber.datatable.DataTable;
+import java.util.function.BiConsumer;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
@@ -85,13 +86,13 @@ public class FulfillmentStepDefs {
 
   @Then("^I have got stock card id for$")
   public void gotStockCardId(DataTable table) {
-    Map<String, String> data = table.asMaps(String.class, String.class).get(0);
+    Map<Object, Object> data = table.asMaps(String.class, String.class).get(0);
 
     RequestSpecification request = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN);
 
-    data.forEach(request::queryParam);
+    data.forEach((key, value) -> request.queryParam(key.toString(), value));
 
     stockCardResponse = request
         .when()
@@ -169,13 +170,13 @@ public class FulfillmentStepDefs {
 
   @When("^I try to get order by:$")
   public void tryToGetOrderBy(DataTable table) {
-    Map<String, String> data = table.asMaps(String.class, String.class).get(0);
+    Map<Object, Object> data = table.asMaps(String.class, String.class).get(0);
 
     RequestSpecification request = given()
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN);
 
-    data.forEach(request::queryParam);
+    data.forEach((key, value) -> request.queryParam(key.toString(), value));
 
     orderResponse = request
         .when()
