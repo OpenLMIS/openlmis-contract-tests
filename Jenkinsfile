@@ -53,7 +53,7 @@ pipeline {
                         mkdir -p build/cucumber/junit
                         touch build/cucumber/junit/test_report.xml
                     '''
-                    sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml -v"
+                    sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml"
                 }
             }
             post {

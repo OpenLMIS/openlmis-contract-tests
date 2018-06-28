@@ -22,9 +22,7 @@ cp ../logs/requisition/messages build/syslog
 echo "========== Logging nginx settings =========="
 /usr/local/bin/docker-compose exec nginx cat /etc/nginx/conf.d/default.conf
 
-/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down $2
-#don't remove the $2 in the line above
-#CI will append -v to it, so all dangling volumes are removed after the job runs
+/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
 
 exit ${contract_test_result}
 #this line above makes sure when jenkins runs this script
