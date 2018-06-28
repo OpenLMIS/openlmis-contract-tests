@@ -6,6 +6,9 @@ FILENAME=${1}
 source ./settings.env
 export BASE_URL
 
+#make sure that old containers have been stopped
+/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
+
 #pull all images
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} pull
 
