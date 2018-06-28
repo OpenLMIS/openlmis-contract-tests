@@ -46,13 +46,15 @@ pipeline {
                 }
             }
             steps {
-                sh '''
-                    sudo rm -rf build
-                    # fixed problem with empty test_report.xml on slave (OLMIS-4386)
-                    mkdir -p build/cucumber/junit
-                    touch build/cucumber/junit/test_report.xml
-                '''
-                sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml -v"
+                timeout(time: 30, unit: 'MINUTES') {
+                    sh '''
+                        sudo rm -rf build
+                        # fixed problem with empty test_report.xml on slave (OLMIS-4386)
+                        mkdir -p build/cucumber/junit
+                        touch build/cucumber/junit/test_report.xml
+                    '''
+                    sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml -v"
+                }
             }
             post {
                 always {
