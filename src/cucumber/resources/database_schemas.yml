@@ -86,3 +86,15 @@ schemata:
         - proofs_of_delivery
         - proof_of_delivery_line_items
         - templates
+  - name: notification
+    table:
+      excluded:
+        - schema_version
+        - jv_global_id
+        - jv_commit
+        - jv_commit_property
+        - jv_snapshot
+      ordered:
+        - user_contact_details
+        - email_verification_tokens
+        - notifications
