@@ -37,6 +37,10 @@ services:
     image: redis:3.2.12
     depends_on: [log]
 
+  ftp:
+    image: hauptmedia/proftpd
+    env_file: settings.env
+
   contract_tests:
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     env_file: settings.env
@@ -45,6 +49,7 @@ services:
       - 'gradlecache:/gradle'
     links:
     - db
+    - ftp
     - redis
     - log
     - nginx

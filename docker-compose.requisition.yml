@@ -48,6 +48,10 @@ services:
     image: redis:3.2.12
     depends_on: [log]
 
+  ftp:
+    image: hauptmedia/proftpd
+    env_file: settings.env
+
   contract_tests:
     mem_limit: 1024m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
@@ -59,6 +63,7 @@ services:
       - 'gradlecache:/gradle'
     links:
     - db
+    - ftp
     - redis
     - log
     - nginx
