@@ -18,6 +18,7 @@ package org.openlmis.contract_tests.requisition;
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -491,7 +492,7 @@ public class RequisitionStepDefs {
         }
       }
 
-      if (!requisitionTemplate.isEmpty()) {
+      if (isNotBlank(requisitionTemplate)) {
         break;
       }
     }

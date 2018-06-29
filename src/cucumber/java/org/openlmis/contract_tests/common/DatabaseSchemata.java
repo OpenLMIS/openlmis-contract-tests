@@ -15,13 +15,16 @@
 
 package org.openlmis.contract_tests.common;
 
-import static java.sql.DriverManager.getConnection;
-
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * This class contains information about database schemata.
@@ -29,37 +32,56 @@ import java.util.List;
  * @see DatabaseSchema
  */
 public class DatabaseSchemata {
+  private static final String DATABASE_URL = System.getenv("DATABASE_URL");
+  private static final String USER_NAME = System.getenv("POSTGRES_USER");
+  private static final String PASSWORD = System.getenv("POSTGRES_PASSWORD");
+
+  @Getter
+  @Setter
   private List<DatabaseSchema> schemata = new ArrayList<>();
 
-  public List<DatabaseSchema> getSchemata() {
-    return schemata;
-  }
-
-  public void setSchemata(List<DatabaseSchema> schemata) {
-    this.schemata = schemata;
-  }
-
-  void init(String url, String username, String password) throws SQLException, IOException {
-    try (Connection connection = getConnection(url, username, password)) {
+  void init() throws SQLException, IOException {
+    try (Connection connection = getConnection()) {
       for (DatabaseSchema schema : schemata) {
         schema.init(connection);
       }
     }
   }
 
-  void removeData(String url, String username, String password) throws SQLException {
-    try (Connection connection = getConnection(url, username, password)) {
-      for (DatabaseSchema schema : schemata) {
-        schema.removeData(connection);
-      }
+  void removeData() throws SQLException {
+    try (Connection connection = getConnection()) {
+      doInTransaction(connection, (statement, schema) -> schema.removeData(statement));
     }
   }
 
-  void loadData(String url, String username, String password) throws SQLException, IOException {
-    try (Connection connection = getConnection(url, username, password)) {
-      for (DatabaseSchema schema : schemata) {
-        schema.loadData(connection);
+  void loadData() throws SQLException {
+    try (Connection connection = getConnection()) {
+      doInTransaction(connection, (statement, schema) -> schema.loadData(statement));
+    }
+  }
+
+  private Connection getConnection() throws SQLException {
+    return DriverManager.getConnection(DATABASE_URL, USER_NAME, PASSWORD);
+  }
+
+  private void doInTransaction(Connection connection, BiConsumer<Statement, DatabaseSchema> action)
+      throws SQLException {
+    boolean oldAutoCommit = connection.getAutoCommit();
+    connection.setAutoCommit(false);
+
+    try {
+      try (Statement statement = connection.createStatement()) {
+        for (DatabaseSchema schema : schemata) {
+          action.accept(statement, schema);
+        }
+
+        statement.executeBatch();
+        connection.commit();
       }
+    } catch (Exception ignored) {
+      connection.rollback();
+    } finally {
+      connection.setAutoCommit(oldAutoCommit);
     }
   }
 

@@ -7,6 +7,7 @@ dependencies {
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     compile 'org.json:json:20170516'
     compile 'org.yaml:snakeyaml:1.18'
+    compile 'org.projectlombok:lombok:1.18.0'
 
     testCompile 'io.rest-assured:rest-assured:3.0.0'
     testCompile 'io.cucumber:cucumber-java:3.0.2'

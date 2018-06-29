@@ -31,10 +31,6 @@ import java.sql.SQLException;
  * @see DatabaseSchemaTable
  */
 public class DatabaseManager {
-  private static final String DATABASE_URL = System.getenv("DATABASE_URL");
-  private static final String USER_NAME = System.getenv("POSTGRES_USER");
-  private static final String PASSWORD = System.getenv("POSTGRES_PASSWORD");
-
   private final Object lock = new Object();
   private boolean initiated;
 
@@ -54,7 +50,7 @@ public class DatabaseManager {
           try (InputStream stream = classLoader.getResourceAsStream("database_schemas.yml")) {
             schemata = yaml.loadAs(stream, DatabaseSchemata.class);
 
-            schemata.init(DATABASE_URL, USER_NAME, PASSWORD);
+            schemata.init();
             initiated = true;
           } catch (SQLException | IOException exp) {
             throw new InitialDataException(exp);
@@ -70,7 +66,7 @@ public class DatabaseManager {
    */
   public void removeData() {
     try {
-      schemata.removeData(DATABASE_URL, USER_NAME, PASSWORD);
+      schemata.removeData();
     } catch (SQLException exp) {
       throw new RemoveDataException(exp);
     }
@@ -81,8 +77,8 @@ public class DatabaseManager {
    */
   public void loadData() {
     try {
-      schemata.loadData(DATABASE_URL, USER_NAME, PASSWORD);
-    } catch (SQLException | IOException exp) {
+      schemata.loadData();
+    } catch (SQLException exp) {
       throw new LoadDataException(exp);
     }
   }

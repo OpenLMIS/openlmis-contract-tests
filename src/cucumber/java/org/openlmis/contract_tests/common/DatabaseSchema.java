@@ -26,34 +26,22 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * This class contains information about a single database schema.
  *
  * @see DatabaseSchemaTable
  */
+@Getter
+@Setter
 public class DatabaseSchema {
   private String name;
   private DatabaseSchemaTable table;
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public DatabaseSchemaTable getTable() {
-    return table;
-  }
-
-  public void setTable(DatabaseSchemaTable table) {
-    this.table = table;
-  }
-
   private Path getFilePath() {
-    return Paths.get("/app", "dump", name + ".sql");
+    return Paths.get("/app", "build", "dump", name + ".sql");
   }
 
   void init(Connection connection) throws IOException, SQLException {
@@ -67,20 +55,26 @@ public class DatabaseSchema {
     }
   }
 
-  void loadData(Connection connection) throws IOException, SQLException {
-    try (Statement statement = connection.createStatement()) {
+  void loadData(Statement statement) {
+    try {
       try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath().toFile()))) {
         String line;
 
         while ((line = reader.readLine()) != null) {
-          statement.execute(line);
+          statement.addBatch(line);
         }
       }
+    } catch (Exception exp) {
+      throw new RuntimeException(exp);
     }
   }
 
-  void removeData(Connection connection) throws SQLException {
-    table.removeData(connection, name);
+  void removeData(Statement statement) {
+    try {
+      table.removeData(statement, name);
+    } catch (Exception exp) {
+      throw new RuntimeException(exp);
+    }
   }
 
   private void createFile() throws IOException {

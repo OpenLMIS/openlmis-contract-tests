@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * This class contains information about schema tables. It is possible to set which tables should
@@ -16,25 +18,16 @@ import java.util.List;
  * order is important and can be set in this class.
  */
 public class DatabaseSchemaTable {
+
+  @Getter
+  @Setter
   private List<String> excluded;
+
+  @Getter
+  @Setter
   private List<String> ordered;
+
   private List<String> all;
-
-  public List<String> getExcluded() {
-    return excluded;
-  }
-
-  public void setExcluded(List<String> excluded) {
-    this.excluded = excluded;
-  }
-
-  public List<String> getOrdered() {
-    return ordered;
-  }
-
-  public void setOrdered(List<String> ordered) {
-    this.ordered = ordered;
-  }
 
   void readAllTables(DatabaseMetaData metaData, String schema) throws SQLException {
     List<String> remaining = new ArrayList<>();
@@ -90,12 +83,10 @@ public class DatabaseSchemaTable {
     }
   }
 
-  void removeData(Connection connection, String schema) throws SQLException {
-    try (Statement statement = connection.createStatement()) {
-      for (String table : all) {
-        String sql = String.format("TRUNCATE %s.%s RESTART IDENTITY CASCADE;", schema, table);
-        statement.execute(sql);
-      }
+  void removeData(Statement statement, String schema) throws SQLException {
+    for (String table : all) {
+      String sql = String.format("TRUNCATE %s.%s RESTART IDENTITY CASCADE;", schema, table);
+      statement.addBatch(sql);
     }
   }
 
