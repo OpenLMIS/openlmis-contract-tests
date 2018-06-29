@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 import static org.openlmis.contract_tests.common.TestVariableReader.passwordOf;
 
+import java.util.UUID;
 import org.apache.commons.codec.binary.Base64;
 
 import cucumber.api.java.en.Given;
@@ -32,6 +33,7 @@ public class LoginStepDefs {
 
   public static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   public static String ACCESS_TOKEN;
+  public static UUID USER_REFERENCE_DATA_ID;
 
   @Given("^I have logged in as (.*)$")
   public void haveLoggedInAs(String userName) throws Throwable {
@@ -52,6 +54,8 @@ public class LoginStepDefs {
         .asString();
 
     ACCESS_TOKEN = from(tokenResponseString).get("access_token");
+    USER_REFERENCE_DATA_ID = from(tokenResponseString).getUUID("referenceDataUserId");
+
     assertThat(
         "Can't log as >" + userName + "< with password >" + passwordOf(userName) + "<",
         ACCESS_TOKEN,

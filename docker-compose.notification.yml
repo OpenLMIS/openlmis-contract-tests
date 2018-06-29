@@ -1,0 +1,47 @@
+version: "2"
+services:
+
+  notification:
+    image: openlmis/notification:${OL_NOTIFICATION_VERSION}
+    mem_limit: 512m
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  contract_tests:
+    mem_limit: 768m
+    image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
+    environment:
+      GRADLE_OPTS: '-Xmx256m'
+    env_file: settings.env
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+    - db
+    - log
+    - nginx
+    - consul
+    - auth
+    - referencedata
+    - notification
+
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=
+        ${BASE_URL}/auth
+        ,${BASE_URL}/notification
+        ,${BASE_URL}/referencedata'
+      - 'cucumber'
+      - '-Ptags=@VerificationTests'
+      - '--stacktrace'
+      - '--no-daemon'
+
+volumes:
+  gradlecache:
+    external: false
