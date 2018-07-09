@@ -45,9 +45,6 @@ public class UserStepDefs {
   private static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
       baseUrlOfService("referencedata");
 
-  private static final String BASE_URL_OF_AUTH_SERVICE =
-      baseUrlOfService("auth");
-
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
   static {
@@ -63,7 +60,7 @@ public class UserStepDefs {
           .when()
           .body(createBodyForUser(map))
           .contentType(ContentType.JSON)
-          .post(BASE_URL_OF_AUTH_SERVICE + "users/auth");
+          .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "users");
     }
   }
 
