@@ -93,9 +93,7 @@ public class UserStepDefs {
           .body("username", is(map.get("username")))
           .body("firstName", is(map.get("firstName")))
           .body("lastName", is(map.get("lastName")))
-          .body("email", is(map.get("email")))
           .body("timezone", is(map.get("timezone")))
-          .body("verified", is(Boolean.parseBoolean(String.valueOf(map.get("verified")))))
           .body("active", is(Boolean.parseBoolean(String.valueOf(map.get("active")))))
           .body("loginRestricted",
               is(Boolean.parseBoolean(String.valueOf(map.get("loginRestricted")))));
@@ -124,12 +122,9 @@ public class UserStepDefs {
     json.put("username", args.get("username"));
     json.put("firstName", args.get("firstName"));
     json.put("lastName", args.get("lastName"));
-    json.put("email", args.get("email"));
     json.put("timezone", args.get("timezone"));
-    json.put("verified", args.get("verified"));
     json.put("active", args.get("active"));
     json.put("loginRestricted", args.get("loginRestricted"));
-    json.put("enabled", "true");
     return json;
   }
 
