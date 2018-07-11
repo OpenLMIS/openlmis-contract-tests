@@ -1,3 +1,11 @@
+properties([
+  [
+    $class: 'ThrottleJobProperty',
+    categories: ['pipeline'],
+    throttleEnabled: true,
+    throttleOption: 'category'
+  ]
+])
 pipeline {
     agent any
     options {
