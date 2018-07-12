@@ -32,6 +32,10 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  redis:
+      image: redis:3.2.12
+      depends_on: [log]
+
   contract_tests:
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     env_file: settings.env
@@ -40,6 +44,7 @@ services:
       - 'gradlecache:/gradle'
     links:
     - db
+    - redis
     - log
     - nginx
     - consul
