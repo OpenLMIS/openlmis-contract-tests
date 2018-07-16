@@ -20,6 +20,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.openlmis.contract_tests.common.JsonFieldSetter;
 
 public class VerificationStepDefs {
 
@@ -92,7 +93,7 @@ public class VerificationStepDefs {
         .stream()
         .map(Map::entrySet)
         .flatMap(Collection::stream)
-        .forEach(entry -> setContactDetailsField(body, entry.getKey(), entry.getValue()));
+        .forEach(entry -> JsonFieldSetter.setField(body, entry.getKey(), entry.getValue()));
 
     contactDetailsResponse = given()
         .pathParam(ID_PARAM, USER_REFERENCE_DATA_ID)
@@ -101,21 +102,6 @@ public class VerificationStepDefs {
         .when()
         .body(body.toJSONString())
         .put(USER_CONTACT_DETAILS_URL);
-  }
-
-  private void setContactDetailsField(JSONObject json, String path, String value) {
-    int dotIndex = path.indexOf('.');
-    boolean nestedField = -1 != dotIndex;
-
-    if (nestedField) {
-      String field = path.substring(0, dotIndex);
-      String rest = path.substring(dotIndex + 1);
-      JSONObject subJson = (JSONObject) json.get(field);
-
-      setContactDetailsField(subJson, rest, value);
-    } else {
-      json.replace(path, value);
-    }
   }
 
   @Then("^I should get update response with old email address$")
