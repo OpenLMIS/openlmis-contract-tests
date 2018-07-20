@@ -46,7 +46,7 @@ import java.util.Map;
 
 public class FulfillmentStepDefs {
 
-  private static final Integer REMAINDER = 1;
+  private static final Integer REMAINDER = 826;
   private Response shipmentResponse;
   private Response orderResponse;
   private Response requisitionResponse;
@@ -145,7 +145,7 @@ public class FulfillmentStepDefs {
         .body(STOCK_ON_HAND, is(stockOnHand));
   }
 
-  @Then("^I should get a stock card with zero stock on hand$")
+  @Then("^I should get a stock card with proper stock on hand$")
   public void shouldGetStockCardWithStockOnHandSubstracted() {
     stockCardResponse
         .then()

@@ -69,8 +69,8 @@ Feature: Fulfillment Tests
       | 047638fa-92ce-4adf-9bbd-3bcb3216897a | f9f9bb7c-7636-40c1-a548-b45e918a512a | 55              |
       | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 06f86552-1aa9-47d6-8857-6b7ad824f805 | 18              |
       | 047638fa-92ce-4adf-9bbd-3bcb3216897a |                                      | 10              |
-      | a852f785-d82e-4afe-bc6a-04f3236caf90 |                                      | 2               |
-      | 18223845-4d19-4408-b7c2-971c26014058 |                                      | 53              |
+      | a852f785-d82e-4afe-bc6a-04f3236caf90 |                                      | 1               |
+      | 18223845-4d19-4408-b7c2-971c26014058 |                                      | 9               |
       | b75a88c7-70fa-4bab-9785-3dd980a5ffc3 |                                      | 4               |
     Then I should get response of shipment created
 
@@ -78,7 +78,7 @@ Feature: Fulfillment Tests
       | program                              | facility                             |
       | 418bdc1d-c303-4bd0-b2d3-d8901150a983 | c62dea9b-6974-4101-ba39-b09914165967 |
     And I try to get stock card with card id
-    Then I should get a stock card with zero stock on hand
+    Then I should get a stock card with proper stock on hand
 
     When I try to get proof of delivery by shipment id
     Then I should get response of proof of delivery found
@@ -92,8 +92,8 @@ Feature: Fulfillment Tests
       | 047638fa-92ce-4adf-9bbd-3bcb3216897a | f9f9bb7c-7636-40c1-a548-b45e918a512a | 55               |
       | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 06f86552-1aa9-47d6-8857-6b7ad824f805 | 18               |
       | 047638fa-92ce-4adf-9bbd-3bcb3216897a |                                      | 10               |
-      | a852f785-d82e-4afe-bc6a-04f3236caf90 |                                      | 2                |
-      | 18223845-4d19-4408-b7c2-971c26014058 |                                      | 53               |
+      | a852f785-d82e-4afe-bc6a-04f3236caf90 |                                      | 1                |
+      | 18223845-4d19-4408-b7c2-971c26014058 |                                      | 9                |
       | b75a88c7-70fa-4bab-9785-3dd980a5ffc3 |                                      | 4                |
     Then I should get response of proof of delivery confirmation success
     And I logout
