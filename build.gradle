@@ -80,6 +80,8 @@ private boolean isReachable(container) {
 
         if (response != "") {
             isRequestSuccessFul = true;
+            println "request successful, waiting 5 more seconds for right assignment regeneration"
+            sleep(5000)
             break
         } else {
             sleep(5000)

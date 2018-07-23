@@ -34,9 +34,9 @@ services:
       - 'clean'
       - 'waitFor'
       - '-Pcontainers=
-        ${BASE_URL}/auth
-        ,${BASE_URL}/notification
-        ,${BASE_URL}/referencedata'
+        ${BASE_URL}/referencedata
+        ,${BASE_URL}/auth
+        ,${BASE_URL}/notification'
       - 'cucumber'
       - '-Ptags=@UserTests,@ApiKeyTests,@IdealStockAmountTests,@FacilityTypeTests,@ProgramTests,@SupervisoryNodeTests,@FacilityTypeApprovedProductTests'
       - '--stacktrace'

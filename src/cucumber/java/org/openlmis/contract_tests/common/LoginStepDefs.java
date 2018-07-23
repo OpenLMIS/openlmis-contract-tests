@@ -24,10 +24,9 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 import static org.openlmis.contract_tests.common.TestVariableReader.passwordOf;
 
+import cucumber.api.java.en.Given;
 import java.util.UUID;
 import org.apache.commons.codec.binary.Base64;
-
-import cucumber.api.java.en.Given;
 
 public class LoginStepDefs {
 
@@ -78,4 +77,8 @@ public class LoginStepDefs {
     }
   }
 
+  @Given("^I pause 5 seconds for right assignment regeneration$")
+  public void pauseFiveSeconds() throws InterruptedException {
+    Thread.sleep(5000);
+  }
 }
