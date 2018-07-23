@@ -41,7 +41,7 @@ services:
     depends_on: [log]
 
   db:
-    mem_limit: 256m
+    mem_limit: 512m
     image: openlmis/postgres:${OL_POSTGRES_VERSION}
     env_file: settings.env
     depends_on: [consul]
