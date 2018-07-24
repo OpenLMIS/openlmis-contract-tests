@@ -6,7 +6,7 @@ services:
     mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -17,7 +17,7 @@ services:
     mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -27,7 +27,7 @@ services:
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -38,7 +38,7 @@ services:
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -56,7 +56,7 @@ services:
     mem_limit: 1024m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
-      GRADLE_OPTS: '-Xmx256m'
+      GRADLE_OPTS: '-Xmx1024m'
     env_file: settings.env
     volumes:
       - '.:/app'
