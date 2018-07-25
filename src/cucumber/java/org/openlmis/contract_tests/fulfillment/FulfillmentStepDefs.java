@@ -254,10 +254,11 @@ public class FulfillmentStepDefs {
     body.put("deliveredBy", "Someone");
     body.put("receivedDate", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-    List<Map<String, String>> data = table.asMaps(String.class, String.class);
+    List<Map<Object, Object>> data = table.asMaps(String.class, String.class);
+
     JSONArray lineItems = (JSONArray) body.get("lineItems");
 
-    for (Map<String, String> map : data) {
+    for (Map<Object, Object> map : data) {
       for (Object line : lineItems) {
         JSONObject obj = (JSONObject) line;
         JSONObject orderable = (JSONObject) obj.get("orderable");
