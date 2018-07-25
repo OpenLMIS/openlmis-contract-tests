@@ -21,9 +21,9 @@ contract_test_result=$?
 echo "========== Logging output from containers =========="
 /usr/local/bin/docker-compose logs --no-color
 echo "========== Logging output from syslog =========="
-/usr/local/bin/docker-compose exec log cat /var/log/messages
+/usr/local/bin/docker-compose exec -T log cat /var/log/messages
 echo "========== Logging nginx settings =========="
-/usr/local/bin/docker-compose exec nginx cat /etc/nginx/conf.d/default.conf
+/usr/local/bin/docker-compose exec -T nginx cat /etc/nginx/conf.d/default.conf
 
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
 
