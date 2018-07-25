@@ -84,12 +84,12 @@ private boolean isReachable(container, int waitTime) {
             println "request failed"
         }
 
-        sleep(waitTime * 1000)
-
         if (response != "") {
             isRequestSuccessFul = true
             break
         }
+
+        sleep(waitTime * 1000)
     }
 
     return isRequestSuccessFul
