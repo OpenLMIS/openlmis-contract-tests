@@ -49,6 +49,4 @@ services:
   log:
     mem_limit: 128m
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
-    volumes:
-      - '../logs/requisition:/var/log'
     depends_on: [consul]
