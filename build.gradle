@@ -54,20 +54,25 @@ task cucumber(dependsOn: testClasses) {
 task waitFor {
     if (project.hasProperty('containers')) {
         def containers = project.getProperty('containers').split(',')
+        def waitTime = 60
+
         println "waiting for " + containers + " to be started up and serving"
 
         for (container in containers) {
-            if (!isReachable(container)) {
+            if (!isReachable(container, waitTime)) {
                 throw new GradleException('timed out waiting for ' + container)
             }
         }
+
+        println "Waiting $waitTime more seconds for right assignment regeneration"
+        sleep(waitTime * 1000)
     }
 }
 
-private boolean isReachable(container) {
+private boolean isReachable(container, waitTime) {
     boolean isRequestSuccessFul = false
 
-    for (def i = 0; i < 50; i++) {
+    for (def i = 0; i < 10; i++) {
         println("trying $container ${i + 1} times")
 
         def response = ""
@@ -78,13 +83,11 @@ private boolean isReachable(container) {
             println "request failed"
         }
 
+        sleep(waitTime * 1000)
+
         if (response != "") {
             isRequestSuccessFul = true;
-            println "request successful, waiting 5 more seconds for right assignment regeneration"
-            sleep(5000)
             break
-        } else {
-            sleep(5000)
         }
     }
 
