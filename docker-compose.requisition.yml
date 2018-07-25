@@ -3,7 +3,7 @@ services:
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
-    mem_limit: 512m
+    mem_limit: 1024m
     env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
@@ -53,7 +53,7 @@ services:
     env_file: settings.env
 
   contract_tests:
-    mem_limit: 1024m
+    mem_limit: 2048m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
       GRADLE_OPTS: '-Xmx1024m'
