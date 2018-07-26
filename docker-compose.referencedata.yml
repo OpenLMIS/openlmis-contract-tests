@@ -3,15 +3,19 @@ services:
 
   notification:
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
+    mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   contract_tests:
+    mem_limit: 768m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
+    environment:
+      GRADLE_OPTS: '-Xmx256m'
     env_file: settings.env
     volumes:
       - '.:/app'
