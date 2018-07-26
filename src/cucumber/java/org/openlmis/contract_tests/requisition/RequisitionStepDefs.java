@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -88,7 +89,7 @@ public class RequisitionStepDefs {
 
   private String requisitionTemplate;
   private DataTable requisitionTemplateUpdateData;
-  private Map<String, DataTable> requisitionTemplateColumnsData = new HashMap<>();
+  private Map<String, Map<String, String>> requisitionTemplateColumnsData = new HashMap<>();
 
 
   static {
@@ -533,20 +534,20 @@ public class RequisitionStepDefs {
         .put(BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE + id);
   }
 
-  @When("^I try to update column (.+):$")
-  public void updateRequisitionTemplate(String name, DataTable data) throws ParseException {
-    requisitionTemplateColumnsData.put(name, data);
+  @When("^I try to update columns:$")
+  public void updateRequisitionTemplateColumns(DataTable data) throws ParseException {
+    Map<String, Map> columnsData = data.asMap(String.class, Map.class);
+    columnsData.forEach(requisitionTemplateColumnsData::put);
 
     JSONParser parser = new JSONParser();
     JSONObject template = (JSONObject) parser.parse(requisitionTemplate);
     String id = template.get("id").toString();
 
     JSONObject columnMaps = (JSONObject) template.get("columnsMap");
-    JSONObject column = (JSONObject) columnMaps.get(name);
-
-    data
-        .asMaps()
-        .forEach(map -> map.forEach(column::replace));
+    columnsData.forEach((key, value) -> {
+      JSONObject column = (JSONObject) columnMaps.get(key);
+      value.forEach(column::replace);
+    });
 
     requisitionTemplateResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
@@ -567,20 +568,18 @@ public class RequisitionStepDefs {
       requisitionTemplateUpdateData
           .asMaps()
           .forEach(map -> map.forEach(
-              (key, value) -> validatableResponse.body(key.toString(), is(hasToString(value.toString())))
+              (key, value) -> validatableResponse.body(key, is(hasToString(value)))
           ));
     }
 
     if (!requisitionTemplateColumnsData.isEmpty()) {
-      for (Map.Entry<String, DataTable> entry : requisitionTemplateColumnsData.entrySet()) {
+      for (Entry<String, Map<String, String>> entry : requisitionTemplateColumnsData.entrySet()) {
         String prefix = "columnsMap." + entry.getKey() + ".";
 
         entry
             .getValue()
-            .asMaps()
-            .forEach(map -> map.forEach(
-                (key, value) -> validatableResponse.body(prefix + key, is(hasToString(value.toString())))
-            ));
+            .forEach((key, value) ->
+                validatableResponse.body(prefix + key, is(hasToString(value))));
       }
     }
   }
