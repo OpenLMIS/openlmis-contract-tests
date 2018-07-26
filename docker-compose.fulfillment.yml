@@ -3,10 +3,9 @@ services:
 
   fulfillment:
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
-    mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -14,10 +13,9 @@ services:
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
-    mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
