@@ -169,11 +169,16 @@ Feature: Regular Requisition Tests
 
   Scenario: Calculated fields should be calculated properly and not change after status changes
     Given I have logged in as administrator
+
     When I try get a requisition templates
     Then I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility type ac1d268b-ce10-455f-bf87-9c667da8f060
     And I try to update column maximumStockQuantity:
       | isDisplayed |
       | true        |
+    And I should get response that template has been updated
+
+    When I try get a requisition templates
+    Then I should get response with requisition template for a program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility type ac1d268b-ce10-455f-bf87-9c667da8f060
     And I try to update column total:
       | isDisplayed |
       | true        |
