@@ -95,7 +95,7 @@ public class RequisitionStepDefs {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
 
-  @Before("@RequisitionTests")
+  @Before("@RegularRequisitionTests or @EmergencyRequisitionTests")
   public void setUp() {
 
       try {
