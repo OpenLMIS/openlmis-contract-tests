@@ -39,6 +39,9 @@ import io.cucumber.datatable.DataTable;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -49,6 +52,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
 import org.json.simple.JSONArray;
@@ -92,11 +97,18 @@ public class RequisitionStepDefs {
 
   @Before("@RequisitionTests")
   public void setUp() {
-    DATABASE_MANAGER.init();
 
-    //Because we have some initial data (bootstrap). We must remove it before loader.
-    DATABASE_MANAGER.removeData();
-    DATABASE_MANAGER.loadData();
+      try {
+        Process proc = Runtime.getRuntime().exec("/app/reset_db.sh");
+
+        StreamGobbler streamGobbler =
+            new StreamGobbler(proc.getInputStream(), System.out::println);
+        Executors.newSingleThreadExecutor().submit(streamGobbler);
+
+        proc.waitFor();
+      } catch (Exception ex) {
+        System.err.println("Exporting db schema failed with message: " + ex);
+      }
   }
 
   @When("^I try to initiate a requisition with:$")
@@ -581,7 +593,7 @@ public class RequisitionStepDefs {
         .get(BASE_URL_OF_REQUISITION_SERVICE + REQUISITIONS_FOR_CONVERT);
   }
 
-  @When("^I try to find requisitions for convert with request parameters$")
+  @When("^I try to find requisitions for convert with request parameters:$")
   public void tryToGetRequisitionsForConvert(DataTable argsList) {
     Map<String, String> data = argsList.asMap(String.class, String.class);
 
@@ -739,6 +751,22 @@ public class RequisitionStepDefs {
     }
     if (supervisoryNodeId != null) {
       requisition.replace("supervisoryNode", null, supervisoryNodeId);
+    }
+  }
+
+  private static class StreamGobbler implements Runnable {
+    private InputStream inputStream;
+    private Consumer<String> consumer;
+
+    StreamGobbler(InputStream inputStream, Consumer<String> consumer) {
+      this.inputStream = inputStream;
+      this.consumer = consumer;
+    }
+
+    @Override
+    public void run() {
+      new BufferedReader(new InputStreamReader(inputStream)).lines()
+          .forEach(consumer);
     }
   }
 }
