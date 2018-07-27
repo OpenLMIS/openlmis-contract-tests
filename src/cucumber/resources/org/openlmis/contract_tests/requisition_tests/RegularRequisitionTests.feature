@@ -2,6 +2,8 @@
 Feature: Regular Requisition Tests
 
 
+  # we have to prepare database to restore removed period
+  @PrepareDatabase
   Scenario: Search should return correct requisitions for convert
     Given I have logged in as divo1
 
@@ -58,6 +60,7 @@ Feature: Regular Requisition Tests
     And I logout
 
 
+  # we don't have to prepare database because search tests does not change database status
   Scenario: Storeroom Manager user should be able to delete initiated requisition
     Given I have logged in as srmanager1
 
@@ -81,7 +84,7 @@ Feature: Regular Requisition Tests
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
       | 7                     | 3                | 3                 | 4                 | test                         | 10                    |
 
-    When I try to delete initiated requisition
+    When I try to delete requisition
     Then I should get response of deleted requisition
 
     When I try to get requisition with id
@@ -89,6 +92,7 @@ Feature: Regular Requisition Tests
     And I logout
 
 
+  # we don't have to prepare database because the requisition from the previous test has been deleted
   Scenario: Warehouse Manager user should be able to convert requisition to order
     Given I have logged in as srmanager1
 
@@ -167,6 +171,7 @@ Feature: Regular Requisition Tests
     And I logout
 
 
+  # we don't have to prepare database because we use different period
   Scenario: Calculated fields should be calculated properly and not change after status changes
     Given I have logged in as administrator
 
@@ -181,13 +186,13 @@ Feature: Regular Requisition Tests
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -312,6 +317,9 @@ Feature: Regular Requisition Tests
     And I logout
 
 
+  # we have to prepare database because the related requisition template has been changed
+  # and in this test we have to create 5 requisitions (for each row in the example table)
+  @PrepareDatabase
   Scenario Outline: Average consumption should be calculated properly (Number of periods to average: <periods>)
     Given I have logged in as administrator
     And I try get a requisition templates
@@ -493,18 +501,19 @@ Feature: Regular Requisition Tests
       | 4       | 30        | 25        | 17        | 17        | 22        |
 
 
+  # we don't have to prepare database because we use different user
   Scenario: Storeroom Manager user should be able to skip initiated requisition
-    Given I have logged in as srmanager1
+    Given I have logged in as srmanager2
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | f419bcd8-ac7a-4b75-8c84-c065ef437938 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | f419bcd8-ac7a-4b75-8c84-c065ef437938 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try to skip initiated requisition
@@ -513,15 +522,21 @@ Feature: Regular Requisition Tests
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+      | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | c5012ddf-b145-4eee-9640-b2cbf4f2da85 | false     |
     Then I should get response with the initiated requisition's id
     When I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance |
       | 0                |
+
+    When I try to delete requisition
+    Then I should get response of deleted requisition
+
+    When I try to get requisition with id
+    Then I should get response of not found
     And I logout
 
-
+  # we don't have to prepare database because we use different user
   Scenario: A requisition should be automatically converted to an order after it goes through final approval
     Given I have logged in as vsrmanager1
 
@@ -564,6 +579,8 @@ Feature: Regular Requisition Tests
     And I logout
 
 
+  # we have to prepare database because the previous test created a lot of requisitions
+  @PrepareDatabase
   Scenario: Storeroom Manager user should be able to skip / unskip line items
     Given I have logged in as srmanager1
 
@@ -649,6 +666,8 @@ Feature: Regular Requisition Tests
       | 10               | 5                     | 5                      | 2                 | false   |
     And I logout
 
+
+  # we don't have to prepare database because we use different period
   Scenario: Storeroom Manager user should be not able to skip / unskip line items when column is disabled
     Given I have logged in as administrator
     When I try get a requisition templates
@@ -660,13 +679,13 @@ Feature: Regular Requisition Tests
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 61694e82-1be6-40a4-9aaa-bfbb720a0d7d | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 61694e82-1be6-40a4-9aaa-bfbb720a0d7d | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try to update fields for product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
@@ -674,6 +693,8 @@ Feature: Regular Requisition Tests
       | true    |
     Then I should get requisition response with status 400
 
+
+  # we don't have to prepare database because we use different user
   Scenario: It should be possible to go through 2-way approval process
     Given I have logged in as srmanager4
 

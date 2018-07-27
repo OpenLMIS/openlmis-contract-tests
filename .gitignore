@@ -15,3 +15,4 @@ node_modules/
 out/
 settings.env
 test-results/
+open_lmis.dump

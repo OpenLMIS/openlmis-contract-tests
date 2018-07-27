@@ -2,6 +2,7 @@
 Feature: Emergency Requisition Tests
 
 
+  # we don't have to prepare database because this is the first test
   Scenario: Storeroom Manager user should be able to delete initiated emergency requisition
     When I have logged in as administrator
     And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
@@ -29,7 +30,7 @@ Feature: Emergency Requisition Tests
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
       | 12                    | 20               | 8                 | 9                 | test                         | 32                    |
 
-    When I try to delete initiated requisition
+    When I try to delete requisition
     Then I should get response of deleted requisition
 
     When I try to get requisition with id
@@ -37,24 +38,7 @@ Feature: Emergency Requisition Tests
     And I logout
 
 
-  Scenario: Storeroom Manager user should get failure response if date outside of period when he creates emergency requisition
-    When I have logged in as administrator
-    And I try to get or create a period with future date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
-    Then I should get response with the period id
-
-    When I try to get periods by program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility 176c4276-1fb1-4507-8ad2-cdfba0f47445
-    And I try to delete current period
-    Then I should get response with status 204
-    And I logout
-
-    When I have logged in as srmanager1
-    And I try to initiate a requisition with:
-      | programId                            | facilityId                           | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | true      |
-    Then I should get response of incorrect period
-    And I logout
-
-
+  # we don't have to prepare database because the requisition from the previous test has been deleted
   Scenario: Program Supervisor user should be able to reject authorized emergency requisition
     When I have logged in as administrator
     And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
@@ -101,8 +85,17 @@ Feature: Emergency Requisition Tests
     And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
     And I logout
 
+    When I have logged in as srmanager1
+    And I try to delete requisition
+    Then I should get response of deleted requisition
 
-  Scenario: Program Supervisor user should be able to approve second emergency requisition in the same period
+    When I try to get requisition with id
+    Then I should get response of not found
+    And I logout
+
+
+  # we don't have to prepare database because the requisition from the previous test has been deleted
+  Scenario: Program Supervisor user should be able to approve several emergency requisitions in the same period
     When I have logged in as administrator
     And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
     Then I should get response with the period id
@@ -189,4 +182,23 @@ Feature: Emergency Requisition Tests
     When I try to approve a requisition
     And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
+    And I logout
+
+  # we have to prepare database because we need to remove ISA values
+  @PrepareDatabase
+  Scenario: Storeroom Manager user should get failure response if date outside of period when he creates emergency requisition
+    When I have logged in as administrator
+    And I try to get or create a period with future date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
+    Then I should get response with the period id
+
+    When I try to get periods by program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility 176c4276-1fb1-4507-8ad2-cdfba0f47445
+    And I try to delete current period
+    Then I should get response with status 204
+    And I logout
+
+    When I have logged in as srmanager1
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | true      |
+    Then I should get response of incorrect period
     And I logout

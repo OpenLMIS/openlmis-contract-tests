@@ -34,10 +34,12 @@ services:
     depends_on: [log]
 
   redis:
+    mem_limit: 512m
     image: redis:3.2.12
     depends_on: [log]
 
   ftp:
+    mem_limit: 512m
     image: hauptmedia/proftpd
     env_file: settings.env
 

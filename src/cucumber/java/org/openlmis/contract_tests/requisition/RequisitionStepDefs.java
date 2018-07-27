@@ -96,9 +96,8 @@ public class RequisitionStepDefs {
     enableLoggingOfRequestAndResponseIfValidationFails();
   }
 
-  @Before("@RegularRequisitionTests or @EmergencyRequisitionTests")
+  @Before("@PrepareDatabase")
   public void setUp() {
-
       try {
         Process proc = Runtime.getRuntime().exec("/app/reset_db.sh");
 
@@ -434,7 +433,7 @@ public class RequisitionStepDefs {
             is(INCORRECT_PERIOD_ERROR));
   }
 
-  @When("^I try to delete initiated requisition$")
+  @When("^I try to delete requisition$")
   public void tryDeleteRequisition() {
     requisitionResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)

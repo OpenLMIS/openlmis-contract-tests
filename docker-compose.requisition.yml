@@ -3,10 +3,10 @@ services:
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
-    mem_limit: 1024m
+    mem_limit: 2048m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx2048m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -23,37 +23,39 @@ services:
     depends_on: [log]
 
   fulfillment:
-    mem_limit: 512m
+    mem_limit: 768m
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx768m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   stockmanagement:
-    mem_limit: 512m
+    mem_limit: 768m
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx768m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   redis:
+    mem_limit: 512m
     image: redis:3.2.12
     depends_on: [log]
 
   ftp:
+    mem_limit: 512m
     image: hauptmedia/proftpd
     env_file: settings.env
 
   contract_tests:
-    mem_limit: 2048m
+    mem_limit: 1024m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
       GRADLE_OPTS: '-Xmx1024m'
