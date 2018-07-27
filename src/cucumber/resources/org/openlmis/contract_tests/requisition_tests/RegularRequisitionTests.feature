@@ -2,7 +2,6 @@
 Feature: Regular Requisition Tests
 
 
-  # we have to prepare database to restore removed period
   @PrepareDatabase
   Scenario: Search should return correct requisitions for convert
     Given I have logged in as divo1
@@ -60,7 +59,6 @@ Feature: Regular Requisition Tests
     And I logout
 
 
-  # we don't have to prepare database because search tests does not change database status
   Scenario: Storeroom Manager user should be able to delete initiated requisition
     Given I have logged in as srmanager1
 
@@ -92,7 +90,6 @@ Feature: Regular Requisition Tests
     And I logout
 
 
-  # we don't have to prepare database because the requisition from the previous test has been deleted
   Scenario: Warehouse Manager user should be able to convert requisition to order
     Given I have logged in as srmanager1
 
@@ -171,7 +168,6 @@ Feature: Regular Requisition Tests
     And I logout
 
 
-  # we don't have to prepare database because we use different period
   Scenario: Calculated fields should be calculated properly and not change after status changes
     Given I have logged in as administrator
 
@@ -317,9 +313,6 @@ Feature: Regular Requisition Tests
     And I logout
 
 
-  # we have to prepare database because the related requisition template has been changed
-  # and in this test we have to create 5 requisitions (for each row in the example table)
-  @PrepareDatabase
   Scenario Outline: Average consumption should be calculated properly (Number of periods to average: <periods>)
     Given I have logged in as administrator
     And I try get a requisition templates
@@ -331,15 +324,15 @@ Feature: Regular Requisition Tests
 
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_1> | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_1> | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -364,15 +357,15 @@ Feature: Regular Requisition Tests
 
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_2> | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 04ec3c83-a086-4792-b7a3-c46559b7f6cd | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_2> | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -397,15 +390,15 @@ Feature: Regular Requisition Tests
 
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 61694e82-1be6-40a4-9aaa-bfbb720a0d7d | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_3> | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 61694e82-1be6-40a4-9aaa-bfbb720a0d7d | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_3> | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -430,15 +423,15 @@ Feature: Regular Requisition Tests
 
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | c9287c65-67fa-4958-adb6-52069f2b1379 | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_4> | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | c9287c65-67fa-4958-adb6-52069f2b1379 | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_4> | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -463,15 +456,15 @@ Feature: Regular Requisition Tests
 
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 2d490229-02f8-4235-9be4-1443fd8f7b4f | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_5> | false     |
 
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
-      | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 2d490229-02f8-4235-9be4-1443fd8f7b4f | false     |
+      | programId                            | facilityId                           | periodId   | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | <period_5> | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -495,13 +488,12 @@ Feature: Regular Requisition Tests
     And I logout
 
     Examples:
-      | periods | average_1 | average_2 | average_3 | average_4 | average_5 |
-      | 2       | 30        | 25        | 10        | 8         | 33        |
-      | 3       | 30        | 25        | 17        | 12        | 22        |
-      | 4       | 30        | 25        | 17        | 17        | 22        |
+      | periods | period_1                             | period_2                             | period_3                             | period_4                             | period_5                             | average_1 | average_2 | average_3 | average_4 | average_5 |
+      | 2       | 61694e82-1be6-40a4-9aaa-bfbb720a0d7d | c9287c65-67fa-4958-adb6-52069f2b1379 | 2d490229-02f8-4235-9be4-1443fd8f7b4f | a91dfbdf-0d9b-4cb1-9d46-0a47b17d22d0 | f55d9dda-d440-40c0-a793-914e0fe1f579 | 21        | 25        | 10        | 8         | 33        |
+      | 3       | ecd6c3c8-f80c-4c4e-af9a-d0529b55424a | c08e1295-793f-4550-933b-571e117f15d9 | 2a9fddb6-5dd3-4dde-81f3-c19629257986 | 1f3c89b2-13e4-4a72-9ef2-228302cc5a25 | 96da0fc3-28fd-4a3f-87a8-b5cdb175c45a | 32        | 34        | 17        | 12        | 22        |
+      | 4       | 0e64442e-fbbe-4a25-9062-fb137040fa63 | af437fc4-ca09-4f02-9ab8-095032f1109b | 2ad974da-3037-4d34-b383-202176b2e13c | c0f0f055-8b50-4709-a02d-d6cc1850bd14 | 6be40568-80ff-47a0-9f14-db7c51fedce1 | 24        | 29        | 25        | 17        | 22        |
 
 
-  # we don't have to prepare database because we use different user
   Scenario: Storeroom Manager user should be able to skip initiated requisition
     Given I have logged in as srmanager2
 
@@ -536,7 +528,6 @@ Feature: Regular Requisition Tests
     Then I should get response of not found
     And I logout
 
-  # we don't have to prepare database because we use different user
   Scenario: A requisition should be automatically converted to an order after it goes through final approval
     Given I have logged in as vsrmanager1
 
@@ -579,72 +570,70 @@ Feature: Regular Requisition Tests
     And I logout
 
 
-  # we have to prepare database because the previous test created a lot of requisitions
-  @PrepareDatabase
   Scenario: Storeroom Manager user should be able to skip / unskip line items
-    Given I have logged in as srmanager1
+    Given I have logged in as srmanager2
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | c5012ddf-b145-4eee-9640-b2cbf4f2da85 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | 516ac930-0d28-49f5-a178-64764e22b236 | false     |
+      | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | c5012ddf-b145-4eee-9640-b2cbf4f2da85 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays |
       | 10               | 5                     | 5                      | 2                 |
-    And I try to update fields for product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+    And I try to update fields for product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | skipped |
       | true    |
     Then I should get requisition response with status 200
     When I try to get requisition with id
-    Then I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+    Then I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand | adjustedConsumption |
       | 10               | 5                     | 5                      | 2                 | true    | null        | null                |
-    Then I should get updated requisition with product id 23819693-0670-4c4b-b400-28e009b86b51:
+    Then I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand | adjustedConsumption |
       | 10               | 5                     | 5                      | 2                 | false   | 10          | 6                   |
 
     When I try to submit a requisition
     And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
-    And I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+    And I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | true    |
     And I logout
 
     Given I have logged in as smanager1
 
-    When I try to update fields for product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+    When I try to update fields for product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | skipped  |
       | false    |
     Then I should get requisition response with status 200
     When I try to get requisition with id
-    Then I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+    Then I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
 
-    When I try to update fields for product id 23819693-0670-4c4b-b400-28e009b86b51:
+    When I try to update fields for product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
       | skipped |
       | true    |
     Then I should get requisition response with status 200
     When I try to get requisition with id
-    Then I should get updated requisition with product id 23819693-0670-4c4b-b400-28e009b86b51:
+    Then I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | true    |
 
     When I try to authorize a requisition
     And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get updated requisition with product id 23819693-0670-4c4b-b400-28e009b86b51:
+    And I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | null                  | null                   | null              | true    |
-    And I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+    And I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
     And I logout
@@ -658,16 +647,15 @@ Feature: Regular Requisition Tests
     When I try to approve a requisition
     And I try to get requisition with id
     Then I should get a requisition with "APPROVED" status
-    And I should get updated requisition with product id 23819693-0670-4c4b-b400-28e009b86b51:
+    And I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | null                  | null                   | null              | true    |
-    And I should get updated requisition with product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
+    And I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
     And I logout
 
 
-  # we don't have to prepare database because we use different period
   Scenario: Storeroom Manager user should be not able to skip / unskip line items when column is disabled
     Given I have logged in as administrator
     When I try get a requisition templates
@@ -694,7 +682,6 @@ Feature: Regular Requisition Tests
     Then I should get requisition response with status 400
 
 
-  # we don't have to prepare database because we use different user
   Scenario: It should be possible to go through 2-way approval process
     Given I have logged in as srmanager4
 

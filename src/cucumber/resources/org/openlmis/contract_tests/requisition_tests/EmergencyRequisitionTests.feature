@@ -2,7 +2,7 @@
 Feature: Emergency Requisition Tests
 
 
-  # we don't have to prepare database because this is the first test
+  PrepareDatabase
   Scenario: Storeroom Manager user should be able to delete initiated emergency requisition
     When I have logged in as administrator
     And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
@@ -38,7 +38,6 @@ Feature: Emergency Requisition Tests
     And I logout
 
 
-  # we don't have to prepare database because the requisition from the previous test has been deleted
   Scenario: Program Supervisor user should be able to reject authorized emergency requisition
     When I have logged in as administrator
     And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
@@ -94,7 +93,6 @@ Feature: Emergency Requisition Tests
     And I logout
 
 
-  # we don't have to prepare database because the requisition from the previous test has been deleted
   Scenario: Program Supervisor user should be able to approve several emergency requisitions in the same period
     When I have logged in as administrator
     And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
@@ -184,7 +182,6 @@ Feature: Emergency Requisition Tests
     Then I should get a requisition with "APPROVED" status
     And I logout
 
-  # we have to prepare database because we need to remove ISA values
   @PrepareDatabase
   Scenario: Storeroom Manager user should get failure response if date outside of period when he creates emergency requisition
     When I have logged in as administrator
