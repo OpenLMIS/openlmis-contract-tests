@@ -7,7 +7,11 @@ properties([
   ]
 ])
 pipeline {
-    agent any
+    agent {
+        node {
+            label: '!master'
+        }
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '30'))
         disableConcurrentBuilds()
