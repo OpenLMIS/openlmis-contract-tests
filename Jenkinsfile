@@ -63,6 +63,7 @@ pipeline {
             steps {
                 timeout(time: 60, unit: 'MINUTES') {
                     sh "sudo rm -rf test-results"
+                    sh "sudo rm -rf open_lmis.dump"
                     sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml"
                 }
             }
