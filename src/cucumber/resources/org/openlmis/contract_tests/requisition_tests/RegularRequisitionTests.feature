@@ -585,19 +585,19 @@ Feature: Regular Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays |
-      | 10               | 5                     | 5                      | 2                 |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | stockOnHand |
+      | 10               | 5                     | 5                      | 2                 | 10          |
     And I try to update fields for product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
       | skipped |
       | true    |
     Then I should get requisition response with status 200
     When I try to get requisition with id
     Then I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand | adjustedConsumption |
-      | 10               | 5                     | 5                      | 2                 | true    | null        | null                |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand |
+      | 10               | 5                     | 5                      | 2                 | true    | 10          |
     Then I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand | adjustedConsumption |
-      | 10               | 5                     | 5                      | 2                 | false   | 10          | 6                   |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand |
+      | 10               | 5                     | 5                      | 2                 | false   | 10          |
 
     When I try to submit a requisition
     And I try to get requisition with id
