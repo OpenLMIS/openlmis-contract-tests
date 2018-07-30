@@ -2,7 +2,6 @@
 Feature: Emergency Requisition Tests
 
 
-  @PrepareDatabase
   Scenario: Storeroom Manager user should be able to delete initiated emergency requisition
     When I have logged in as administrator
     And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
@@ -182,6 +181,7 @@ Feature: Emergency Requisition Tests
     Then I should get a requisition with "APPROVED" status
     And I logout
 
+  @RemoveIdealStockAmounts
   Scenario: Storeroom Manager user should get failure response if date outside of period when he creates emergency requisition
     When I have logged in as administrator
     And I try to get or create a period with future date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac

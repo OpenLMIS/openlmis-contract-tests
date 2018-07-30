@@ -91,10 +91,10 @@ public class RequisitionStepDefs {
   private Map<String, Map<String, String>> requisitionTemplateColumnsData = new HashMap<>();
 
 
-  @Before("@PrepareDatabase")
+  @Before("@RemoveIdealStockAmounts")
   public void setUp() {
       try {
-        Process proc = Runtime.getRuntime().exec("/app/reset_db.sh");
+        Process proc = Runtime.getRuntime().exec("/app/remove_isa_values.sh");
 
         StreamGobbler streamGobbler =
             new StreamGobbler(proc.getInputStream(), System.out::println);

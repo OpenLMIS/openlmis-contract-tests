@@ -27,14 +27,4 @@ export PGDATABASE=$DB
 export PGUSER=$POSTGRES_USER
 export PGPASSWORD=$POSTGRES_PASSWORD
 
-# Create baseline if it does not already exist
-# ideal_stock_amounts excluded because of bug described in OLMIS-3341
-if [ ! -f open_lmis.dump ]; then
-  pg_dump --exclude-table-data=referencedata.ideal_stock_amounts -Fc open_lmis > open_lmis.dump
-fi
-
-# Restore from baseline, after disconnecting and cleaning up db
-psql -q -t -c "ALTER DATABASE open_lmis CONNECTION LIMIT 0;" -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'open_lmis';" postgres >/dev/null
-dropdb open_lmis
-createdb open_lmis
-pg_restore -d open_lmis open_lmis.dump
+psql -q -t -c "TRUNCATE referencedata.ideal_stock_amounts RESTART IDENTITY CASCADE;"
