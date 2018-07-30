@@ -571,86 +571,92 @@ Feature: Regular Requisition Tests
 
 
   Scenario: Storeroom Manager user should be able to skip / unskip line items
-    Given I have logged in as srmanager2
+    Given I have logged in as srmanager3
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | f419bcd8-ac7a-4b75-8c84-c065ef437938 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | bc1c47bc-3f29-4504-af07-ebbc44040a55 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | e6799d64-d10d-4011-b8c2-0e4d4a3f65ce | f419bcd8-ac7a-4b75-8c84-c065ef437938 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | bc1c47bc-3f29-4504-af07-ebbc44040a55 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | stockOnHand |
-      | 10               | 5                     | 5                      | 2                 | 10          |
-    And I try to update fields for product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | datePhysicalStockCountCompleted |
+      | 10               | 5                     | 5                      | 2                 | 5                 | test                         | 2018-01-15                      |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | requestedQuantity | requestedQuantityExplanation |
+      | 10               | 5                     | 5                      | 2                 | 5                 | test                         |
+
+    When I try to update fields for product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | skipped |
       | true    |
     Then I should get requisition response with status 200
+
     When I try to get requisition with id
-    Then I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
+    Then I should get updated requisition with product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand |
-      | 10               | 5                     | 5                      | 2                 | true    | 10          |
-    Then I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
+      | 10               | 5                     | 5                      | 2                 | true    | null        |
+    And I should get updated requisition with product id f573f7d1-b90b-4c3c-8d8b-b8865315d32d:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped | stockOnHand |
       | 10               | 5                     | 5                      | 2                 | false   | 10          |
 
     When I try to submit a requisition
     And I try to get requisition with id
     Then I should get a requisition with "SUBMITTED" status
-    And I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
+    And I should get updated requisition with product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | true    |
     And I logout
 
-    Given I have logged in as smanager2
-
-    When I try to update fields for product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
+    When I have logged in as smanager3
+    And I try to update fields for product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | skipped  |
       | false    |
     Then I should get requisition response with status 200
+
     When I try to get requisition with id
-    Then I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
+    Then I should get updated requisition with product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
 
-    When I try to update fields for product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
+    When I try to update fields for product id f573f7d1-b90b-4c3c-8d8b-b8865315d32d:
       | skipped |
       | true    |
     Then I should get requisition response with status 200
+
     When I try to get requisition with id
-    Then I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
+    Then I should get updated requisition with product id f573f7d1-b90b-4c3c-8d8b-b8865315d32d:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | true    |
 
     When I try to authorize a requisition
     And I try to get requisition with id
     Then I should get a requisition with "AUTHORIZED" status
-    And I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
+    And I should get updated requisition with product id f573f7d1-b90b-4c3c-8d8b-b8865315d32d:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | null                  | null                   | null              | true    |
-    And I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
+    And I should get updated requisition with product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
     And I logout
 
-    Given I have logged in as psupervisor
-
-    When I try update fields in requisition:
+    When I have logged in as dsrmanager
+    And I try update fields in requisition:
       | approvedQuantity | skipped |
       | 100              | true    |
 
     When I try to approve a requisition
     And I try to get requisition with id
-    Then I should get a requisition with "APPROVED" status
-    And I should get updated requisition with product id c9e65f02-f84f-4ba2-85f7-e2cb6f0989af:
+    Then I should get a requisition with "IN_APPROVAL" status
+    And I should get updated requisition with product id f573f7d1-b90b-4c3c-8d8b-b8865315d32d:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | null                  | null                   | null              | true    |
-    And I should get updated requisition with product id 2400e410-b8dd-4954-b1c0-80d8a8e785fc:
+    And I should get updated requisition with product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | 5                     | 5                      | 2                 | false   |
     And I logout
