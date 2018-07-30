@@ -15,7 +15,6 @@
 
 package org.openlmis.contract_tests.fulfillment;
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -25,24 +24,21 @@ import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
-import java.util.function.BiConsumer;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
 
 public class FulfillmentStepDefs {
 
@@ -79,10 +75,6 @@ public class FulfillmentStepDefs {
   private static final String STOCK_ON_HAND = "content[0].stockOnHand";
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   private static final String LOT_ID = "lotId";
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @Then("^I have got stock card id for$")
   public void gotStockCardId(DataTable table) {

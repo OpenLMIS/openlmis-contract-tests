@@ -62,18 +62,13 @@ pipeline {
             }
             steps {
                 timeout(time: 60, unit: 'MINUTES') {
-                    sh '''
-                        sudo rm -rf build
-                        # fixed problem with empty test_report.xml on slave (OLMIS-4386)
-                        mkdir -p build/cucumber/junit
-                        touch build/cucumber/junit/test_report.xml
-                    '''
+                    sh "sudo rm -rf test-results"
                     sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml"
                 }
             }
             post {
                 always {
-                    junit healthScaleFactor: 1.0, testResults: 'build/cucumber/junit/**.xml'
+                    junit healthScaleFactor: 1.0, testResults: 'test-results/cucumber-junit.xml'
                 }
                 failure {
                     slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} FAILED (<${env.BUILD_URL}|Open>)"

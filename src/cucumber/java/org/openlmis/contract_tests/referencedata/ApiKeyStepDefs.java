@@ -16,25 +16,20 @@
 package org.openlmis.contract_tests.referencedata;
 
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import org.apache.http.HttpStatus;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.response.Response;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.http.HttpStatus;
+import org.json.simple.JSONObject;
 
 public class ApiKeyStepDefs {
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
@@ -59,10 +54,6 @@ public class ApiKeyStepDefs {
   private String token;
 
   private Map<String, Response> resourceResponses = new HashMap<>();
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @When("^I try to create a API key$")
   public void tryToCreateApiKey() {

@@ -10,6 +10,9 @@ export BASE_URL
 # prepare files because docker changes owner of build directory
 mkdir -p ${TEST_RESULTS_DIR}
 
+# fixed problem with empty test_report.xml on slave (OLMIS-4386)
+touch ${TEST_RESULTS_DIR}/cucumber-junit.xml
+
 #make sure that old containers have been stopped
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
 
@@ -26,7 +29,11 @@ contract_test_result=$?
 /usr/local/bin/docker-compose exec -T log cat /var/log/messages > ${TEST_RESULTS_DIR}/sys-logs
 /usr/local/bin/docker-compose exec -T nginx cat /etc/nginx/conf.d/default.conf > ${TEST_RESULTS_DIR}/nginx
 
-echo "Logs and nginx settings can be found in ${TEST_RESULTS_DIR}"
+echo
+echo "=========================================================================="
+echo "  Logs and nginx settings can be found in ${TEST_RESULTS_DIR}"
+echo "=========================================================================="
+echo
 
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
 

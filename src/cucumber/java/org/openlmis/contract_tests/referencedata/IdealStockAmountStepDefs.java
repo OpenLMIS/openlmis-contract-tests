@@ -16,7 +16,6 @@
 package org.openlmis.contract_tests.referencedata;
 
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -29,21 +28,19 @@ import static org.junit.Assert.assertTrue;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
+import io.restassured.response.Response;
+import java.io.File;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import io.restassured.response.Response;
-
-import java.io.File;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class IdealStockAmountStepDefs {
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
@@ -71,10 +68,6 @@ public class IdealStockAmountStepDefs {
   private byte[] downloadedIsaFile;
 
   private Integer rowsUploaded;
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @When("^I try to upload ISA CSV from (\\S+)$")
   public void tryToUploadIsaCsv(String path) {

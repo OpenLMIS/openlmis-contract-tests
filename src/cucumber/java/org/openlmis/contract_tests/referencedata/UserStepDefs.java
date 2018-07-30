@@ -16,7 +16,6 @@
 package org.openlmis.contract_tests.referencedata;
 
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.is;
@@ -30,11 +29,10 @@ import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
-import org.json.simple.JSONObject;
-
 import java.util.List;
 import java.util.Map;
+import org.apache.http.HttpStatus;
+import org.json.simple.JSONObject;
 
 public class UserStepDefs {
 
@@ -46,10 +44,6 @@ public class UserStepDefs {
       baseUrlOfService("referencedata");
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @When("^I try to create a user with:$")
   public void tryToCreateNewUser(DataTable argsList) {

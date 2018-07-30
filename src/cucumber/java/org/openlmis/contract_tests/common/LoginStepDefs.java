@@ -15,6 +15,7 @@
 
 package org.openlmis.contract_tests.common;
 
+import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -33,6 +34,10 @@ public class LoginStepDefs {
   public static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   public static String ACCESS_TOKEN;
   public static UUID USER_REFERENCE_DATA_ID;
+
+  static {
+    enableLoggingOfRequestAndResponseIfValidationFails();
+  }
 
   @Given("^I have logged in as (.*)$")
   public void haveLoggedInAs(String userName) throws Throwable {

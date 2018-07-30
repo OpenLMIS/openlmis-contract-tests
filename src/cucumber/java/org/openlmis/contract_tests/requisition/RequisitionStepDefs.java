@@ -15,7 +15,6 @@
 
 package org.openlmis.contract_tests.requisition;
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -91,10 +90,6 @@ public class RequisitionStepDefs {
   private DataTable requisitionTemplateUpdateData;
   private Map<String, Map<String, String>> requisitionTemplateColumnsData = new HashMap<>();
 
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @Before("@PrepareDatabase")
   public void setUp() {

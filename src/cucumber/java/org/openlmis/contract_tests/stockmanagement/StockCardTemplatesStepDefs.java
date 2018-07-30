@@ -15,7 +15,6 @@
 
 package org.openlmis.contract_tests.stockmanagement;
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
@@ -38,10 +37,6 @@ public class StockCardTemplatesStepDefs {
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
   private static final String STOCKMANAGEMENT_ERROR_PROGRAM_NOT_FOUND = "stockmanagement.error.program.notFound";
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @When("^I try to get the default stock card template")
   public void iTryToGetTheDefaultStockCardTemplate() {

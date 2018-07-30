@@ -1,6 +1,5 @@
 package org.openlmis.contract_tests.referencedata;
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.is;
@@ -26,10 +25,6 @@ public class FacilityTypeApprovedProductStepDefs {
   private Response deleteApprovedProductResponse;
 
   private String createdApprovedProductId;
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @When("^I try to create a FTAP:$")
   public void tryToCreateApprovedProduct(DataTable table) {

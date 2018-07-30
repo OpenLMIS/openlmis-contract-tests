@@ -1,6 +1,5 @@
 package org.openlmis.contract_tests.notification;
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.is;
@@ -44,10 +43,6 @@ public class VerificationStepDefs {
   private String contactDetails;
   private String email;
   private String token;
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @When("^I try to get my contact details$")
   public void tryToGetContactDetails() {

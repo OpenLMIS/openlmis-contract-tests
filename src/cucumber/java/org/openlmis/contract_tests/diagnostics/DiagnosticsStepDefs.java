@@ -16,31 +16,22 @@
 package org.openlmis.contract_tests.diagnostics;
 
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
-import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.assertThat;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
-
-import org.apache.http.HttpStatus;
-import org.junit.Assert;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 
 public class DiagnosticsStepDefs {
   private Response healthResponse;
 
   private static final String BASE_URL_OF_DIAGNOSTICS_SERVICE =
       baseUrlOfService("diagnostics");
-
-  static {
-    enableLoggingOfRequestAndResponseIfValidationFails();
-  }
 
   @When("^I try to retrieve system health status$")
   public void tryToRetrieveSystemHealthStatus() {

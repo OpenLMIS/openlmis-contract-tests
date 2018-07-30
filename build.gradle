@@ -39,13 +39,15 @@ task cucumber(dependsOn: testClasses) {
             main = "cucumber.api.cli.Main"
             classpath = configurations.testRuntimeClasspath + sourceSets.main.output + sourceSets.test.output
             args = [
-                    '--add-plugin', 'pretty',
-                    '--add-plugin', 'html:build/cucumber',
-                    '--add-plugin', 'junit:build/cucumber/junit/test_report.xml',
-                    '--add-plugin', 'json:build/cucumber.json',
-                    '--glue', 'classpath:org.openlmis.contract_tests',
                     '--monochrome',
+                    '--glue', 'classpath:org.openlmis.contract_tests',
                     '--tags', project.getProperty('tags'),
+                    '--add-plugin', 'pretty',
+                    '--add-plugin', 'html:test-results/html',
+                    '--add-plugin', 'json:test-results/cucumber.json',
+                    '--add-plugin', 'junit:test-results/cucumber-junit.xml',
+                    '--add-plugin', 'pretty:test-results/cucumber-logs',
+                    '--add-plugin', 'usage:test-results/cucumber-usage',
                     'src/cucumber/resources/']
         }
     }

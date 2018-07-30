@@ -15,7 +15,6 @@
 
 package org.openlmis.contract_tests.referencedata;
 
-import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.is;
@@ -34,10 +33,6 @@ public class ProgramStepDefs {
     private Response createProgramResponse;
     private String createdProgramId;
     private Response getProgramResponse;
-
-    static {
-        enableLoggingOfRequestAndResponseIfValidationFails();
-    }
 
     @When("^I try to create a program with name: (.*), code: (.*)$")
     public void ITryToCreateAProgramWith(String name, String code) throws Throwable {
