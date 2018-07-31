@@ -198,3 +198,8 @@ Feature: Emergency Requisition Tests
       | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | true      |
     Then I should get response of incorrect period
     And I logout
+
+    When I have logged in as administrator
+    And I try to get or create a period with current date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
+    Then I should get response with the period id
+    And I logout
