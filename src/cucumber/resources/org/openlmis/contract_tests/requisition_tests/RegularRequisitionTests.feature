@@ -494,17 +494,17 @@ Feature: Regular Requisition Tests
 
 
   Scenario: Storeroom Manager user should be able to skip initiated requisition
-    Given I have logged in as srmanager1
+    Given I have logged in as srmanager3
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | f23ce0ab-2ebd-4d19-ba6e-aa9bdd34093b | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | bc1c47bc-3f29-4504-af07-ebbc44040a55 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | f23ce0ab-2ebd-4d19-ba6e-aa9bdd34093b | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | bc1c47bc-3f29-4504-af07-ebbc44040a55 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try to skip initiated requisition
@@ -513,7 +513,7 @@ Feature: Regular Requisition Tests
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | be8f5943-884a-4ca6-b722-5b37acde7b3f | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | 906a53c6-e76c-4237-9a7d-344e7a6bdd04 | false     |
     Then I should get response with the initiated requisition's id
     When I try to get requisition with id
     Then I should get a updated requisition with:
@@ -574,13 +574,13 @@ Feature: Regular Requisition Tests
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | bc1c47bc-3f29-4504-af07-ebbc44040a55 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | 906a53c6-e76c-4237-9a7d-344e7a6bdd04 | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | bc1c47bc-3f29-4504-af07-ebbc44040a55 | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 5b39f0fb-5c47-4551-b983-1e30ac6df65d | 906a53c6-e76c-4237-9a7d-344e7a6bdd04 | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
@@ -672,13 +672,13 @@ Feature: Regular Requisition Tests
 
     When I try to initiate a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | be8f5943-884a-4ca6-b722-5b37acde7b3f | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | f23ce0ab-2ebd-4d19-ba6e-aa9bdd34093b | false     |
     Then I should get response with the initiated requisition's id
 
     When I try to get requisition with id
     Then I should get a requisition with:
       | programId                            | facilityId                           | periodId                             | emergency |
-      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | be8f5943-884a-4ca6-b722-5b37acde7b3f | false     |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | f23ce0ab-2ebd-4d19-ba6e-aa9bdd34093b | false     |
     And I should get a requisition with "INITIATED" status
 
     When I try to update fields for product id d602d0c6-4052-456c-8ccd-61b4ad77bece:
