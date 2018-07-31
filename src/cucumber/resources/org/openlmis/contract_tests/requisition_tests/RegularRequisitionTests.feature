@@ -651,7 +651,7 @@ Feature: Regular Requisition Tests
 
     When I try to approve a requisition
     And I try to get requisition with id
-    Then I should get a requisition with "IN_APPROVAL" status
+    Then I should get a requisition with "RELEASED_WITHOUT_ORDER" status
     And I should get updated requisition with product id f573f7d1-b90b-4c3c-8d8b-b8865315d32d:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
       | 10               | null                  | null                   | null              | true    |
