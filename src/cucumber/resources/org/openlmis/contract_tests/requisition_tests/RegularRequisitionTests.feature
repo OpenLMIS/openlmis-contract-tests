@@ -584,12 +584,12 @@ Feature: Regular Requisition Tests
     And I should get a requisition with "INITIATED" status
 
     When I try update fields in requisition:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | datePhysicalStockCountCompleted |
-      | 10               | 5                     | 5                      | 2                 | 5                 | test                         | 2018-01-15                      |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays |
+      | 10               | 5                     | 5                      | 2                 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
-      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | requestedQuantity | requestedQuantityExplanation |
-      | 10               | 5                     | 5                      | 2                 | 5                 | test                         |
+      | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays |
+      | 10               | 5                     | 5                      | 2                 |
 
     When I try to update fields for product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | skipped |
@@ -646,8 +646,8 @@ Feature: Regular Requisition Tests
 
     When I have logged in as dsrmanager
     And I try update fields in requisition:
-      | approvedQuantity | skipped |
-      | 100              | true    |
+      | skipped |
+      | true    |
 
     When I try to approve a requisition
     And I try to get requisition with id
