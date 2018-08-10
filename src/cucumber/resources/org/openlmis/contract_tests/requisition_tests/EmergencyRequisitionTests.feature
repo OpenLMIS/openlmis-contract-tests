@@ -80,7 +80,7 @@ Feature: Emergency Requisition Tests
     When I try to reject authorized requisition
     And I try to get requisition with id
     Then I should get a requisition with "REJECTED" status
-    And I should get a requisition with "fb38bd1c-beeb-4527-8345-900900329c10" supervisoryNode
+    And I should get a requisition without supervisoryNode
     And I logout
 
     When I have logged in as srmanager1
