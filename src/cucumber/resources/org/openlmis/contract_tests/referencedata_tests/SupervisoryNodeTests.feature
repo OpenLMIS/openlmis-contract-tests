@@ -31,15 +31,17 @@ Feature: Supervisory Node tests
   Scenario: Admin user should be able to edit existing supervisory nodes
     Given I have logged in as admin
 
-    When I try to create a supervisoryNode with:
-      | facilityId                           | code  | name                |
-      | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | SN003 | Supervisory Node #3 |
-    Then I should get response with the created supervisoryNode's id
+    When I try to find a supervisoryNode with:
+      | facilityId                           | code  | name                  |
+      | 13037147-1769-4735-90a7-b9b310d128b8 | SN1.1 | FP approval sub point |
+    Then I should get response with the supervisoryNode's id
 
     When I try to update a supervisoryNode with:
       | facilityId                           | code   | name                        |
       | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | SN003U | Supervisory Node #3 Updated |
-    And I try to get supervisoryNode with id
+    Then I should get response with OK status
+
+    When I try to get supervisoryNode with id
     Then I should get supervisoryNode with:
       | facilityId                           | code   | name                        |
       | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | SN003U | Supervisory Node #3 Updated |

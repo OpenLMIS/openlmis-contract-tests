@@ -5,12 +5,12 @@
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Affero General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details. You should have received a copy of
  * the GNU Affero General Public License along with this program. If not, see
- * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org. 
+ * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
 package org.openlmis.contract_tests.requisition;
@@ -18,6 +18,9 @@ package org.openlmis.contract_tests.requisition;
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.apache.http.HttpStatus.SC_NO_CONTENT;
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -172,7 +175,7 @@ public class RequisitionStepDefs {
         .body(requisition.toJSONString())
         .when()
         .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId).then()
-        .statusCode(200);
+        .statusCode(SC_OK);
   }
 
   @When("^I try to update fields for product id (.+):$")
@@ -211,7 +214,7 @@ public class RequisitionStepDefs {
         .when()
         .put(BASE_URL_OF_REQUISITION_SERVICE + requisitionId)
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
   }
 
   @Then("^I should get requisition response with status ([0-9]+)$")
@@ -287,7 +290,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
   }
 
   @Then("^I should get a requisition with \"([^\"]*)\" ([a-zA-Z]+)$")
@@ -306,7 +309,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
 
     supervisoryNodeId = from(requisitionResponse.asString()).get("supervisoryNode");
   }
@@ -330,7 +333,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
   }
 
   @When("^I try to skip initiated requisition$")
@@ -342,7 +345,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
   }
 
   @When("^I try to reject authorized requisition$")
@@ -354,7 +357,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
   }
 
   @When("^I try to get period with id:$")
@@ -437,7 +440,7 @@ public class RequisitionStepDefs {
 
     requisitionResponse
         .then()
-        .statusCode(204);
+        .statusCode(SC_NO_CONTENT);
   }
 
   @Then("^I should get response of deleted requisition$")
@@ -454,18 +457,21 @@ public class RequisitionStepDefs {
         .statusCode(HttpStatus.SC_NOT_FOUND);
   }
 
-  @When("^I try to convert requisition to order$")
-  public void tryConvertRequisitionToOrder() {
+  @When("^I try to convert requisition with:$")
+  public void tryConvertRequisitionToOrder(DataTable table) {
     requisitionResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
         .contentType(ContentType.JSON)
-        .body(createBodyForConvertToOrder())
+        .body(createBodyForConvertToOrder(table))
         .post(BASE_URL_OF_REQUISITION_SERVICE + "convertToOrder");
+  }
 
+  @Then("^I should get response of order created$")
+  public void shouldGetResponseOfOrderCreated() {
     requisitionResponse
         .then()
-        .statusCode(201);
+        .statusCode(SC_CREATED);
   }
 
   @When("^I try get a requisition templates$")
@@ -480,7 +486,7 @@ public class RequisitionStepDefs {
   public void shouldGetRequisitionTemplateForProgram(String programId, String facilityTypeId) throws ParseException {
     requisitionTemplateResponse
         .then()
-        .statusCode(200)
+        .statusCode(SC_OK)
         .body("$.isEmpty()", is(false));
 
     JSONParser parser = new JSONParser();
@@ -556,7 +562,7 @@ public class RequisitionStepDefs {
   public void checkIfRequisitionTemplateWasUpdated() {
     ValidatableResponse validatableResponse = requisitionTemplateResponse
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
 
     if (null != requisitionTemplateUpdateData) {
       requisitionTemplateUpdateData
@@ -677,13 +683,20 @@ public class RequisitionStepDefs {
     }
   }
 
-  private JSONArray createBodyForConvertToOrder() {
-    JSONObject json = new JSONObject();
-    json.put("requisitionId", requisitionId);
-    //supplyingDepot from demo-data
-    json.put("supplyingDepotId", "19121381-9f3d-4e77-b9e5-d3f59fc1639e");
+  private JSONArray createBodyForConvertToOrder(DataTable table) {
+    List<Map<String, String>> data = table.asMaps(String.class, String.class);
     JSONArray array = new JSONArray();
-    array.add(json);
+
+    for (Map map : data) {
+      JSONObject json = new JSONObject();
+      if (map.get("requisitionId") != null) {
+        requisitionId = map.get("requisitionId").toString();
+      }
+      json.put("requisitionId", requisitionId);
+      json.put("supplyingDepotId", map.get("supplyingDepotId"));
+
+      array.add(json);
+    }
     return array;
   }
 
@@ -729,7 +742,7 @@ public class RequisitionStepDefs {
         .put(BASE_URL_OF_REFERENCEDATA_SERVICE + "processingPeriods/" + id);
     periodResponse
         .then()
-        .statusCode(200);
+        .statusCode(SC_OK);
 
     JSONParser parser = new JSONParser();
     period = (JSONObject) parser.parse(periodResponse.asString());
