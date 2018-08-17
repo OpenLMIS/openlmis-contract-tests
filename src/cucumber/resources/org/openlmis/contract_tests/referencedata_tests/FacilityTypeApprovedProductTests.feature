@@ -14,8 +14,10 @@ Feature: Facility Type Approved Product Tests
   Scenario: Admin user should be able to remove FTAP
     Given I have logged in as admin
 
-    When I try to get all FTAPs with health_center facility type
-    Then I should get first returned FTAP's id
+    When I try to create a FTAP:
+    | orderable.id                            | program.id                              | facilityType.id                         | maxPeriodsOfStock | minPeriodsOfStock | emergencyOrderPoint |
+    | 103396e1-f5e4-4754-bb7b-1c799097dfea    | 10845cb9-d365-4aaa-badd-b4fa39c6a26a    | 663b1d34-cc17-4d60-9619-e553e45aa441    | 4                 | 2                 | 2                   |
+    Then I should get response with created FTAP's id
 
     When I try to delete created FTAP
     Then I should get response of deleted FTAP
@@ -24,8 +26,10 @@ Feature: Facility Type Approved Product Tests
   Scenario: Admin user should be able to recreate FTAP
     Given I have logged in as admin
 
-    When I try to get all FTAPs with health_center facility type
-    Then I should get first returned FTAP's id
+    When I try to create a FTAP:
+    | orderable.id                            | program.id                              | facilityType.id                         | maxPeriodsOfStock | minPeriodsOfStock | emergencyOrderPoint |
+    | bac90734-6e58-426e-849b-331286ec77d2    | 66032ea8-b69b-4102-a1eb-844e57143187    | 5fc213c6-1bd7-46f0-9883-57c05250ca90    | 5                 | 3                 | 3                   |
+    Then I should get response with created FTAP's id
 
     When I try to delete created FTAP
     Then I should get response of deleted FTAP

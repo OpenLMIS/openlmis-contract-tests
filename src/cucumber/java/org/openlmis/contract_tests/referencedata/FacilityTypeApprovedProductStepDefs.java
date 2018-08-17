@@ -23,9 +23,8 @@ public class FacilityTypeApprovedProductStepDefs {
 
   private Response createApprovedProductResponse;
   private Response deleteApprovedProductResponse;
-  private Response getApprovedProductsResponse;
 
-  private String approvedProductId;
+  private String createdApprovedProductId;
 
   @When("^I try to create a FTAP:$")
   public void tryToCreateApprovedProduct(DataTable table) {
@@ -49,7 +48,7 @@ public class FacilityTypeApprovedProductStepDefs {
         .statusCode(HttpStatus.SC_CREATED)
         .body("id", is(notNullValue()));
 
-    approvedProductId = from(createApprovedProductResponse.asString()).getString("id");
+    createdApprovedProductId = from(createApprovedProductResponse.asString()).getString("id");
   }
 
   @When("^I try to delete created FTAP$")
@@ -57,7 +56,7 @@ public class FacilityTypeApprovedProductStepDefs {
     deleteApprovedProductResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .when()
-        .delete(FTAP_URL + approvedProductId);
+        .delete(FTAP_URL + createdApprovedProductId);
   }
 
   @Then("^I should get response of deleted FTAP$")
@@ -65,24 +64,6 @@ public class FacilityTypeApprovedProductStepDefs {
     deleteApprovedProductResponse
         .then()
         .statusCode(HttpStatus.SC_NO_CONTENT);
-  }
-
-  @When("^I try to get all FTAPs with (.*) facility type$")
-  public void tryToGetAllApprovedProducts(String facilityType) {
-    getApprovedProductsResponse = given()
-        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .queryParam("facilityType", facilityType)
-        .when()
-        .get(FTAP_URL);
-  }
-
-  @Then("^I should get first returned FTAP's id$")
-  public void shouldGetResponseOfAllApprovedProduct() {
-    getApprovedProductsResponse
-        .then()
-        .statusCode(HttpStatus.SC_OK)
-        .body("content.id[0]", notNullValue());
-    approvedProductId = getApprovedProductsResponse.jsonPath().getString("content.id[0]");
   }
 
 }

@@ -5,12 +5,12 @@
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Affero General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ *  
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
  * See the GNU Affero General Public License for more details. You should have received a copy of
  * the GNU Affero General Public License along with this program. If not, see
- * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
+ * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org. 
  */
 
 package org.openlmis.contract_tests.fulfillment;
@@ -42,8 +42,10 @@ import org.json.simple.parser.ParseException;
 
 public class FulfillmentStepDefs {
 
+  private static final Integer REMAINDER = 826;
   private Response shipmentResponse;
   private Response orderResponse;
+  private Response requisitionResponse;
   private Response stockCardResponse;
   private Response proofOfDeliveryResponse;
   private Response printProofOfDeliveryResponse;
@@ -62,15 +64,19 @@ public class FulfillmentStepDefs {
       baseUrlOfService(FULFILLMENT) + "orders";
   private static final String URL_OF_PODS =
       baseUrlOfService(FULFILLMENT) + "proofsOfDelivery/";
+  private static final String URL_OF_REQUISITION_CONVERT =
+      baseUrlOfService("requisition") + "requisitions/convertToOrder";
   private static final String URL_OF_STOCK_CARD_SUMMARIES =
       baseUrlOfService("stockmanagement") + "stockCardSummaries";
+  private static final String URL_OF_STOCK_CARD_MANAGEMENT =
+      baseUrlOfService("stockmanagement") + "stockCards/";
 
   private static final String CONTENT_ID = "content[0].id";
   private static final String STOCK_ON_HAND = "content[0].stockOnHand";
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   private static final String LOT_ID = "lotId";
 
-  @When("^I have got stock card id for$")
+  @Then("^I have got stock card id for$")
   public void gotStockCardId(DataTable table) {
     Map<Object, Object> data = table.asMaps(String.class, String.class).get(0);
 
@@ -86,6 +92,15 @@ public class FulfillmentStepDefs {
 
     stockCardId = stockCardResponse.jsonPath().getString(CONTENT_ID);
     stockOnHand = stockCardResponse.jsonPath().getInt(STOCK_ON_HAND);
+  }
+
+  @When("^I try to get stock card with id$")
+  public void tryToGetStockCardWithId() {
+    stockCardResponse = given()
+        .contentType(ContentType.JSON)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .when()
+        .get(URL_OF_STOCK_CARD_MANAGEMENT + stockCardId);
   }
 
   @When("^I try to find any proof of delivery$")
@@ -114,12 +129,35 @@ public class FulfillmentStepDefs {
         .header("Content-Type", "application/pdf;charset=UTF-8");
   }
 
+  @Then("^I should get a stock card$")
+  public void shouldGetAStockCardWithStockOnHand() {
+    stockCardResponse
+        .then()
+        .statusCode(HttpStatus.SC_OK)
+        .body(STOCK_ON_HAND, is(stockOnHand));
+  }
+
   @Then("^I should get a stock card with proper stock on hand$")
   public void shouldGetStockCardWithStockOnHandSubstracted() {
     stockCardResponse
         .then()
         .statusCode(HttpStatus.SC_OK)
-        .body(STOCK_ON_HAND, is(stockOnHand));
+        .body(STOCK_ON_HAND, is(REMAINDER));
+  }
+
+  @When("^I try to convert requisition with:$")
+  public void tryToConvertRequisition(DataTable table) {
+    requisitionResponse = given().contentType(ContentType.JSON)
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .body(createBodyForConvertToOrder(table))
+        .when()
+        .post(URL_OF_REQUISITION_CONVERT);
+  }
+
+  @Then("^I should get response of order created$")
+  public void shouldGetResponseOfOrderCreated() {
+    requisitionResponse.then()
+        .statusCode(SC_CREATED);
   }
 
   @When("^I try to get order by:$")
@@ -293,5 +331,20 @@ public class FulfillmentStepDefs {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("id", id);
     return jsonObject;
+  }
+
+  private JSONArray createBodyForConvertToOrder(DataTable table) {
+    List<Map<String, String>> data = table.asMaps(String.class, String.class);
+    JSONArray array = new JSONArray();
+
+    for (Map map : data) {
+      JSONObject json = new JSONObject();
+      json.put("requisitionId", map.get("requisitionId"));
+      json.put("supplyingDepotId", map.get("supplyingDepotId"));
+
+      array.add(json);
+    }
+
+    return array;
   }
 }

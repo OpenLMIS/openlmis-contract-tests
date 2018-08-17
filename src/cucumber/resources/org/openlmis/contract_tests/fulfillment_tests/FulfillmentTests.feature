@@ -45,7 +45,7 @@ Feature: Fulfillment Tests
       | program                              | facility                             |
       | 418bdc1d-c303-4bd0-b2d3-d8901150a983 | c62dea9b-6974-4101-ba39-b09914165967 |
     And I try to get stock card with card id
-    Then I should get a stock card with proper stock on hand
+    Then I should get a stock card
 
     When I try to convert requisition with:
       | requisitionId                        | supplyingDepotId                     |
