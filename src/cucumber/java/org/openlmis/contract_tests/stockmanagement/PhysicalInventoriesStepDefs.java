@@ -31,6 +31,7 @@ public class PhysicalInventoriesStepDefs {
     private static final String IS_DRAFT_PARAM_NAME = "isDraft";
 
     private Response response;
+    private int quantity;
     private String physicalInventoryid;
 
     @When("^I try to get a draft with facilityId: (.*), programId: (.*)$")
@@ -79,6 +80,7 @@ public class PhysicalInventoriesStepDefs {
                 .body(jsonObject.toString())
                 .when()
                 .put(URL_PHYSICAL_INVENTORIES + physicalInventoryid);
+        quantity = JsonPath.from(bodyString).get("lineItems[0].quantity");
     }
 
     @Then("^I should get response of draft physical inventory saved$")
