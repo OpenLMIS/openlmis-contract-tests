@@ -74,7 +74,7 @@ task waitFor {
 private boolean isReachable(container) {
     boolean isRequestSuccessFul = false
 
-    for (def i = 0; i < 120; ++i) {
+    for (def i = 0; i < 60; ++i) {
         println("Waiting $i seconds and checking if the $container is available")
         sleep i * 1000
 
