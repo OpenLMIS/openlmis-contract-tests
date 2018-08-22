@@ -33,6 +33,17 @@ echo
 echo "=========================================================================="
 echo "  Logs and nginx settings can be found in ${TEST_RESULTS_DIR}"
 echo "=========================================================================="
+echo "  CONTAINER LOGS"
+echo "=========================================================================="
+cat ${TEST_RESULTS_DIR}/container-logs
+echo "=========================================================================="
+echo "  SYSTEM LOGS"
+echo "=========================================================================="
+cat ${TEST_RESULTS_DIR}/sys-logs | egrep "(WARN|ERROR)"
+echo "=========================================================================="
+echo "  NGINX SETTINGS"
+echo "=========================================================================="
+cat ${TEST_RESULTS_DIR}/nginx
 echo
 
 /usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
