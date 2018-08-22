@@ -14,7 +14,6 @@ pipeline {
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '30'))
-        disableConcurrentBuilds()
     }
     environment {
         PATH = "/usr/local/bin/:$PATH"
