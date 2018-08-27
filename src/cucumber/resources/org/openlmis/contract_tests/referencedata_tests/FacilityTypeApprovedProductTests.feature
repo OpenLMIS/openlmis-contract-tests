@@ -14,7 +14,7 @@ Feature: Facility Type Approved Product Tests
   Scenario: Admin user should be able to remove FTAP
     Given I have logged in as admin
 
-    When I try to get all FTAPs with health_center facility type
+    When I try to get first FTAP with health_center facility type
     Then I should get first returned FTAP's id
 
     When I try to delete created FTAP
@@ -24,7 +24,7 @@ Feature: Facility Type Approved Product Tests
   Scenario: Admin user should be able to recreate FTAP
     Given I have logged in as admin
 
-    When I try to get all FTAPs with health_center facility type
+    When I try to get first FTAP with health_center facility type
     Then I should get first returned FTAP's id
 
     When I try to delete created FTAP

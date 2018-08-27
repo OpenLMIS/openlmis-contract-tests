@@ -13,6 +13,8 @@ import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.util.List;
+import java.util.Map;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONObject;
 import org.openlmis.contract_tests.common.JsonFieldSetter;
@@ -67,11 +69,12 @@ public class FacilityTypeApprovedProductStepDefs {
         .statusCode(HttpStatus.SC_NO_CONTENT);
   }
 
-  @When("^I try to get all FTAPs with (.*) facility type$")
+  @When("^I try to get first FTAP with (.*) facility type$")
   public void tryToGetAllApprovedProducts(String facilityType) {
     getApprovedProductsResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam("facilityType", facilityType)
+        .queryParam("size", 1)
         .when()
         .get(FTAP_URL);
   }
