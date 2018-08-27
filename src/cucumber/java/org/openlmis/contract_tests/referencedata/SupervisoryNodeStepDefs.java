@@ -5,12 +5,12 @@
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of the GNU Affero General Public License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details. You should have received a copy of
  * the GNU Affero General Public License along with this program. If not, see
- * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org. 
+ * http://www.gnu.org/licenses.  For additional information contact info@OpenLMIS.org.
  */
 
 package org.openlmis.contract_tests.referencedata;
@@ -29,6 +29,8 @@ import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.apache.http.HttpStatus;
@@ -42,6 +44,8 @@ public class SupervisoryNodeStepDefs {
   private Response createSupervisoryNodeResponse;
   private Response getSupervisoryNodeResponse;
   private Response deleteSupervisoryNodeResponse;
+  private Response searchSupervisoryNodesResponse;
+  private Response updateSupervisoryNodeResponse;
   private String id;
 
   @When("^I try to create a supervisoryNode with:$")
@@ -58,11 +62,33 @@ public class SupervisoryNodeStepDefs {
     }
   }
 
+  @When("^I try to find a supervisoryNode with:$")
+  public void tryToGetupervisoryNodeWith(DataTable argsList) {
+    List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
+    for (Map<String, String> map : data) {
+      searchSupervisoryNodesResponse = given()
+          .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+          .queryParam("code", map.get("code"))
+          .queryParam("name", map.get("name"))
+          .queryParam("facilityId", map.get("facilityId"))
+          .when()
+          .get(SUPERVISORY_NODE_URL);
+    }
+  }
+
+  @Then("^I should get response with the supervisoryNode's id$")
+  public void shouldGetResponseWithTheSupervisoryNodeId() throws Throwable {
+    searchSupervisoryNodesResponse
+        .then()
+        .body("content.id[0]", notNullValue());
+    id = searchSupervisoryNodesResponse.jsonPath().getString("content.id[0]");
+  }
+
   @When("^I try to update a supervisoryNode with:$")
   public void tryToUpdateSupervisoryNodeWith(DataTable argsList) {
     List<Map<String, String>> data = argsList.asMaps(String.class, String.class);
     for (Map<String, String> map : data) {
-      given()
+      updateSupervisoryNodeResponse = given()
           .contentType(ContentType.JSON)
           .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
           .body(buildSupervisoryNode(map)
@@ -70,6 +96,13 @@ public class SupervisoryNodeStepDefs {
           .when()
           .put(SUPERVISORY_NODE_URL + id);
     }
+  }
+
+  @Then("^I should get response with OK status")
+  public void shouldGetOkResponse() {
+    updateSupervisoryNodeResponse
+        .then()
+        .statusCode(HttpStatus.SC_OK);
   }
 
   @Then("^I should get response with the created supervisoryNode's id$")
