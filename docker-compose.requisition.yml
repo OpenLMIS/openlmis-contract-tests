@@ -28,7 +28,7 @@ services:
     env_file: settings.env
     environment:
       JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
-      spring_profiles_active: demo-data,refresh-db
+      spring_profiles_active: refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
