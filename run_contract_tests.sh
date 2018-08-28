@@ -39,7 +39,7 @@ cat ${TEST_RESULTS_DIR}/container-logs
 echo "=========================================================================="
 echo "  SYSTEM LOGS"
 echo "=========================================================================="
-cat ${TEST_RESULTS_DIR}/sys-logs | egrep "(WARN|ERROR)"
+cat ${TEST_RESULTS_DIR}/sys-logs | grep -v "Resource2Db"
 echo "=========================================================================="
 echo "  NGINX SETTINGS"
 echo "=========================================================================="
