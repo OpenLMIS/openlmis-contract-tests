@@ -302,7 +302,9 @@ Feature: Regular Requisition Tests
     And I logout
 
     When I have logged in as wclerk1
-    And I try to convert requisition to order
+    And I try to convert requisition with:
+      | supplyingDepotId                     |
+      | 19121381-9f3d-4e77-b9e5-d3f59fc1639e |
     Then I logout
 
     When I have logged in as srmanager1
@@ -759,7 +761,9 @@ Feature: Regular Requisition Tests
     And I logout
 
     When I have logged in as wclerk1
-    And I try to convert requisition to order
+    And I try to convert requisition with:
+      | supplyingDepotId                     |
+      | 19121381-9f3d-4e77-b9e5-d3f59fc1639e |
     Then I logout
 
     When I have logged in as srmanager4
