@@ -28,3 +28,4 @@ export PGUSER=$POSTGRES_USER
 export PGPASSWORD=$POSTGRES_PASSWORD
 
 psql -q -t -c "TRUNCATE referencedata.ideal_stock_amounts RESTART IDENTITY CASCADE;"
+psql -q -t -c "DELETE FROM referencedata.processing_periods WHERE startDate = (date_trunc('MONTH', NOW()))::DATE AND endDate = (date_trunc('MONTH', NOW()) + INTERVAL '1 MONTH - 1 day')::DATE;";

@@ -181,17 +181,8 @@ Feature: Emergency Requisition Tests
     Then I should get a requisition with "APPROVED" status
     And I logout
 
-  @RemoveIdealStockAmounts
+  @RemoveCurrentPeriod
   Scenario: Storeroom Manager user should get failure response if date outside of period when he creates emergency requisition
-    When I have logged in as administrator
-    And I try to get or create a period with future date and schedule 9c15bd6e-3f6b-4b91-b53a-36c199d35eac
-    Then I should get response with the period id
-
-    When I try to get periods by program dce17f2e-af3e-40ad-8e00-3496adef44c3 and facility 176c4276-1fb1-4507-8ad2-cdfba0f47445
-    And I try to delete current period
-    Then I should get response with status 204
-    And I logout
-
     When I have logged in as srmanager1
     And I try to initiate a requisition with:
       | programId                            | facilityId                           | emergency |

@@ -42,7 +42,6 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -94,18 +93,17 @@ public class RequisitionStepDefs {
   private Map<String, Map<String, String>> requisitionTemplateColumnsData = new HashMap<>();
 
 
-  @Before("@RemoveIdealStockAmounts")
+  @Before("@RemoveCurrentPeriod")
   public void setUp() {
       try {
-        Process proc = Runtime.getRuntime().exec("/app/remove_isa_values.sh");
+        Process proc = Runtime.getRuntime().exec("/app/remove_current_period.sh");
 
-        StreamGobbler streamGobbler =
-            new StreamGobbler(proc.getInputStream(), System.out::println);
+        StreamGobbler streamGobbler = new StreamGobbler(proc, System.out::println);
         Executors.newSingleThreadExecutor().submit(streamGobbler);
 
         proc.waitFor();
       } catch (Exception ex) {
-        System.err.println("Exporting db schema failed with message: " + ex);
+        System.err.println("Removing current period failed with message: " + ex);
       }
   }
 
@@ -761,18 +759,18 @@ public class RequisitionStepDefs {
   }
 
   private static class StreamGobbler implements Runnable {
-    private InputStream inputStream;
+    private Process process;
     private Consumer<String> consumer;
 
-    StreamGobbler(InputStream inputStream, Consumer<String> consumer) {
-      this.inputStream = inputStream;
+    StreamGobbler(Process process, Consumer<String> consumer) {
+      this.process = process;
       this.consumer = consumer;
     }
 
     @Override
     public void run() {
-      new BufferedReader(new InputStreamReader(inputStream)).lines()
-          .forEach(consumer);
+      new BufferedReader(new InputStreamReader(process.getInputStream())).lines().forEach(consumer);
+      new BufferedReader(new InputStreamReader(process.getErrorStream())).lines().forEach(consumer);
     }
   }
 }
