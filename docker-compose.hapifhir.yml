@@ -1,0 +1,58 @@
+version: "2"
+services:
+
+  hapifhir:
+    image: openlmis/hapifhir:${OL_HAPIFHIR_VERSION}
+    mem_limit: 512m
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  referencedata:
+    image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
+    env_file: settings.env
+    mem_limit: 1536m
+    environment:
+      JAVA_OPTS: '-Xmx1536m -Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data
+      fhirClient.enabled: "true"
+    volumes:
+    - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  contract_tests:
+    mem_limit: 768m
+    image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
+    environment:
+      GRADLE_OPTS: '-Xmx256m'
+    env_file: settings.env
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+    - db
+    - log
+    - nginx
+    - consul
+    - auth
+    - referencedata
+    - hapifhir
+
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=
+        ${BASE_URL}/auth,
+        ${BASE_URL}/referencedata'
+      - 'cucumber'
+      - '-Ptags=@LocationTests'
+      - '--stacktrace'
+      - '--no-daemon'
+
+volumes:
+  gradlecache:
+    external: false

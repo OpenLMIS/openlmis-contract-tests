@@ -67,6 +67,25 @@ public class LoginStepDefs {
     );
   }
 
+  @Given("^I generate a service-level token$")
+  public void haveLoggedInAsService() {
+    String plainCreds = "trusted-client:secret";
+    byte[] plainCredsBytes = plainCreds.getBytes();
+    byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+    String base64Creds = new String(base64CredsBytes);
+
+    String tokenResponseString = given()
+        .header("Authorization", "Basic " + base64Creds)
+        .param("grant_type", "client_credentials")
+        .when()
+        .post(baseUrlOfService("oauth") + "token")
+        .asString();
+
+    ACCESS_TOKEN = from(tokenResponseString).get("access_token");
+
+    assertThat("Can't generate service-level token", ACCESS_TOKEN, is(notNullValue()));
+  }
+
   @Given("^I logout$")
   public void tryLogout() {
     given()
