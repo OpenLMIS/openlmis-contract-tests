@@ -27,6 +27,7 @@ import static org.openlmis.contract_tests.common.TestVariableReader.passwordOf;
 
 import cucumber.api.java.en.Given;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.codec.binary.Base64;
 
 public class LoginStepDefs {
@@ -101,8 +102,8 @@ public class LoginStepDefs {
     }
   }
 
-  @Given("^I pause 5 seconds for right assignment regeneration$")
-  public void pauseFiveSeconds() throws InterruptedException {
-    Thread.sleep(5000);
+  @Given("^I pause (\\d+) seconds for right assignment regeneration$")
+  public void pauseFiveSeconds(int seconds) throws InterruptedException {
+    TimeUnit.SECONDS.sleep(seconds);
   }
 }

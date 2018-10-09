@@ -39,13 +39,15 @@ Feature: Location Tests
         "extraData": { }
       }
       """
-      Then the facility should be created
+      Then I pause 15 seconds for right assignment regeneration
+      And the facility should be created
       And the related FHIR location should be created
 
       When I update the facility:
       | goDownDate | active |
       | 2025-12-31 | false  |
-      Then the facility should be up-to-date
+      Then I pause 15 seconds for right assignment regeneration
+      And the facility should be up-to-date
       And the related FHIR location should be updated
 
   Scenario: Location should be updated when geographic zone is updated
