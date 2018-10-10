@@ -47,7 +47,8 @@ services:
       - 'waitFor'
       - '-Pcontainers=
         ${BASE_URL}/auth,
-        ${BASE_URL}/referencedata'
+        ${BASE_URL}/referencedata,
+        ${BASE_URL}/hapifhir'
       - 'cucumber'
       - '-Ptags=@LocationTests'
       - '--stacktrace'
