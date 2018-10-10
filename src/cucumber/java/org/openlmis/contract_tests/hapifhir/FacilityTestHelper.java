@@ -1,27 +1,22 @@
 package org.openlmis.contract_tests.hapifhir;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
-import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
-import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN_PARAM_NAME;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 
-class FacilityTestHelper implements TestHelper {
+class FacilityTestHelper extends OlmisResourceTestHelper {
 
   private static final String BASE_REFERENCE_DATA_URL = baseUrlOfService("referencedata");
   private static final String FACILITY_URL = BASE_REFERENCE_DATA_URL + "facilities";
 
   private static final String PHYSICAL_TYPE = "si";
 
-  private static final String CODE = "CT-HAPI-FHIR-F";
-  private static final String NAME = "Contract Test HAPI FHIR Facility";
+  private static final String CODE = "CT-F";
+  private static final String NAME = "Contract Test Facility";
   private static final String DESCRIPTION =
       "This is an example facility which should be added to FHIR server";
 
@@ -33,34 +28,20 @@ class FacilityTestHelper implements TestHelper {
   private static final String STATUS_BEFORE = "active";
   private static final String STATUS_AFTER = "inactive";
 
-
   @Override
-  public Response createResource(String bodyAsString) {
-    return given()
-        .contentType(ContentType.JSON)
-        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .body(bodyAsString)
-        .when()
-        .post(FACILITY_URL);
+  String getResourceUrl() {
+    return FACILITY_URL;
   }
 
   @Override
-  public void verifyLocationAfterCreate(ValidatableResponse response) {
+  public void verifyFhirResourceAfterCreate(String resource, Object resourceId) {
+    ValidatableResponse response = getLocation(resourceId, "1");
     verifyLocation(response, STATUS_BEFORE);
   }
 
   @Override
-  public Response updateResource(Object resourceId, String bodyAsString) {
-    return given()
-        .contentType(ContentType.JSON)
-        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .body(bodyAsString)
-        .when()
-        .put(FACILITY_URL + "/" + resourceId);
-  }
-
-  @Override
-  public void verifyLocationAfterUpdate(ValidatableResponse response) {
+  public void verifyFhirResourceAfterUpdate(String resource, Object resourceId) {
+    ValidatableResponse response = getLocation(resourceId, "2");
     verifyLocation(response, STATUS_AFTER);
   }
 

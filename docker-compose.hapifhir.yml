@@ -17,7 +17,7 @@ services:
     mem_limit: 1536m
     environment:
       JAVA_OPTS: '-Xmx1536m -Dlogging.config=/logback.xml'
-      spring_profiles_active: demo-data
+      spring_profiles_active: demo-data, refresh-db
       fhirClient.enabled: "true"
     volumes:
     - './logback.xml:/logback.xml'

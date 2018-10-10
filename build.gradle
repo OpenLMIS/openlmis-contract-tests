@@ -14,6 +14,7 @@ dependencies {
     testCompile 'io.cucumber:cucumber-junit:3.0.2'
     testCompile 'junit:junit:4.12'
     testCompile 'org.jglue.fluent-json:fluent-json:2.0.0'
+    testCompile 'org.assertj:assertj-core:3.11.1'
 }
 
 repositories {

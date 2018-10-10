@@ -2,15 +2,18 @@ package org.openlmis.contract_tests.hapifhir;
 
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
-public interface TestHelper {
+interface TestHelper {
 
-  Response createResource(String bodyAsString);
+  Response createResource(String body);
 
-  void verifyLocationAfterCreate(ValidatableResponse response);
+  Response updateResource(Object resourceId, String body);
 
-  Response updateResource(Object resourceId, String bodyAsString);
+  JSONObject getResource(ValidatableResponse response) throws ParseException;
 
-  void verifyLocationAfterUpdate(ValidatableResponse response);
+  void verifyFhirResourceAfterCreate(String resource, Object resourceId);
 
+  void verifyFhirResourceAfterUpdate(String resource, Object resourceId);
 }

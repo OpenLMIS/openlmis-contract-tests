@@ -87,6 +87,12 @@ public class LoginStepDefs {
     assertThat("Can't generate service-level token", ACCESS_TOKEN, is(notNullValue()));
   }
 
+  @Given("^I use API Key: (.*)$")
+  public void haveLoggedWithApiKey(String apiKey) {
+    ACCESS_TOKEN = apiKey;
+    assertThat("Can't use API Key", ACCESS_TOKEN, is(notNullValue()));
+  }
+
   @Given("^I logout$")
   public void tryLogout() {
     given()
