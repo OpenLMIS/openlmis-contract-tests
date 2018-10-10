@@ -39,7 +39,7 @@ Feature: Location Tests
         "extraData": { }
       }
       """
-      Then I pause 15 seconds for right assignment regeneration
+      Then I pause 30 seconds for right assignment regeneration
       And the facility should be created
       And I logout
 
@@ -50,7 +50,7 @@ Feature: Location Tests
       And I update the facility:
       | goDownDate | active |
       | 2025-12-31 | false  |
-      Then I pause 15 seconds for right assignment regeneration
+      Then I pause 30 seconds for right assignment regeneration
       And the facility should be up-to-date
       And I logout
 
@@ -114,14 +114,14 @@ Feature: Location Tests
         "status": "inactive"
       }
       """
-      Then I pause 15 seconds for right assignment regeneration
+      Then I pause 30 seconds for right assignment regeneration
       And the location should be created
       And the related facility should be created
 
       When I update the location:
       | status |
       | active |
-      Then I pause 15 seconds for right assignment regeneration
+      Then I pause 30 seconds for right assignment regeneration
       And the location should be up-to-date
       And the related facility should be updated
 
