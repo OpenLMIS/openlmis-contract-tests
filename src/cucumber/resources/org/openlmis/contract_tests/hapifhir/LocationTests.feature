@@ -84,7 +84,7 @@ Feature: Location Tests
       Then the related location should be created
 
       When I have logged in as administrator
-      When I update the geographic zone:
+      And I update the geographic zone:
       | latitude | longitude | catchmentPopulation |
       | 2        | 2         | 10000               |
       Then the geographic zone should be up-to-date
@@ -145,13 +145,13 @@ Feature: Location Tests
         }
       }
       """
-      And the location should be created
+      Then the location should be created
       And the related geographic zone should be created
 
       When I update the location:
       | position.latitude | position.longitude |
       | 2                 | 2                  |
-      And the location should be up-to-date
+      Then the location should be up-to-date
       And the related geographic zone should be updated
 
   Scenario: Geographic zone (with parent) should be updated when location is updated
@@ -177,11 +177,11 @@ Feature: Location Tests
         }
       }
       """
-      And the location should be created
+      Then the location should be created
       And the related geographic zone should be created
 
       When I update the location:
       | position.latitude | position.longitude |
       | 2                 | 2                  |
-      And the location should be up-to-date
+      Then the location should be up-to-date
       And the related geographic zone should be updated

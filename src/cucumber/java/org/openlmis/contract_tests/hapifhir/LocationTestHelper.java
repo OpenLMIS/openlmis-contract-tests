@@ -10,6 +10,7 @@ import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONObject;
@@ -38,10 +39,12 @@ public class LocationTestHelper extends BaseTestHelper {
   }
 
   @Override
-  public JSONObject getResource(ValidatableResponse response) throws ParseException {
+  public JSONObject getResource(ValidatableResponse response) throws Exception {
     String locationHref = response
         .extract()
         .header(HttpHeaders.CONTENT_LOCATION);
+
+    TimeUnit.SECONDS.sleep(1);
 
     String locationAsString = given()
         .contentType(ContentType.JSON)
