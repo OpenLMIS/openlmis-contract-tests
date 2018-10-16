@@ -11,7 +11,7 @@ interface TestHelper {
 
   Response updateResource(Object resourceId, String body);
 
-  JSONObject getResource(ValidatableResponse response) throws Exception;
+  JSONObject getResource(ValidatableResponse response) throws ParseException;
 
   void verifyFhirResourceAfterCreate(String resource, Object resourceId);
 

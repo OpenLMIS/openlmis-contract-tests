@@ -40,7 +40,7 @@ public class LocationStepDefs {
   }
 
   @Then("^the (facility|geographic zone|location) should be created$")
-  public void shouldCreateResource(String resource) throws Exception {
+  public void shouldCreateResource(String resource) throws ParseException {
     ValidatableResponse response = this.response
         .then()
         .statusCode(HttpStatus.SC_CREATED);
@@ -71,7 +71,7 @@ public class LocationStepDefs {
   }
 
   @Then("^the (facility|geographic zone|location) should be up-to-date$")
-  public void shouldUpdateResource(String resource) throws Exception {
+  public void shouldUpdateResource(String resource) throws ParseException {
     ValidatableResponse response = this.response
         .then()
         .statusCode(HttpStatus.SC_OK);
