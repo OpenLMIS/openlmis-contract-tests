@@ -39,6 +39,11 @@ services:
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
+  
+  redis:
+    mem_limit: 512m
+    image: redis:3.2.12
+    depends_on: [log]
 
   db:
     mem_limit: 512m

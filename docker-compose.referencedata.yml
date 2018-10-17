@@ -11,11 +11,6 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
   
-  redis:
-    mem_limit: 512m
-    image: redis:3.2.12
-    depends_on: [log]
-
   contract_tests:
     mem_limit: 768m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}

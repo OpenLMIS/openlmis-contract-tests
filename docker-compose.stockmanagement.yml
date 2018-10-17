@@ -19,6 +19,7 @@ services:
       - 'gradlecache:/gradle'
     links:
     - db
+    - redis
     - log
     - nginx
     - consul
