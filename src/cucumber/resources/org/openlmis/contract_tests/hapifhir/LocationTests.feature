@@ -37,7 +37,7 @@ Feature: Location Tests
   Scenario: Location should be synchronized with geographic zone (with parent)
       Given I have logged in as administrator
 
-      When I try to find geographic zone for geographic zone:
+      When I try to find geographic zone for new geographic zone:
       | code    |
       | CT-GZ-1 |
       Then I should find geographic zone
@@ -76,7 +76,7 @@ Feature: Location Tests
   Scenario: Location should be synchronized with facility
       Given I have logged in as administrator
 
-      When I try to find geographic zone for facility:
+      When I try to find geographic zone for new facility:
       | code    |
       | CT-GZ-2 |
       Then I should find geographic zone
@@ -164,7 +164,7 @@ Feature: Location Tests
   Scenario: Geographic zone (with parent) should be synchronized with location
       Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
 
-      When I try to find location for location:
+      When I try to find location for new location:
       | name         |
       | CT-FHIR-GZ-1 |
       Then I should find location
@@ -199,7 +199,7 @@ Feature: Location Tests
   Scenario: Facility should be synchronized with location
       Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
 
-      When I try to find location for location:
+      When I try to find location for new location:
       | name         |
       | CT-FHIR-GZ-2 |
       Then I should find location

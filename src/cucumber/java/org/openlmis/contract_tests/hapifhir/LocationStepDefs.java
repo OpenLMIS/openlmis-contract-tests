@@ -85,7 +85,7 @@ public class LocationStepDefs {
     findHelper(resourceName).verifyFhirResourceAfterUpdate(resource, resourceId);
   }
 
-  @When("^I try to find (.*) for (.*):$")
+  @When("^I try to find (.*) for new (.*):$")
   public void tryToFindResource(String findResourceName, String resource,
       DataTable parameters) {
     Map<String, String> params = parameters
