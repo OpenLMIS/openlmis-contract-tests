@@ -13,11 +13,9 @@ import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import java.util.List;
-import java.util.Map;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONObject;
-import org.openlmis.contract_tests.common.JsonFieldSetter;
+import org.openlmis.contract_tests.common.JsonFieldHelper;
 
 public class FacilityTypeApprovedProductStepDefs {
   private static final String FTAP_URL = baseUrlOfService("referencedata")
@@ -34,7 +32,7 @@ public class FacilityTypeApprovedProductStepDefs {
     JSONObject json = new JSONObject();
     table
         .asMaps()
-        .forEach(map -> map.forEach((key, value) -> JsonFieldSetter.setField(json, key, value)));
+        .forEach(map -> map.forEach((key, value) -> JsonFieldHelper.setField(json, key, value)));
 
     createApprovedProductResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)

@@ -16,9 +16,6 @@ import org.json.simple.parser.ParseException;
 
 public abstract class OlmisResourceTestHelper extends BaseTestHelper {
 
-  private static final String BASE_HAPI_FHIR_URL = baseUrlOfService("hapifhir");
-  private static final String LOCATION_URL = BASE_HAPI_FHIR_URL + "Location";
-
   private static final String SEARCH_BY_IDENTIFIER_FORMAT = "%s|%s";
   private static final String BASE_URL = System.getenv("BASE_URL");
 

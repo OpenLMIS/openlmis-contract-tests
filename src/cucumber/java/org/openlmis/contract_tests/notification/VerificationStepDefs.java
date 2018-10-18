@@ -19,7 +19,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.openlmis.contract_tests.common.JsonFieldSetter;
+import org.openlmis.contract_tests.common.JsonFieldHelper;
 
 public class VerificationStepDefs {
 
@@ -88,7 +88,7 @@ public class VerificationStepDefs {
         .stream()
         .map(Map::entrySet)
         .flatMap(Collection::stream)
-        .forEach(entry -> JsonFieldSetter.setField(body, entry.getKey(), entry.getValue()));
+        .forEach(entry -> JsonFieldHelper.setField(body, entry.getKey(), entry.getValue()));
 
     contactDetailsResponse = given()
         .pathParam(ID_PARAM, USER_REFERENCE_DATA_ID)

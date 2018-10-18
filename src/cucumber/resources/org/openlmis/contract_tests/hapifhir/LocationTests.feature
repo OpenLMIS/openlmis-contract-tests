@@ -1,10 +1,88 @@
 @LocationTests
 Feature: Location Tests
 
-  Scenario: Location should be updated when facility is updated
+  Scenario: Location should be synchronized with geographic zone (without parent)
       Given I have logged in as administrator
 
-      When I create a facility:
+      When I create geographic zone:
+      """
+      {
+        "code" : "CT-GZ-1",
+        "name" : "Contract Test Geographic Zone 1",
+        "level" : {
+          "id" : "6b78e6c6-292e-4733-bb9c-3d802ad61206"
+        },
+        "catchmentPopulation" : 1000,
+        "latitude" : 0,
+        "longitude" : 0,
+        "extraData" : { }
+      }
+      """
+      Then geographic zone should be created
+      And I logout
+
+      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Then related location should also be created
+
+      When I have logged in as administrator
+      And I update geographic zone:
+      | latitude | longitude | catchmentPopulation |
+      | 2        | 2         | 10000               |
+      Then geographic zone should be up-to-date
+      And I logout
+
+      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Then related location should also be up-to-date
+
+  Scenario: Location should be synchronized with geographic zone (with parent)
+      Given I have logged in as administrator
+
+      When I try to find geographic zone for geographic zone:
+      | code    |
+      | CT-GZ-1 |
+      Then I should find geographic zone
+
+      When I use id field of found geographic zone to set parent.id field in geographic zone
+      And I create geographic zone:
+      """
+      {
+        "code" : "CT-GZ-2",
+        "name" : "Contract Test Geographic Zone 2",
+        "level" : {
+          "id" : "9b497d87-cdd9-400e-bb04-fae0bf6a9491"
+        },
+        "catchmentPopulation" : 1000,
+        "latitude" : 0,
+        "longitude" : 0,
+        "extraData" : { }
+      }
+      """
+      Then geographic zone should be created
+      And I logout
+
+      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Then related location should also be created
+
+      When I have logged in as administrator
+      And I update geographic zone:
+      | latitude | longitude | catchmentPopulation |
+      | 2        | 2         | 10000               |
+      Then geographic zone should be up-to-date
+      And I logout
+
+      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Then related location should also be up-to-date
+
+  Scenario: Location should be synchronized with facility
+      Given I have logged in as administrator
+
+      When I try to find geographic zone for facility:
+      | code    |
+      | CT-GZ-2 |
+      Then I should find geographic zone
+
+      When I use id field of found geographic zone to set geographicZone.id field in facility
+      And I create facility:
       """
       {
         "code": "CT-F",
@@ -27,9 +105,6 @@ Feature: Location Tests
           "supportLocallyFulfilled": false,
           "supportStartDate": "2015-01-01"
         }],
-        "geographicZone": {
-          "id": "4df0cc89-8a71-450f-9c1a-29ceea1f14f3"
-        },
         "operator": {
           "id": "9456c3e9-c4a6-4a28-9e08-47ceb16a4121"
         },
@@ -40,95 +115,27 @@ Feature: Location Tests
       }
       """
       Then I pause 30 seconds for right assignment regeneration
-      And the facility should be created
+      And facility should be created
       And I logout
 
       When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
-      Then the related location should be created
+      Then related location should also be created
 
       When I have logged in as administrator
-      And I update the facility:
+      And I update facility:
       | goDownDate | active |
       | 2025-12-31 | false  |
       Then I pause 30 seconds for right assignment regeneration
-      And the facility should be up-to-date
+      And facility should be up-to-date
       And I logout
 
       When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
-      Then the related location should be updated
+      Then related location should also be up-to-date
 
-  Scenario: Location should be updated when geographic zone is updated
-      Given I have logged in as administrator
-
-      When I create a geographic zone:
-      """
-      {
-        "code" : "CT-GZ",
-        "name" : "Contract Test Geographic Zone",
-        "level" : {
-          "id" : "90e35999-a64f-4312-ba8f-bc13a1311c75"
-        },
-        "catchmentPopulation" : 1000,
-        "latitude" : 0,
-        "longitude" : 0,
-        "parent" : {
-          "id" : "4e471242-da63-436c-8157-ade3e615c848"
-        },
-        "extraData" : { }
-      }
-      """
-      Then the geographic zone should be created
-      And I logout
-
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
-      Then the related location should be created
-
-      When I have logged in as administrator
-      When I update the geographic zone:
-      | latitude | longitude | catchmentPopulation |
-      | 2        | 2         | 10000               |
-      Then the geographic zone should be up-to-date
-      And I logout
-
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
-      Then the related location should be updated
-
-  Scenario: Facility should be updated when location is updated
+  Scenario: Geographic zone (without parent) should be synchronized with location
       Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
 
-      When I create a location:
-      """
-      {
-        "resourceType": "Location",
-        "name": "Contract Test FHIR Facility",
-        "description": "This is an example location which should be added to the reference data service",
-        "alias": ["CT-FHIR-F"],
-        "partOf": {
-          "reference": "http://nginx/api/Location/4df0cc89-8a71-450f-9c1a-29ceea1f14f3"
-        },
-        "physicalType": {
-          "coding": [{
-            "code": "si"
-          }]
-        },
-        "status": "inactive"
-      }
-      """
-      Then I pause 30 seconds for right assignment regeneration
-      And the location should be created
-      And the related facility should be created
-
-      When I update the location:
-      | status |
-      | active |
-      Then I pause 30 seconds for right assignment regeneration
-      And the location should be up-to-date
-      And the related facility should be updated
-
-  Scenario: Geographic zone (without parent) should be updated when location is updated
-      Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
-
-      When I create a location:
+      When I create location:
       """
       {
         "resourceType": "Location",
@@ -145,27 +152,30 @@ Feature: Location Tests
         }
       }
       """
-      And the location should be created
-      And the related geographic zone should be created
+      Then location should be created
+      And related geographic zone should also be created
 
-      When I update the location:
+      When I update location:
       | position.latitude | position.longitude |
       | 2                 | 2                  |
-      And the location should be up-to-date
-      And the related geographic zone should be updated
+      Then location should be up-to-date
+      And related geographic zone should also be up-to-date
 
-  Scenario: Geographic zone (with parent) should be updated when location is updated
+  Scenario: Geographic zone (with parent) should be synchronized with location
       Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
 
-      When I create a location:
+      When I try to find location for location:
+      | name         |
+      | CT-FHIR-GZ-1 |
+      Then I should find location
+
+      When I use id field of found location to set partOf.reference field in location
+      And I create location:
       """
       {
         "resourceType": "Location",
         "name": "Contract Test FHIR Geographic Zone 2",
         "alias": ["CT-FHIR-GZ-2"],
-        "partOf": {
-          "reference": "http://nginx/api/Location/4e471242-da63-436c-8157-ade3e615c848"
-        },
         "position": {
           "latitude": 0,
           "longitude": 0
@@ -177,11 +187,46 @@ Feature: Location Tests
         }
       }
       """
-      And the location should be created
-      And the related geographic zone should be created
+      Then location should be created
+      And related geographic zone should also be created
 
-      When I update the location:
+      When I update location:
       | position.latitude | position.longitude |
       | 2                 | 2                  |
-      And the location should be up-to-date
-      And the related geographic zone should be updated
+      Then location should be up-to-date
+      And related geographic zone should also be up-to-date
+
+  Scenario: Facility should be synchronized with location
+      Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+
+      When I try to find location for location:
+      | name         |
+      | CT-FHIR-GZ-2 |
+      Then I should find location
+
+      When I use id field of found location to set partOf.reference field in location
+      And I create location:
+      """
+      {
+        "resourceType": "Location",
+        "name": "Contract Test FHIR Facility",
+        "description": "This is an example location which should be added to the reference data service",
+        "alias": ["CT-FHIR-F"],
+        "physicalType": {
+          "coding": [{
+            "code": "si"
+          }]
+        },
+        "status": "inactive"
+      }
+      """
+      Then I pause 30 seconds for right assignment regeneration
+      And location should be created
+      And related facility should also be created
+
+      When I update location:
+      | status |
+      | active |
+      Then I pause 30 seconds for right assignment regeneration
+      And location should be up-to-date
+      And related facility should also be up-to-date

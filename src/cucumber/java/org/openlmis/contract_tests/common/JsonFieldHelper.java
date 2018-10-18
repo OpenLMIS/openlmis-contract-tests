@@ -17,7 +17,22 @@ package org.openlmis.contract_tests.common;
 
 import org.json.simple.JSONObject;
 
-public final class JsonFieldSetter {
+public final class JsonFieldHelper {
+
+  public static String getField(JSONObject json, String path) {
+    int dotIndex = path.indexOf('.');
+    boolean nestedField = -1 != dotIndex;
+
+    if (nestedField) {
+      String field = path.substring(0, dotIndex);
+      String rest = path.substring(dotIndex + 1);
+      JSONObject subJson = getSubJson(json, field);
+
+      return getField(subJson, rest);
+    } else {
+      return (String) json.get(path);
+    }
+  }
 
   public static void setField(JSONObject json, String path, String value) {
     int dotIndex = path.indexOf('.');
