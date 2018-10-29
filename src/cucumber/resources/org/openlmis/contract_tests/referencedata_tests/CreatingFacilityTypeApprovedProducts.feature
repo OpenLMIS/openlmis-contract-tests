@@ -1,8 +1,7 @@
 @FacilityTypeApprovedProductTests
-Feature: Facility Type Approved Product Tests
+Feature: Creating facility type approved products
 
-
-  Scenario: Admin user should be able to create FTAP
+  Scenario: Administrator should be able to create FTAP
     Given I have logged in as admin
 
     When I try to create a FTAP:
@@ -11,17 +10,7 @@ Feature: Facility Type Approved Product Tests
     Then I should get response with created FTAP's id
     And I logout
 
-  Scenario: Admin user should be able to remove FTAP
-    Given I have logged in as admin
-
-    When I try to get first FTAP with health_center facility type
-    Then I should get first returned FTAP's id
-
-    When I try to delete created FTAP
-    Then I should get response of deleted FTAP
-    And I logout
-
-  Scenario: Admin user should be able to recreate FTAP
+  Scenario: Administrator should be able to recreate FTAP
     Given I have logged in as admin
 
     When I try to get first FTAP with health_center facility type
