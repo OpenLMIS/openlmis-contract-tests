@@ -24,6 +24,7 @@ import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN_PARAM_NAME;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
+import com.google.gson.JsonObject;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.jglue.fluentjson.JsonObjectBuilder;
 
@@ -55,7 +57,7 @@ public class SupervisoryNodeStepDefs {
       createSupervisoryNodeResponse = given()
           .contentType(ContentType.JSON)
           .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-          .body(buildSupervisoryNode(map)
+          .body(buildSupervisoryNode(map, null)
               .getJson().toString())
           .when()
           .post(SUPERVISORY_NODE_URL);
@@ -91,7 +93,7 @@ public class SupervisoryNodeStepDefs {
       updateSupervisoryNodeResponse = given()
           .contentType(ContentType.JSON)
           .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-          .body(buildSupervisoryNode(map)
+          .body(buildSupervisoryNode(map, id)
               .getJson().toString())
           .when()
           .put(SUPERVISORY_NODE_URL + id);
@@ -155,12 +157,16 @@ public class SupervisoryNodeStepDefs {
         .statusCode(HttpStatus.SC_NOT_FOUND);
   }
 
-  private JsonObjectBuilder buildSupervisoryNode(Map<String, String> data) {
-    JsonObjectBuilder facility = buildObject()
-        .add("id", data.get("facilityId"));
-    return buildObject()
+  private JsonObjectBuilder buildSupervisoryNode(Map<String, String> data, String id) {
+    JsonObjectBuilder<?, JsonObject> json = buildObject()
         .add("code", (String) data.get("code"))
-        .add("facility", facility)
+        .add("facility", buildObject().add("id", data.get("facilityId")))
         .add("name", (String) data.get("name"));
+
+    if (StringUtils.isNotBlank(id)) {
+      json.add("id", id);
+    }
+
+    return json;
   }
 }
