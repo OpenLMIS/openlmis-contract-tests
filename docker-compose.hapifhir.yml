@@ -1,6 +1,13 @@
 version: "2"
 services:
 
+
+  wiremock:
+    image: rodolpheche/wiremock:2.19.0
+    ports:
+      - 8080
+
+
   hapifhir:
     image: openlmis/hapifhir:${OL_HAPIFHIR_VERSION}
     mem_limit: 1024m
@@ -10,6 +17,8 @@ services:
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
+    links:
+      - wiremock
 
   referencedata:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
@@ -41,6 +50,7 @@ services:
     - auth
     - referencedata
     - hapifhir
+    - wiremock
 
     entrypoint:
       - 'gradle'
@@ -51,7 +61,7 @@ services:
         ${BASE_URL}/referencedata,
         ${BASE_URL}/hapifhir'
       - 'cucumber'
-      - '-Ptags=@LocationTests'
+      - '-Ptags=@LocationTests,@SubscriptionTests'
       - '--stacktrace'
       - '--no-daemon'
 

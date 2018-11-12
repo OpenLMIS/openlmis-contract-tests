@@ -8,7 +8,8 @@ dependencies {
     compile 'org.json:json:20170516'
     compile 'org.yaml:snakeyaml:1.18'
     compile 'org.projectlombok:lombok:1.18.0'
-
+    
+    testCompile 'com.github.tomakehurst:wiremock:2.19.0'
     testCompile 'io.rest-assured:rest-assured:3.0.0'
     testCompile 'io.cucumber:cucumber-java:3.0.2'
     testCompile 'io.cucumber:cucumber-junit:3.0.2'
