@@ -88,9 +88,7 @@ public class UserStepDefs {
           .body("firstName", is(map.get("firstName")))
           .body("lastName", is(map.get("lastName")))
           .body("timezone", is(map.get("timezone")))
-          .body("active", is(Boolean.parseBoolean(String.valueOf(map.get("active")))))
-          .body("loginRestricted",
-              is(Boolean.parseBoolean(String.valueOf(map.get("loginRestricted")))));
+          .body("active", is(Boolean.parseBoolean(String.valueOf(map.get("active")))));
     }
   }
 
