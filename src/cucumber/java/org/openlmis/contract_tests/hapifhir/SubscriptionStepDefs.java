@@ -39,9 +39,5 @@ public class SubscriptionStepDefs {
     subscriptionTestHelper.verifyThatStubWasCalled();
   }
 
-  @Then("^Wait for (\\d+) seconds$")
-  public void waitFor(int seconds) throws Exception {
-    TimeUnit.SECONDS.sleep(seconds);
-  }
 
 }

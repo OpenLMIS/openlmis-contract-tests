@@ -40,7 +40,6 @@
       }
       """
 
-      And Wait for 10 seconds
-
+      And I pause 30 seconds
 
       Then verify that mock server is called

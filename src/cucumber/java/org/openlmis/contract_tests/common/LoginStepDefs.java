@@ -108,7 +108,7 @@ public class LoginStepDefs {
     }
   }
 
-  @Given("^I pause (\\d+) seconds for right assignment regeneration$")
+  @Given("^I pause (\\d+) seconds")
   public void pauseFiveSeconds(int seconds) throws InterruptedException {
     TimeUnit.SECONDS.sleep(seconds);
   }
