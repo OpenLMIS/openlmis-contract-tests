@@ -46,4 +46,4 @@ Feature: Supervisory Node tests
       | facilityId                           | code   | name                        |
       | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | SN003U | Supervisory Node #3 Updated |
     
-    And I pause 5 seconds for right assignment regeneration
+    And I pause for 5 seconds

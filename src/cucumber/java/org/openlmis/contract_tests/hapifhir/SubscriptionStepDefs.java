@@ -19,22 +19,22 @@ public class SubscriptionStepDefs {
     subscriptionTestHelper = new SubscriptionTestHelper();
   }
 
-  @And("^I stub a mock server$")
+  @And("^I have an upstream FHIR server$")
   public void stubAMockServer() {
     subscriptionTestHelper.stubForLocation();
   }
 
-  @When("^I post a rest-hook subscription resource to call wiremock server on any location update$")
+  @When("^my upstream FHIR server subscribes to Location updates with the OpenLMIS FHIR Service$")
   public void createASubscription(String body) throws Exception {
     subscriptionTestHelper.createAFHIRSubscriptionResource(body);
   }
 
-  @Then("^I post a new hapifhir location")
+  @Then("^I update an OpenLMIS Location")
   public void createAHapiLocation(String body) throws Exception {
     subscriptionTestHelper.createFHIRLocationResource(body);
   }
 
-  @Then("^verify that mock server is called$")
+  @Then("^I verify that my Upstream FHIR Server has received a notification of a Location change$")
   public void verifyThatMockServerIsCalled() {
     subscriptionTestHelper.verifyThatStubWasCalled();
   }

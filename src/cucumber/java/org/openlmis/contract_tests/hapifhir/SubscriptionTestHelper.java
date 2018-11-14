@@ -16,8 +16,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static io.restassured.RestAssured.given;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
@@ -27,6 +29,7 @@ public class SubscriptionTestHelper {
 
   private static final String BASE_HAPI_FHIR_URL = baseUrlOfService("hapifhir");
   private static final String SUBSCRIPTION_URI = BASE_HAPI_FHIR_URL + "Subscription";
+  public static final String LOCATION_URI = "Location/a5d519aa-1ab4-49e8-b720-07cc647108ea";
 
   private WireMock wireMock = new WireMock("wiremock", 8080);
 
@@ -59,8 +62,9 @@ public class SubscriptionTestHelper {
   public void verifyThatStubWasCalled() {
     wireMock.verify(
         putRequestedFor(
-            urlPathMatching("/fhir_locations/Location/a5d519aa-1ab4-49e8-b720-07cc647108ea"))
-            .withRequestBody(matchingJsonPath("$..name", containing("Contract Test S  FHIR Geographic Zone 2")))
+            urlPathMatching("/fhir_locations/" + LOCATION_URI))
+            .withRequestBody(
+                matchingJsonPath("$..name", containing("Contract Test S  FHIR Geographic Zone 2")))
             .withRequestBody(matchingJsonPath("$.resourceType", containing("Location")))
     );
 
@@ -73,11 +77,12 @@ public class SubscriptionTestHelper {
         .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
         .body(json)
         .when()
-        .put(BASE_HAPI_FHIR_URL + "Location/a5d519aa-1ab4-49e8-b720-07cc647108ea")
+        .put(BASE_HAPI_FHIR_URL + LOCATION_URI)
         .then()
         .statusCode(HttpStatus.SC_CREATED);
 
     response.body("resourceType", is("OperationOutcome"))
-        .body("issue[0].diagnostics", containsString("Successfully created resource \"Location/a5d519aa-1ab4-49e8-b720-07cc647108ea/_history/1\""));
+        .body("issue[0].diagnostics",
+            containsString("Successfully created resource \"" + LOCATION_URI + "/_history/1\""));
   }
 }

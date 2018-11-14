@@ -87,6 +87,7 @@ public class LoginStepDefs {
     assertThat("Can't generate service-level token", ACCESS_TOKEN, is(notNullValue()));
   }
 
+
   @Given("^I use API Key: (.*)$")
   public void haveLoggedWithApiKey(String apiKey) {
     ACCESS_TOKEN = apiKey;
@@ -101,15 +102,15 @@ public class LoginStepDefs {
         .post(baseUrlOfService("oauth") + "/users/logout");
   }
 
-  @Given("^I am not logged$")
+  @Given("^I am not logged in$")
   public void notLogged() {
     if (null != ACCESS_TOKEN) {
       tryLogout();
     }
   }
 
-  @Given("^I pause (\\d+) seconds")
-  public void pauseFiveSeconds(int seconds) throws InterruptedException {
+  @Given("^(?:After )?I pause for (\\d+) seconds")
+  public void pauseInSeconds(int seconds) throws InterruptedException {
     TimeUnit.SECONDS.sleep(seconds);
   }
 }

@@ -3,7 +3,7 @@ services:
 
 
   wiremock:
-    image: rodolpheche/wiremock:2.19.0
+    image: rodolpheche/wiremock:${WIREMOCK_IMAGE_VERSION}
     ports:
       - 8080
 
@@ -61,7 +61,7 @@ services:
         ${BASE_URL}/referencedata,
         ${BASE_URL}/hapifhir'
       - 'cucumber'
-      - '-Ptags=@LocationTests,@SubscriptionTests'
+      - '-Ptags=@LocationTests or @SubscriptionTests'
       - '--stacktrace'
       - '--no-daemon'
 

@@ -11,7 +11,7 @@ Feature: User Tests
 
 
   Scenario: System health status should be un-authenticated
-    Given I am not logged
+    Given I am not logged in
 
     When I try to retrieve system health status
     Then I should get response with current system health status

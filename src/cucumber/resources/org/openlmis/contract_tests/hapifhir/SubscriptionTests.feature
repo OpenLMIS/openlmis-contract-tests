@@ -3,8 +3,8 @@
 
     Scenario: When rest hook subscription is made, subscribers should receive notification on update
       Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
-      And I stub a mock server
-      And I post a rest-hook subscription resource to call wiremock server on any location update
+      And I have an upstream FHIR server
+      When my upstream FHIR server subscribes to Location updates with the OpenLMIS FHIR Service
       """
       {
         "resourceType": "Subscription",
@@ -21,7 +21,7 @@
       }
       """
 
-      Then I post a new hapifhir location
+      And I update an OpenLMIS Location
       """
       {
         "id": "a5d519aa-1ab4-49e8-b720-07cc647108ea"
@@ -40,6 +40,6 @@
       }
       """
 
-      And I pause 30 seconds
+      Then After I pause for 30 seconds
 
-      Then verify that mock server is called
+      And I verify that my Upstream FHIR Server has received a notification of a Location change
