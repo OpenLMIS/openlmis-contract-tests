@@ -2,7 +2,7 @@
   Feature: HAPI FHIR Subscription Tests
 
     Scenario: When rest hook subscription is made, subscribers should receive notification on update
-      Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Given I am logged in as a service client
       And I have an upstream FHIR server
       When my upstream FHIR server subscribes to Location updates with the OpenLMIS FHIR Service
       """

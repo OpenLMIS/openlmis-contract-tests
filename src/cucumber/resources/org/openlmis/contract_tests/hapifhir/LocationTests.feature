@@ -21,7 +21,7 @@ Feature: Location Tests
       Then geographic zone should be created
       And I logout
 
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      When I am logged in as a service client
       Then related location should also be created
 
       When I have logged in as administrator
@@ -31,7 +31,7 @@ Feature: Location Tests
       Then geographic zone should be up-to-date
       And I logout
 
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      When I am logged in as a service client
       Then related location should also be up-to-date
 
   Scenario: Location should be synchronized with geographic zone (with parent)
@@ -60,7 +60,7 @@ Feature: Location Tests
       Then geographic zone should be created
       And I logout
 
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      When I am logged in as a service client
       Then related location should also be created
 
       When I have logged in as administrator
@@ -70,7 +70,7 @@ Feature: Location Tests
       Then geographic zone should be up-to-date
       And I logout
 
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      When I am logged in as a service client
       Then related location should also be up-to-date
 
   Scenario: Location should be synchronized with facility
@@ -118,7 +118,7 @@ Feature: Location Tests
       And facility should be created
       And I logout
 
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      When I am logged in as a service client
       Then related location should also be created
 
       When I have logged in as administrator
@@ -129,11 +129,11 @@ Feature: Location Tests
       And facility should be up-to-date
       And I logout
 
-      When I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      When I am logged in as a service client
       Then related location should also be up-to-date
 
   Scenario: Geographic zone (without parent) should be synchronized with location
-      Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Given I am logged in as a service client
 
       When I create location:
       """
@@ -162,7 +162,7 @@ Feature: Location Tests
       And related geographic zone should also be up-to-date
 
   Scenario: Geographic zone (with parent) should be synchronized with location
-      Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Given I am logged in as a service client
 
       When I try to find location for new location:
       | name         |
@@ -197,7 +197,7 @@ Feature: Location Tests
       And related geographic zone should also be up-to-date
 
   Scenario: Facility should be synchronized with location
-      Given I use API Key: 9a556033-ed13-4dde-9561-158469d15134
+      Given I am logged in as a service client
 
       When I try to find location for new location:
       | name         |

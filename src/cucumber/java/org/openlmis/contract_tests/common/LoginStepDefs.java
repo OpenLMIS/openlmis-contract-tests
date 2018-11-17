@@ -87,11 +87,9 @@ public class LoginStepDefs {
     assertThat("Can't generate service-level token", ACCESS_TOKEN, is(notNullValue()));
   }
 
-
-  @Given("^I use API Key: (.*)$")
-  public void haveLoggedWithApiKey(String apiKey) {
-    ACCESS_TOKEN = apiKey;
-    assertThat("Can't use API Key", ACCESS_TOKEN, is(notNullValue()));
+  @Given("^I am logged in as a service client$")
+  public void haveLoggedWithApiKey() {
+    ACCESS_TOKEN = "9a556033-ed13-4dde-9561-158469d15134";
   }
 
   @Given("^I logout$")
