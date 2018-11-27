@@ -96,16 +96,16 @@ The following things should be done:
 
 #### Create cucumber feature file
 This file describes a list of steps that the test should take, in a human readability friendly manner.
-Look at [RequisitionTests.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/requisition_tests/RequisitionTests.feature) for example.
+Look at [RegularRequisitionTests.feature](src/cucumber/resources/org/openlmis/contract_tests/requisition_tests/RegularRequisitionTests.feature) for example.
 
 #### Create step definitions
 The step definition file provides the feature file with runnable code.
 Both need to be present for cucumber to run.
-Look at [RequisitionStepDefs.java](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/java/org/openlmis/contract_tests/requisition/RequisitionStepDefs.java) for example.
+Look at [RequisitionStepDefs.java](src/cucumber/java/org/openlmis/contract_tests/requisition/RequisitionStepDefs.java) for example.
 
 #### Assign cucumber feature appropriate tag 
 Tags allow us to run different test cases in pipelines of different services.
-Look at the first line of [RequisitionTests.feature](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/src/cucumber/resources/org/openlmis/contract_tests/requisition_tests/RequisitionTests.feature) for example.
+Look at the first line of [RegularRequisitionTests.feature](src/cucumber/resources/org/openlmis/contract_tests/requisition_tests/RegularRequisitionTests.feature) for example.
 
 When tag is defined, it allows us to run:
 `gradle clean cucumber -Ptags=@admin,@otherTag,@yetAnotherTag`
@@ -113,12 +113,10 @@ This will only run test cases that match the tags, nothing else.
 
 #### Docker compose file
 This docker compose file will be used by CI to link required containers together and run the tests.
-Look at [docker-compose.override.yml](https://github.com/OpenLMIS/openlmis-contract-tests/blob/master/docker-compose.override.yml) for example.
+Look at [docker-compose.requisition.yml](docker-compose.requisition.yml) for example.
 
 #### Jenkins job
 Job in both auth service and requisition service's pipelines, which uses the compose file defined in the previous step to run tests.
 
 By doing this step, we can ensure that when either service's code changes, the test is ran.
-Look at [OpenLMIS-requisition-contract-test](http://ci.openlmis.org:8080/job/OpenLMIS-requisition-contract-test/)
-
-Report [Result of tests on Jenkins] (http://ci.openlmis.org:8080/job/OpenLMIS-requisition-contract-test/ws/build/cucumber/index.html)
+Look at [OpenLMIS-requisition-contract-test](http://build.openlmis.org/job/OpenLMIS-contract-tests-pipeline/)
