@@ -18,7 +18,7 @@ For a certain business scenario named A, it requires:
 to work together.
 
 In that case, we should create a number of contract tests in this repository, which of course would call those two end points.
-All of them organized in the same [suite](https://github.com/cucumber/cucumber/wiki/Tags) under business scenario A's name.
+All of them organized in the same [suite](https://docs.cucumber.io/cucumber/api/#tags) under business scenario A's name.
 
 Then in service **X's CI pipeline** we could have:
 
