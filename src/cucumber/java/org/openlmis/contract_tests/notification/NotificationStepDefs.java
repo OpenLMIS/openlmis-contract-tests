@@ -16,7 +16,6 @@
 package org.openlmis.contract_tests.notification;
 
 import static io.restassured.RestAssured.given;
-import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
@@ -29,10 +28,10 @@ import io.restassured.http.ContentType;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.assertj.core.util.Lists;
+import org.assertj.core.util.Sets;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -42,7 +41,7 @@ public class NotificationStepDefs {
 
   private static final String BASE_URL_OF_NOTIFICATION_SERVICE = baseUrlOfService("notification");
 
-  private List<JSONObject> notifications = Lists.newArrayList();
+  private Set<String> notifications = Sets.newHashSet();
   private String userId;
 
 
@@ -52,7 +51,7 @@ public class NotificationStepDefs {
 
     JSONParser parser = new JSONParser();
     int pageNumber = 0;
-    int pageSize = 10_000;
+    int pageSize = 1_000;
 
     while (true) {
       String pageAsString = given()
@@ -74,9 +73,13 @@ public class NotificationStepDefs {
       }
 
       for (Object item : content) {
-        JSONObject obj = (JSONObject) item;
-        if (equalsIgnoreCase(userId, obj.get("userId").toString())) {
-          notifications.add(obj);
+        JSONObject json = (JSONObject) item;
+        if (equalsIgnoreCase(userId, json.get("userId").toString())) {
+          JSONObject messages = (JSONObject) json.get("messages");
+          JSONObject message = (JSONObject) messages.get("email");
+          String body = (String) message.get("body");
+
+          notifications.add(body);
         }
       }
 
@@ -90,17 +93,7 @@ public class NotificationStepDefs {
         .as("No notifications for user %s", userId)
         .isNotEmpty();
 
-    Set<String> bodies = notifications
-        .stream()
-        .map(json -> (JSONObject) json.get("messages"))
-        .filter(Objects::nonNull)
-        .map(messages -> (JSONObject) messages.get("email"))
-        .filter(Objects::nonNull)
-        .map(message -> (String) message.get("body"))
-        .filter(Objects::nonNull)
-        .collect(Collectors.toSet());
-
-    assertThat(bodies)
+    assertThat(notifications)
         .as("Can't find a notification with the given body")
         .anyMatch(body -> Pattern.matches(regex, body));
   }
