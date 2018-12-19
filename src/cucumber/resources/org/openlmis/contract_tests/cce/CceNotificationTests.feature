@@ -1,4 +1,4 @@
-@CceNotificationTests
+#@CceNotificationTests
 Feature: CCE Notification Tests
 
   Scenario: User with supervisory supervision role should get a notification about nonfunctional CCE
