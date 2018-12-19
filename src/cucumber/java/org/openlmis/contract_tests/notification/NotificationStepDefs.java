@@ -25,12 +25,8 @@ import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfSer
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import org.assertj.core.util.Lists;
 import org.assertj.core.util.Sets;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
