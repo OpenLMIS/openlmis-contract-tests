@@ -3,10 +3,10 @@ services:
 
   cce:
     image: openlmis/cce:${OL_CCE_VERSION}
-    mem_limit: 512m
+    mem_limit: 1024m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx1024m -Dlogging.config=/logback.xml'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -16,7 +16,7 @@ services:
     mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
@@ -25,7 +25,7 @@ services:
     mem_limit: 768m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
-      GRADLE_OPTS: '-Xmx256m'
+      GRADLE_OPTS: '-Xmx768m'
     env_file: settings.env
     volumes:
       - '.:/app'
