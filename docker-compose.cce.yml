@@ -2,8 +2,7 @@ version: "2"
 services:
 
   cce:
-    build:
-      context: ./../openlmis-cce
+    image: openlmis/cce:${OL_CCE_VERSION}
     mem_limit: 512m
     env_file: settings.env
     environment:
