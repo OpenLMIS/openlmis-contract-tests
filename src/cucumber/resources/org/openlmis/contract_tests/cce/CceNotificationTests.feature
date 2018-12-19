@@ -11,7 +11,7 @@ Feature: CCE Notification Tests
 
     When I try to change functionality status to AWAITING_REPAIR with NO_FUEL as a reason
     Then I should get response with inventory item with AWAITING_REPAIR functionality status
-    And I pause for 30 seconds
+    And I pause for 60 seconds
 
     When I try to find notifications for user 560be32a-ea2e-4d12-ae00-1f69376ad535
     Then I should get a notification that match the following regex
@@ -29,7 +29,7 @@ Feature: CCE Notification Tests
 
     When I try to change functionality status to AWAITING_REPAIR with NO_FUEL as a reason
     Then I should get response with inventory item with AWAITING_REPAIR functionality status
-    And I pause for 30 seconds
+    And I pause for 60 seconds
 
     When I try to find notifications for user 211a6b4d-3c59-4fb2-8075-eedb79a18103
     Then I should get a notification that match the following regex
