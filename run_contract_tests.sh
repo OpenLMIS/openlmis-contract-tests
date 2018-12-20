@@ -25,7 +25,7 @@ touch ${TEST_RESULTS_DIR}/cucumber-junit.xml
 #cleaning after tests
 contract_test_result=$?
 
-/usr/local/bin/docker-compose logs --no-color > ${TEST_RESULTS_DIR}/container-logs
+/usr/local/bin/docker-compose logs --no-color --timestamps > ${TEST_RESULTS_DIR}/container-logs
 /usr/local/bin/docker-compose exec -T log cat /var/log/messages > ${TEST_RESULTS_DIR}/sys-logs
 /usr/local/bin/docker-compose exec -T nginx cat /etc/nginx/conf.d/default.conf > ${TEST_RESULTS_DIR}/nginx
 

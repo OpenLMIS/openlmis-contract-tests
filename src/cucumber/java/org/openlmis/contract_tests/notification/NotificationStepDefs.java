@@ -16,7 +16,6 @@
 package org.openlmis.contract_tests.notification;
 
 import static io.restassured.RestAssured.given;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN_PARAM_NAME;
@@ -25,6 +24,7 @@ import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfSer
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
+import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.assertj.core.util.Sets;
@@ -41,57 +41,53 @@ public class NotificationStepDefs {
   private String userId;
 
 
-  @When("^I try to find notifications for user (.+)$")
-  public void tryToFindNotificationsForUser(String userId) throws ParseException {
+  @When("^I try to find notifications for user (.+) from last (\\d+) days$")
+  public void tryToFindNotificationsForUser(String userId, Integer days) throws ParseException {
     this.userId = userId;
 
+    ZonedDateTime to = ZonedDateTime.now();
+    ZonedDateTime from = to.minusDays(days);
+
+    String pageAsString = given()
+        .when()
+        .contentType(ContentType.JSON)
+        .queryParam("userId", userId)
+        .queryParam("sendingDateFrom", from.toString())
+        .queryParam("sendingDateTo", to.toString())
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
+        .get(BASE_URL_OF_NOTIFICATION_SERVICE + "notifications")
+        .then()
+        .statusCode(200)
+        .extract()
+        .asString();
+
     JSONParser parser = new JSONParser();
-    int pageNumber = 0;
-    int pageSize = 1_000;
+    JSONObject page = (JSONObject) parser.parse(pageAsString);
+    JSONArray content = (JSONArray) page.get("content");
 
-    while (true) {
-      String pageAsString = given()
-          .when()
-          .contentType(ContentType.JSON)
-          .queryParam("page", pageNumber)
-          .queryParam("size", pageSize)
-          .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-          .get(BASE_URL_OF_NOTIFICATION_SERVICE + "notifications")
-          .then()
-          .statusCode(200)
-          .extract()
-          .asString();
-      JSONObject page = (JSONObject) parser.parse(pageAsString);
-      JSONArray content = (JSONArray) page.get("content");
+    for (Object item : content) {
+      JSONObject json = (JSONObject) item;
+      JSONObject messages = (JSONObject) json.get("messages");
+      JSONObject message = (JSONObject) messages.get("email");
+      String body = (String) message.get("body");
 
-      if (content.isEmpty()) {
-        break;
-      }
-
-      for (Object item : content) {
-        JSONObject json = (JSONObject) item;
-        if (equalsIgnoreCase(userId, json.get("userId").toString())) {
-          JSONObject messages = (JSONObject) json.get("messages");
-          JSONObject message = (JSONObject) messages.get("email");
-          String body = (String) message.get("body");
-
-          notifications.add(body);
-        }
-      }
-
-      pageNumber += 1;
+      notifications.add(body);
     }
+
+    System.out.println(notifications);
   }
 
   @Then("^I should get a notification that match the following regex$")
   public void shouldGetNotificationWithBody(String regex) {
+    Pattern pattern = Pattern.compile(regex);
+
     assertThat(notifications)
         .as("No notifications for user %s", userId)
         .isNotEmpty();
 
     assertThat(notifications)
         .as("Can't find a notification with the given body")
-        .anyMatch(body -> Pattern.matches(regex, body));
+        .anyMatch(body -> pattern.matcher(body).find());
   }
 
 }
