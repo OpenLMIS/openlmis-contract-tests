@@ -52,7 +52,7 @@ services:
         ,${BASE_URL}/cce'
       - 'cucumber'
       - '-Ptags=@CceNotificationTests'
-      - '-PwaitTime=660'
+      - '-PwaitTime=720'
       - '--stacktrace'
       - '--no-daemon'
 
