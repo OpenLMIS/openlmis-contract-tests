@@ -73,7 +73,7 @@ task waitFor {
             waitTime = project.getProperty('waitTime') as int
         }
 
-        println "Waiting another $waitTime seconds for right assignment regeneration"
+        println "Waiting another $waitTime seconds for services to be ready"
         sleep(waitTime * 1000)
     }
 }
