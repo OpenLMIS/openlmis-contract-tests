@@ -73,8 +73,6 @@ public class NotificationStepDefs {
 
       notifications.add(body);
     }
-
-    System.out.println(notifications);
   }
 
   @Then("^I should get a notification that match the following regex$")
