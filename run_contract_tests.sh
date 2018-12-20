@@ -41,6 +41,10 @@ echo "  SYSTEM LOGS"
 echo "=========================================================================="
 cat ${TEST_RESULTS_DIR}/sys-logs | egrep -v "(Resource2Db|RightAssignmentService)"
 echo "=========================================================================="
+echo "  LOADED DEMO DATA"
+echo "=========================================================================="
+egrep -o "Resource2Db (.+)\.(.+): \[" test-results/sys-logs | awk '{print substr($0, 13, length($0) - 16)}' | sort | uniq -c | sort -nr
+echo "=========================================================================="
 echo "  NGINX SETTINGS"
 echo "=========================================================================="
 cat ${TEST_RESULTS_DIR}/nginx
