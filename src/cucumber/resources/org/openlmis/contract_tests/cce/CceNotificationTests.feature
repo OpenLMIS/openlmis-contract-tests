@@ -31,7 +31,7 @@ Feature: CCE Notification Tests
     Then I should get response with inventory item with AWAITING_REPAIR functionality status
     And I pause for 30 seconds
 
-    When I try to find notifications for user 211a6b4d-3c59-4fb2-8075-eedb79a18103 from last 5 days
+    When I try to find notifications for user 1e3b03a5-1d48-4de1-bb4a-389beece2277 from last 5 days
     Then I should get a notification that match the following regex
     """
     ^Dear rivo:(\s*)This email is to inform you that the Gas "Fridge #27" at Depósito Provincial Niassa has been marked as AWAITING_REPAIR with the reason "NO_FUEL\."
