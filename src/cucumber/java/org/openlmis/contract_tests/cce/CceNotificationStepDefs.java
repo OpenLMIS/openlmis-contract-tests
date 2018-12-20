@@ -62,9 +62,14 @@ public class CceNotificationStepDefs {
   @Then("^I should get response with inventory item with reference name \"([^\"]*)?\"$")
   public void shouldGetResponseWithInventoryItemWithReferenceName(String referenceName)
       throws ParseException {
-    JSONParser parser = new JSONParser();
+    String searchResponseAsString = searchResponse
+        .then()
+        .statusCode(200)
+        .extract()
+        .asString();
 
-    JSONObject page = (JSONObject) parser.parse(searchResponse.asString());
+    JSONParser parser = new JSONParser();
+    JSONObject page = (JSONObject) parser.parse(searchResponseAsString);
     JSONArray content = (JSONArray) page.get("content");
     inventoryItem = null;
 
