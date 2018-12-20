@@ -10,6 +10,7 @@ services:
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
 
   notification:
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
@@ -20,6 +21,7 @@ services:
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
+    command: ["/wait-for-postgres.sh", "/run.sh"]
 
   contract_tests:
     mem_limit: 768m
