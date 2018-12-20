@@ -67,7 +67,7 @@ task waitFor {
             }
         }
 
-        def waitTime = 60
+        def waitTime = 120
         println "Waiting another $waitTime seconds for right assignment regeneration"
         sleep(waitTime * 1000)
     }
