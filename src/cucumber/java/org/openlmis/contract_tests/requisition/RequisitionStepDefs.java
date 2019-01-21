@@ -62,13 +62,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.openlmis.contract_tests.common.DatabaseManager;
 
 public class RequisitionStepDefs {
 
   static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
       baseUrlOfService("referencedata");
-  private static final DatabaseManager DATABASE_MANAGER = new DatabaseManager();
   private static final String REQUISITION_LINE_ITEMS = "requisitionLineItems";
   private static final String REQUISITIONS_FOR_CONVERT = "requisitionsForConvert/";
   private static final String BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE =
