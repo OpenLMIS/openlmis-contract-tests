@@ -107,7 +107,7 @@ public class LoginStepDefs {
     }
   }
 
-  @Given("^(?:After )?I pause for (\\d+) seconds")
+  @Given("^I pause for (\\d+) seconds")
   public void pauseInSeconds(int seconds) throws InterruptedException {
     TimeUnit.SECONDS.sleep(seconds);
   }

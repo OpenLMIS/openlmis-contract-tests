@@ -4,6 +4,7 @@
     Scenario: When rest hook subscription is made, subscribers should receive notification on update
       Given I am logged in as a service client
       And I have an upstream FHIR server
+
       When my upstream FHIR server subscribes to Location updates with the OpenLMIS FHIR Service
       """
       {
@@ -20,7 +21,6 @@
         }
       }
       """
-
       And I update an OpenLMIS Location
       """
       {
@@ -39,7 +39,6 @@
         }
       }
       """
+      And I pause for 30 seconds
 
-      Then After I pause for 30 seconds
-
-      And I verify that my Upstream FHIR Server has received a notification of a Location change
+      Then I verify that my Upstream FHIR Server has received a notification of a Location change
