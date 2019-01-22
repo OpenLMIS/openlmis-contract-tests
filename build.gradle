@@ -2,18 +2,16 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 dependencies {
-    compile 'org.postgresql:postgresql:9.4.1211'
     compile 'com.ibatis:ibatis2-common:2.1.7.597'
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
-    compile 'org.json:json:20170516'
-    compile 'org.yaml:snakeyaml:1.18'
+    compile 'org.json:json:20180813'
 
-    testCompile 'com.github.tomakehurst:wiremock:2.19.0'
-    testCompile 'io.rest-assured:rest-assured:3.0.0'
-    testCompile 'io.cucumber:cucumber-java:3.0.2'
-    testCompile 'io.cucumber:cucumber-junit:3.0.2'
+    testCompile 'com.github.tomakehurst:wiremock:2.20.0'
+    testCompile 'io.rest-assured:rest-assured:3.3.0'
+    testCompile 'io.cucumber:cucumber-java:4.2.2'
+    testCompile 'io.cucumber:cucumber-junit:4.2.2'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.jglue.fluent-json:fluent-json:2.0.0'
+    testCompile 'org.jglue.fluent-json:fluent-json:2.0.3'
     testCompile 'org.assertj:assertj-core:3.11.1'
 }
 

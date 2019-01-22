@@ -72,7 +72,7 @@ services:
         ,${BASE_URL}/stockmanagement
         ,${BASE_URL}/fulfillment'
       - 'cucumber'
-      - '-Ptags=@RegularRequisitionTests,@EmergencyRequisitionTests'
+      - '-Ptags=@RegularRequisitionTests or @EmergencyRequisitionTests'
       - '--stacktrace'
       - '--no-daemon'
 

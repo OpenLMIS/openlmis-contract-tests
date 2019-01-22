@@ -39,7 +39,7 @@ services:
         ,${BASE_URL}/auth
         ,${BASE_URL}/notification'
       - 'cucumber'
-      - '-Ptags=@UserTests,@ApiKeyTests,@IdealStockAmountTests,@FacilityTypeTests,@ProgramTests,@SupervisoryNodeTests,@FacilityTypeApprovedProductTests'
+      - '-Ptags=@UserTests or @ApiKeyTests or @IdealStockAmountTests or @FacilityTypeTests or @ProgramTests or @SupervisoryNodeTests or @FacilityTypeApprovedProductTests'
       - '--stacktrace'
       - '--no-daemon'
 

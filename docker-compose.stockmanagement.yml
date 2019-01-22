@@ -36,12 +36,7 @@ services:
         ,${BASE_URL}/stockmanagement
         ,${BASE_URL}/referencedata'
       - 'cucumber'
-      - '-Ptags=
-      @StockCardTemplatesTests,
-      @StockEventsTests,
-      @StockCardsTests,
-      @StockReasonsTests,
-      @PhysicalInventoriesTests'
+      - '-Ptags=@StockCardTemplatesTests or @StockEventsTests or @StockCardsTests or @StockReasonsTests or @PhysicalInventoriesTests'
       - '--stacktrace'
       - '--no-daemon'
 
