@@ -39,6 +39,6 @@
         }
       }
       """
-      And I pause for 30 seconds
+      And I pause for 45 seconds
 
       Then I verify that my Upstream FHIR Server has received a notification of a Location change

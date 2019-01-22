@@ -114,7 +114,7 @@ Feature: Location Tests
         "extraData": { }
       }
       """
-      Then I pause for 30 seconds
+      Then I pause for 45 seconds
       And facility should be created
       And I logout
 
@@ -125,7 +125,7 @@ Feature: Location Tests
       And I update facility:
       | goDownDate | active |
       | 2025-12-31 | false  |
-      Then I pause for 30 seconds
+      Then I pause for 45 seconds
       And facility should be up-to-date
       And I logout
 
@@ -220,13 +220,13 @@ Feature: Location Tests
         "status": "inactive"
       }
       """
-      Then I pause for 30 seconds
+      Then I pause for 45 seconds
       And location should be created
       And related facility should also be created
 
       When I update location:
       | status |
       | active |
-      Then I pause for 30 seconds
+      Then I pause for 45 seconds
       And location should be up-to-date
       And related facility should also be up-to-date
