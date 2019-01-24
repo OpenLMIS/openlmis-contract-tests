@@ -32,7 +32,7 @@ class SubscriptionTestHelper {
   void stubForLocation() {
     wiremock.register(
         put(
-            urlPathMatching("/fhir_locations/Location/*"))
+            urlPathMatching("/fhir_locations/Location/.*"))
             .withHeader("Authentication", equalTo("Bearer 04199b94-15ce-4405-969c-05dedf4c073c"))
             .willReturn(aResponse().withStatus(200))
     );
