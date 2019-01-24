@@ -43,6 +43,7 @@ public class LocationTestHelper extends BaseTestHelper {
     String locationAsString = given()
         .contentType(ContentType.JSON)
         .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
+        .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1")
         .when()
         .get(locationHref)
         .then()
