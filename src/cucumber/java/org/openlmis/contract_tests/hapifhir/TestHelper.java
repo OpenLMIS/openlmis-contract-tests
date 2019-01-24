@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 interface TestHelper {
   String BASE_HAPI_FHIR_URL = baseUrlOfService("hapifhir");
   String LOCATION_URL = BASE_HAPI_FHIR_URL + "Location";
+  String SUBSCRIPTION_URL = BASE_HAPI_FHIR_URL + "Subscription";
 
   String BASE_REFERENCE_DATA_URL = baseUrlOfService("referencedata");
 
@@ -21,6 +22,7 @@ interface TestHelper {
   String LOCATION = "location";
   String FACILITY = "facility";
   String GEO_ZONE = "geographic zone";
+  String SUBSCRIPTION = "subscription";
 
   Response createResource(String body) throws ParseException;
 

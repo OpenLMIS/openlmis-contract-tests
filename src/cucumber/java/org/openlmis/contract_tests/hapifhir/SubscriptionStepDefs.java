@@ -1,40 +1,40 @@
 package org.openlmis.contract_tests.hapifhir;
 
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+
+import com.github.tomakehurst.wiremock.client.WireMock;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
-import java.util.concurrent.TimeUnit;
+public class SubscriptionStepDefs extends BaseHapiFhirStepDefs {
 
-public class SubscriptionStepDefs {
-
-  private SubscriptionTestHelper subscriptionTestHelper;
-
-  @Before("@SubscriptionTests")
-  public void setup() {
-    subscriptionTestHelper = new SubscriptionTestHelper();
-  }
+  private WireMock wiremock = WireMock.create().host("wiremock").port(8080).build();
 
   @Given("^I have an upstream FHIR server$")
   public void stubAMockServer() {
-    subscriptionTestHelper.stubForLocation();
+    wiremock.register(
+        put(
+            urlPathMatching("/fhir_locations/Location/.*"))
+            .withHeader("Authorization", equalTo("Bearer 04199b94-15ce-4405-969c-05dedf4c073c"))
+            .willReturn(aResponse().withStatus(200))
+    );
   }
 
-  @When("^my upstream FHIR server subscribes to Location updates with the OpenLMIS FHIR Service$")
-  public void createASubscription(String body) throws Exception {
-    subscriptionTestHelper.createAFHIRSubscriptionResource(body);
-  }
-
-  @When("^I update an OpenLMIS Location")
-  public void createAHapiLocation(String body) throws Exception {
-    subscriptionTestHelper.createFHIRLocationResource(body);
-  }
-
-  @Then("^I verify that my Upstream FHIR Server has received a notification of a Location change$")
+  @Then("^my upstream FHIR Server has received a notification of a location change$")
   public void verifyThatMockServerIsCalled() {
-    subscriptionTestHelper.verifyThatStubWasCalled();
+    wiremock.verifyThat(
+        putRequestedFor(
+            urlPathMatching("/fhir_locations/Location/.*"))
+            .withHeader("Authorization", equalTo("Bearer 04199b94-15ce-4405-969c-05dedf4c073c"))
+            .withRequestBody(matchingJsonPath("$.resourceType", containing("Location")))
+            .withRequestBody(matchingJsonPath("$..name", containing("Contract Test S")))
+            .withRequestBody(matchingJsonPath("$..alias", containing("CTS-FHIR-S"))));
   }
 
 }

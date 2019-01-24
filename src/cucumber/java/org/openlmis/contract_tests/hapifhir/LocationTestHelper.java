@@ -14,12 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.http.HttpHeaders;
-import org.apache.http.HttpStatus;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-public class LocationTestHelper extends BaseTestHelper {
+public class LocationTestHelper extends FhirResourceTestHelper {
 
   private static final Map<String, ResourceChecker> CHECKERS;
 
@@ -32,26 +28,6 @@ public class LocationTestHelper extends BaseTestHelper {
   @Override
   String getResourceUrl() {
     return LOCATION_URL;
-  }
-
-  @Override
-  public JSONObject getResource(ValidatableResponse response) throws ParseException {
-    String locationHref = response
-        .extract()
-        .header(HttpHeaders.CONTENT_LOCATION);
-
-    String locationAsString = given()
-        .contentType(ContentType.JSON)
-        .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
-        .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1")
-        .when()
-        .get(locationHref)
-        .then()
-        .statusCode(HttpStatus.SC_OK)
-        .extract()
-        .asString();
-
-    return (JSONObject) new JSONParser().parse(locationAsString);
   }
 
   @Override

@@ -17,21 +17,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.openlmis.contract_tests.common.JsonFieldHelper;
 
-public class LocationStepDefs {
-
-  private final Map<String, TestHelper> helpers = new HashMap<>();
+public class FhirResourceStepDefs extends BaseHapiFhirStepDefs {
 
   private Response response;
 
   private String resourceName;
   private JSONObject resourceAsJson;
-
-  @Before("@LocationTests")
-  public void setUp() {
-    helpers.put(TestHelper.FACILITY, new FacilityTestHelper());
-    helpers.put(TestHelper.GEO_ZONE, new GeographicZoneTestHelper());
-    helpers.put(TestHelper.LOCATION, new LocationTestHelper());
-  }
 
   @When("^I create (.*):$")
   public void tryCreateResource(String resource, String bodyAsString) throws ParseException {
@@ -109,12 +100,6 @@ public class LocationStepDefs {
       String newResourceName) {
     findHelper(newResourceName).saveTransformation(resourceName, fieldInFound, propertyPath);
 
-  }
-
-  private TestHelper findHelper(String resource) {
-    return Optional
-        .ofNullable(helpers.get(resource))
-        .orElseThrow(() -> new IllegalStateException("Unsupported resource: " + resource));
   }
 
 }

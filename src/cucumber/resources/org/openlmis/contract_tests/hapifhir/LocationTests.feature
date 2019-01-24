@@ -1,4 +1,4 @@
-@LocationTests
+@LocationTests @HapiFhirTests
 Feature: Location Tests
 
   Scenario: Location should be synchronized with geographic zone (without parent)
