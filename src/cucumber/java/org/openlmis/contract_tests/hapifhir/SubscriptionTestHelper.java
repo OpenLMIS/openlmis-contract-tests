@@ -57,6 +57,7 @@ class SubscriptionTestHelper {
     wiremock.verifyThat(
         putRequestedFor(
             urlPathMatching("/fhir_locations/" + LOCATION_URI))
+            .withHeader("Authentication", equalTo("Bearer 04199b94-15ce-4405-969c-05dedf4c073c"))
             .withRequestBody(
                 matchingJsonPath("$..name", containing("Contract Test S  FHIR Geographic Zone 2")))
             .withRequestBody(matchingJsonPath("$.resourceType", containing("Location"))));
