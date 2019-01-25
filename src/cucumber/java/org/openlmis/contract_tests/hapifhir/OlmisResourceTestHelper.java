@@ -1,14 +1,10 @@
 package org.openlmis.contract_tests.hapifhir;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
-import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
 import io.restassured.response.ValidatableResponse;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -31,9 +27,7 @@ public abstract class OlmisResourceTestHelper extends BaseTestHelper {
         BASE_URL, resourceId
     );
 
-    return given()
-        .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
-        .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1")
+    return doRequest()
         .queryParam("identifier", queryParamValue)
         .when()
         .get(LOCATION_URL)

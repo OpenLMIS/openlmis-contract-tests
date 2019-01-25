@@ -1,19 +1,15 @@
 package org.openlmis.contract_tests.hapifhir;
 
-import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 
-import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.http.HttpHeaders;
 
 public class LocationTestHelper extends FhirResourceTestHelper {
 
@@ -159,9 +155,7 @@ public class LocationTestHelper extends FhirResourceTestHelper {
     String getResourceUrl();
 
     default ValidatableResponse getResource(Object resourceId) {
-      return given()
-          .contentType(ContentType.JSON)
-          .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
+      return doRequest()
           .when()
           .get(getResourceUrl() + "/" + resourceId)
           .then();

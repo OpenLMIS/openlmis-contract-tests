@@ -37,9 +37,7 @@ public abstract class BaseTestHelper implements TestHelper {
 
   @Override
   public Response createResource(String body) throws ParseException {
-    return given()
-        .contentType(ContentType.JSON)
-        .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
+    return doRequest()
         .body(applyTransformations(body))
         .when()
         .post(getResourceUrl());
@@ -47,9 +45,7 @@ public abstract class BaseTestHelper implements TestHelper {
 
   @Override
   public Response updateResource(Object resourceId, String body) throws ParseException {
-    return given()
-        .contentType(ContentType.JSON)
-        .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
+    return doRequest()
         .body(applyTransformations(body))
         .when()
         .put(getResourceUrl() + "/" + resourceId);
@@ -134,15 +130,20 @@ public abstract class BaseTestHelper implements TestHelper {
     return json.toString();
   }
 
+  static RequestSpecification doRequest() {
+    return given()
+        .contentType(ContentType.JSON)
+        .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
+        .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1");
+  }
+
   private static final class GeographicZoneFinder implements ResourceFinder {
 
     @Override
     public Response find(Map<String, String> parameters) {
       JSONObject body = new JSONObject(parameters);
 
-      return given()
-          .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
-          .contentType(ContentType.JSON)
+      return doRequest()
           .body(body)
           .when()
           .post(GEO_ZONE_URL + "/search");
@@ -154,10 +155,7 @@ public abstract class BaseTestHelper implements TestHelper {
 
     @Override
     public Response find(Map<String, String> parameters) {
-      RequestSpecification specification = given()
-          .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
-          .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1");
-
+      RequestSpecification specification = doRequest();
       parameters.forEach(specification::queryParam);
 
       return specification.when().get(LOCATION_URL);

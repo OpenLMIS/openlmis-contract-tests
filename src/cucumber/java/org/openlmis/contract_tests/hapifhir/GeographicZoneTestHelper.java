@@ -1,16 +1,13 @@
 package org.openlmis.contract_tests.hapifhir;
 
-import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
-import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import java.util.List;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 
 class GeographicZoneTestHelper extends OlmisResourceTestHelper {
@@ -73,9 +70,7 @@ class GeographicZoneTestHelper extends OlmisResourceTestHelper {
       assertThat(name).isEqualTo(NAME_2);
       assertThat(identifierValues).contains(GEO_LEVEL_URL + "/" + LEVEL_ID_2);
 
-      given()
-          .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
-          .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1")
+      doRequest()
           .when()
           .get(BASE_HAPI_FHIR_URL + reference)
           .then()

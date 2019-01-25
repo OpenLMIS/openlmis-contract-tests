@@ -7,11 +7,9 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
-import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
-import java.util.Map;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 
@@ -66,9 +64,7 @@ class FacilityTestHelper extends OlmisResourceTestHelper {
     JsonPath from = from(resource);
     String reference = from.getString("entry[0].resource.partOf.reference");
 
-    given()
-        .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
-        .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1")
+    doRequest()
         .when()
         .get(BASE_HAPI_FHIR_URL + reference)
         .then()

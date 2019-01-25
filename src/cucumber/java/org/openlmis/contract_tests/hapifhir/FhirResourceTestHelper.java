@@ -20,10 +20,7 @@ public abstract class FhirResourceTestHelper extends BaseTestHelper {
         .extract()
         .header(HttpHeaders.CONTENT_LOCATION);
 
-    String locationAsString = given()
-        .contentType(ContentType.JSON)
-        .header(HttpHeaders.AUTHORIZATION, "bearer " + ACCESS_TOKEN)
-        .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, max-results=1")
+    String locationAsString = doRequest()
         .when()
         .get(href)
         .then()
