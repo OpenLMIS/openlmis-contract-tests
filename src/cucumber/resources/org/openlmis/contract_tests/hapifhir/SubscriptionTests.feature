@@ -21,8 +21,8 @@ Feature: Subscription Tests
       }
     }
     """
-    Then subscription should be created
-    And I pause for 30 seconds
+    Then I pause for 30 seconds
+    And subscription should be created
 
     When I create location:
     """
@@ -41,6 +41,6 @@ Feature: Subscription Tests
       }
     }
     """
-    Then location should be created
-    And I pause for 30 seconds
+    Then I pause for 30 seconds
+    And location should be created
     And my upstream FHIR Server has received a notification of a location change
