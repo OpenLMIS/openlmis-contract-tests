@@ -595,8 +595,8 @@ public class RequisitionStepDefs {
     String filterValue = data.get("filterValue");
     requisitionResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
-        .queryParam("filterBy", data.get("filterBy"))
-        .queryParam("filterValue", Arrays.asList(filterValue.split(",")))
+        .queryParam("programId", data.get("programId"))
+        .queryParam("facilityId", data.get("facilityId"))
         .when()
         .get(BASE_URL_OF_REQUISITION_SERVICE + REQUISITIONS_FOR_CONVERT);
   }
