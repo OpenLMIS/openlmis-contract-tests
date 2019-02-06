@@ -593,6 +593,8 @@ public class RequisitionStepDefs {
     Map<String, String> data = argsList.asMap(String.class, String.class);
 
     System.out.println("FOR CONVERT DATA: " + data);
+    System.out.println("FOR CONVERT DATA programId: " + data.get("programId"));
+    System.out.println("FOR CONVERT DATA facilityId:" + data.get("facilityId"));
     requisitionResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam("programId", data.get("programId"))
