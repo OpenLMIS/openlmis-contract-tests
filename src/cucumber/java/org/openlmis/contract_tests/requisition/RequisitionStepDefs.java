@@ -590,7 +590,7 @@ public class RequisitionStepDefs {
 
   @When("^I try to find requisitions for convert with request parameters:$")
   public void tryToGetRequisitionsForConvert(DataTable argsList) {
-    Map<String, String> data = argsList.asMap(String.class, String.class);
+    Map<String, String> data = argsList.asMaps().get(0);
 
     System.out.println("FOR CONVERT DATA: " + data);
     System.out.println("FOR CONVERT DATA programId: " + data.get("programId"));
