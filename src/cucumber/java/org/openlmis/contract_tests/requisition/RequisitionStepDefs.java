@@ -592,7 +592,7 @@ public class RequisitionStepDefs {
   public void tryToGetRequisitionsForConvert(DataTable argsList) {
     Map<String, String> data = argsList.asMap(String.class, String.class);
 
-    String filterValue = data.get("filterValue");
+    System.out.println("FOR CONVERT DATA: " + data);
     requisitionResponse = given()
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam("programId", data.get("programId"))
