@@ -41,7 +41,7 @@ services:
     depends_on: [log]
   
   redis:
-    mem_limit: 512m
+    mem_limit: 64m
     image: redis:3.2.12
     depends_on: [log]
 
@@ -52,6 +52,6 @@ services:
     depends_on: [consul]
 
   log:
-    mem_limit: 128m
+    mem_limit: 64m
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
     depends_on: [consul]
