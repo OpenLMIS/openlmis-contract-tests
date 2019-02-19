@@ -40,10 +40,10 @@ services:
     env_file: settings.env
 
   contract_tests:
-    mem_limit: 768m
+    mem_limit: 2048m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
-      GRADLE_OPTS: '-Xmx768m'
+      GRADLE_OPTS: '-Xmx2048m'
     env_file: settings.env
     volumes:
       - '.:/app'
