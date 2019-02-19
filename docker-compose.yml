@@ -4,7 +4,7 @@ services:
   consul:
     command: -server -bootstrap
     image: gliderlabs/consul-server
-    mem_limit: 128m
+    mem_limit: 64m
     ports:
       - "8300"
       - "8400"
@@ -15,7 +15,7 @@ services:
     image: openlmis/nginx:${OL_NGINX_VERSION}
     env_file: settings.env
     links: [consul]
-    mem_limit: 128m
+    mem_limit: 64m
     # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
