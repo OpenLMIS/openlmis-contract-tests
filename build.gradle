@@ -64,7 +64,7 @@ task waitFor {
             }
         }
 
-        def waitTime = 60
+        def waitTime = 180
 
         if (project.hasProperty('waitTime')) {
             waitTime = project.getProperty('waitTime') as int
