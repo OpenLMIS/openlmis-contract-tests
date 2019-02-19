@@ -22,6 +22,7 @@ services:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
     env_file: settings.env
     mem_limit: 3584m
+    oom_kill_disable: true
     environment:
       JAVA_OPTS: '-Xmx3584m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
