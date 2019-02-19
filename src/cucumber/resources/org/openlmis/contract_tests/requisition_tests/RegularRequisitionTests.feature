@@ -1,6 +1,33 @@
 @RegularRequisitionTests
 Feature: Regular Requisition Tests
 
+  Scenario: Search should return correct requisitions for convert
+    Given I have logged in as divo1
+
+    When I try to find requisitions for convert without request parameters
+    Then I should get a page with 3 requisitions
+
+    When I try to find requisitions for convert with request parameters:
+      | facilityId                           |
+      | a205764b-3998-4c89-afac-2bc9d737c8d3 |
+    Then I should get a page with 1 requisitions
+    And I should get requisitions with facility "N008"
+    And I should get requisitions with program "EPI"
+
+    When I try to find requisitions for convert with request parameters:
+      | programId                            |
+      | 418bdc1d-c303-4bd0-b2d3-d8901150a983 |
+    Then I should get a page with 3 requisitions
+    And I should get requisitions with program "EPI"
+
+    When I try to find requisitions for convert with request parameters:
+      | facilityId                            | programId                            |
+      | a205764b-3998-4c89-afac-2bc9d737c8d3  | 418bdc1d-c303-4bd0-b2d3-d8901150a983 |
+    Then I should get a page with 1 requisitions
+    And I should get requisitions with facility "N008"
+    And I should get requisitions with program "EPI"
+
+
   Scenario: Storeroom Manager user should be able to delete initiated requisition
     Given I have logged in as srmanager1
 
