@@ -58,7 +58,7 @@ Feature: Emergency Requisition Tests
 
     When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 2017-08-15 |
+      | 12                    | 20               | 8                 | 9                 | test                         | 32                    | 2018-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
@@ -108,7 +108,7 @@ Feature: Emergency Requisition Tests
 
     When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 1                     | 1                | 16                | 17                | test                         | 2                     | 2017-08-15 |
+      | 1                     | 1                | 16                | 17                | test                         | 2                     | 2018-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
@@ -150,7 +150,7 @@ Feature: Emergency Requisition Tests
 
     When I try to add products to requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 2017-08-15 |
+      | 2                     | 2                | 2                 | 2                 | test                         | 4                     | 2018-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
