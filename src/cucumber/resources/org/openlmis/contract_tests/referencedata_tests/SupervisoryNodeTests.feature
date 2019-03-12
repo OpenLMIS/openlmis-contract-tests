@@ -37,13 +37,13 @@ Feature: Supervisory Node tests
     Then I should get response with the supervisoryNode's id
 
     When I try to update a supervisoryNode with:
-      | facilityId                           | code   | name                        |
-      | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | SN003U | Supervisory Node #3 Updated |
+      | facilityId                           | code   | name                        | requisitionGroupId                   |
+      | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | SN003U | Supervisory Node #3 Updated | 1581c59f-55c1-40de-adae-085614e6d03f |
     Then I should get response with OK status
 
     When I try to get supervisoryNode with id
     Then I should get supervisoryNode with:
-      | facilityId                           | code   | name                        |
-      | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | SN003U | Supervisory Node #3 Updated |
+      | facilityId                           | code   | name                        | requisitionGroupId                   |
+      | 7fc9bda8-ad8a-468d-8244-38e1918527d5 | SN003U | Supervisory Node #3 Updated | 1581c59f-55c1-40de-adae-085614e6d03f |
     
     And I pause for 5 seconds
