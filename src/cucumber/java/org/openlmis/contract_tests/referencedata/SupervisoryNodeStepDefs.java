@@ -167,6 +167,10 @@ public class SupervisoryNodeStepDefs {
       json.add("id", id);
     }
 
+    if (StringUtils.isNotBlank(data.get("requisitionGroupId"))) {
+      json.add("requisitionGroup", buildObject().add("id", data.get("requisitionGroupId")));
+    }
+
     return json;
   }
 }
