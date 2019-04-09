@@ -19,7 +19,7 @@ import org.json.simple.JSONObject;
 
 public final class JsonFieldHelper {
 
-  public static String getField(JSONObject json, String path) {
+  public static Object getField(JSONObject json, String path) {
     int dotIndex = path.indexOf('.');
     boolean nestedField = -1 != dotIndex;
 
@@ -30,11 +30,11 @@ public final class JsonFieldHelper {
 
       return getField(subJson, rest);
     } else {
-      return (String) json.get(path);
+      return json.get(path);
     }
   }
 
-  public static void setField(JSONObject json, String path, String value) {
+  public static void setField(JSONObject json, String path, Object value) {
     int dotIndex = path.indexOf('.');
     boolean nestedField = -1 != dotIndex;
 

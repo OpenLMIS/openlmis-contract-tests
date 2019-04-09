@@ -113,10 +113,10 @@ public abstract class BaseTestHelper implements TestHelper {
       JSONObject resource = savedResources.get(resourceEntry.getKey());
 
       for (Entry<String, List<String>> fieldEntry : resourceEntry.getValue().entrySet()) {
-        String fieldValue = JsonFieldHelper.getField(resource, fieldEntry.getKey());
+        Object fieldValue = JsonFieldHelper.getField(resource, fieldEntry.getKey());
 
         for (String path : fieldEntry.getValue()) {
-          String newFieldValue = fieldValue;
+          Object newFieldValue = fieldValue;
 
           if (resource.containsKey("resourceType") && "partOf.reference".equalsIgnoreCase(path)) {
             newFieldValue = resource.get("resourceType") + "/" + fieldValue;

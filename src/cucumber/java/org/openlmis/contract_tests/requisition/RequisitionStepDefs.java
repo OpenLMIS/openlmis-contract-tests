@@ -41,6 +41,7 @@ import io.cucumber.datatable.DataTable;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -49,6 +50,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -62,12 +64,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.openlmis.contract_tests.common.JsonFieldHelper;
 
 public class RequisitionStepDefs {
 
   static final String BASE_URL_OF_REFERENCEDATA_SERVICE =
       baseUrlOfService("referencedata");
   private static final String REQUISITION_LINE_ITEMS = "requisitionLineItems";
+  private static final String REQUISITIONS_FOR_APPROVAL = "requisitionsForApproval/";
   private static final String REQUISITIONS_FOR_CONVERT = "requisitionsForConvert/";
   private static final String BASE_URL_OF_REQUISITION_TEMPLATE_SERVICE =
       baseUrlOfService("requisition") + "requisitionTemplates/";
@@ -637,6 +641,84 @@ public class RequisitionStepDefs {
       assertNotNull(code);
       assertTrue(facilityList.contains(code));
     }
+  }
+
+  @When("^I try to find requisitions for approval with request parameters:$")
+  public void tryToGetRequisitionsForApproval(DataTable argsList) {
+    Map<String, String> data = argsList.asMaps().get(0);
+
+    RequestSpecification specification = given()
+        .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN);
+
+    data.forEach(specification::queryParam);
+
+    requisitionResponse = specification
+        .when()
+        .get(BASE_URL_OF_REQUISITION_SERVICE + REQUISITIONS_FOR_APPROVAL);
+  }
+
+  @When("^I try to find a requisition from the response with parameters:$")
+  public void tryToFindRequisitionFromResponse(DataTable table) throws ParseException {
+    Map<String, String> params = table.asMaps().get(0);
+
+    JSONParser parser = new JSONParser();
+    JSONObject page = (JSONObject) parser.parse(requisitionResponse.asString());
+    JSONArray content = (JSONArray) page.get("content");
+
+    for (int i = 0, size = content.size(); i < size; ++i) {
+      requisition = (JSONObject) content.get(i);
+      boolean match = true;
+
+      for (Entry<String, String> entry : params.entrySet()) {
+        match = match
+            && entry.getValue().equals(JsonFieldHelper.getField(requisition, entry.getKey()));
+      }
+
+      if (match) {
+        break;
+      } else {
+        requisition = null;
+      }
+    }
+  }
+
+  @Then("^I should get the requisition$")
+  public void shouldGetRequisition() {
+    assertThat("Can't find the correct requisition", requisition, is(notNullValue()));
+    requisitionId = String.valueOf(requisition.get("id"));
+  }
+
+  @Then("^the requisition should have line items with values:$")
+  public void requisitionShouldHaveLineItems(DataTable table) throws ParseException {
+    List<Map<String, String>> params = table.asMaps();
+
+    JSONParser parser = new JSONParser();
+    JSONObject req = (JSONObject) parser.parse(requisitionResponse.asString());
+    JSONArray lineItems = (JSONArray) req.get(REQUISITION_LINE_ITEMS);
+    Iterator iterator = lineItems.iterator();
+
+    while (iterator.hasNext()) {
+      JSONObject lineItem = (JSONObject) iterator.next();
+
+      for (Map<String, String> values : params) {
+        boolean match = true;
+
+        for (Entry<String, String> entry : values.entrySet()) {
+          Object lineItemField = JsonFieldHelper.getField(lineItem, entry.getKey());
+
+          match = null == lineItemField
+              ? match && (null == entry.getValue() || "".equals(entry.getValue()))
+              : match && entry.getValue().equals(lineItemField.toString());
+        }
+
+        if (match) {
+          iterator.remove();
+          break;
+        }
+      }
+    }
+
+    assertThat("Can't match line items: " + lineItems, lineItems.size(), is(0));
   }
 
   private void addProducts(JSONObject requisition) {
