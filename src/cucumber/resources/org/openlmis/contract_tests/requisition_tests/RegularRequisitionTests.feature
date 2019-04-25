@@ -740,3 +740,48 @@ Feature: Regular Requisition Tests
     And I try to get requisition with id
     Then I should get a requisition with "RELEASED" status
     And I logout
+
+  Scenario: Beginning balance and Stock on Hand should be calculated properly
+    Given I have logged in as administrator
+
+    When I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | f23ce0ab-2ebd-4d19-ba6e-aa9bdd34093b | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | f23ce0ab-2ebd-4d19-ba6e-aa9bdd34093b | false     |
+    And I should get a requisition with "INITIATED" status
+
+    When I try update fields in requisition:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | totalLossesAndAdjustments | reasonId                             | quantity |
+      | 10                    | 25               | 1                 | 50                | test                         | 10                    | -5                        | c1fc3cf3-da18-44b0-a220-77c985202e06 | 5        |
+    And I try to get requisition with id
+    Then I should get a updated requisition with:
+      | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | totalLossesAndAdjustments | stockOnHand |
+      | 10                    | 25               | 1                 | 50                | test                         | 10                    | -5                        | 20          |
+
+    When I try to submit a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "SUBMITTED" status
+    And I logout
+
+    When I have logged in as smanager1
+    When I try to authorize a requisition
+    And I try to get requisition with id
+    Then I should get a requisition with "AUTHORIZED" status
+    And I logout
+
+    When I have logged in as administrator
+    And I try to initiate a requisition with:
+      | programId                            | facilityId                           | periodId                             | emergency |
+      | dce17f2e-af3e-40ad-8e00-3496adef44c3 | 176c4276-1fb1-4507-8ad2-cdfba0f47445 | be8f5943-884a-4ca6-b722-5b37acde7b3f | false     |
+    Then I should get response with the initiated requisition's id
+
+    When I try to get requisition with id
+    Then I should get a updated requisition with:
+      | beginningBalance |
+      | 20               |
+    And I logout

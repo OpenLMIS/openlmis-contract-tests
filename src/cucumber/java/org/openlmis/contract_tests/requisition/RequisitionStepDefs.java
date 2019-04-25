@@ -159,12 +159,12 @@ public class RequisitionStepDefs {
 
     List<Map<String, String>> data = argsList.asMaps();
 
-    data.forEach(map -> map.entrySet().forEach(entry -> {
+    data.forEach(map -> map.forEach((key, value) -> {
           if (Arrays.asList("datePhysicalStockCountCompleted","supervisoryNode")
-              .contains(entry.getKey())) {
-            requisition.put(entry.getKey(), entry.getValue());
+              .contains(key)) {
+            requisition.put(key, value);
           } else {
-            updateFieldInRequisitionLineItem(requisition, entry.getKey(), entry.getValue());
+            updateFieldInRequisitionLineItem(requisition, key, value);
           }
         }
     ));
@@ -736,11 +736,15 @@ public class RequisitionStepDefs {
   }
 
   private void updateFieldInRequisitionLineItem(JSONObject requisition,
-                                                Object keyToUpdate, Object newValue) {
+                                                String keyToUpdate, String newValue) {
     JSONArray requisitionLineItems = (JSONArray) requisition.get(REQUISITION_LINE_ITEMS);
 
     for (Object requisitionLine : requisitionLineItems) {
       JSONObject requisitionLineAsJson = (JSONObject) requisitionLine;
+
+      if (keyToUpdate.equals("reasonId") || keyToUpdate.equals("quantity")) {
+         requisitionLineAsJson = buildStockAdjustment(keyToUpdate, newValue, requisitionLineAsJson);
+      }
       requisitionLineAsJson.put(keyToUpdate, newValue);
     }
   }
@@ -835,6 +839,31 @@ public class RequisitionStepDefs {
     if (supervisoryNodeId != null) {
       requisition.replace("supervisoryNode", null, supervisoryNodeId);
     }
+  }
+
+  private JSONObject buildStockAdjustment(String key, String value, JSONObject requisitionLineItem) {
+    JSONArray stockAdjustments = (JSONArray) requisitionLineItem.get("stockAdjustments");
+    JSONObject stockAdjustmentJson = new JSONObject();
+
+    if (!stockAdjustments.isEmpty()) {
+      stockAdjustmentJson = (JSONObject) stockAdjustments.get(0);
+    }
+
+    if (key.equals("reasonId")) {
+      stockAdjustmentJson.put("reasonId", value);
+    }
+
+    if (key.equals("quantity")) {
+      stockAdjustmentJson.put("quantity", value);
+    }
+
+    if (stockAdjustments.isEmpty()) {
+      stockAdjustments.add(stockAdjustmentJson);
+    }
+
+    requisitionLineItem.put("stockAdjustments", stockAdjustments);
+
+    return requisitionLineItem;
   }
 
   private static class StreamGobbler implements Runnable {
