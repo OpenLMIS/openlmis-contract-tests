@@ -21,7 +21,7 @@ Feature: Subscription Tests
       }
     }
     """
-    Then I pause for 60 seconds
+    Then I pause for 75 seconds
     And subscription should be created
 
     When I create location:
