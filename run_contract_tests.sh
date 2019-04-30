@@ -2,6 +2,12 @@
 
 FILENAME=${1}
 TEST_RESULTS_DIR="test-results"
+export PATH="/usr/local/bin:$PATH"
+
+cleanup() {
+    docker-compose -f docker-compose.yml -f "${FILENAME}" down -v --remove-orphans
+}
+trap cleanup EXIT
 
 #Set our environment variables to the values specified within settings.env and export (expose) the BASE_URL one.
 source ./settings.env
@@ -14,20 +20,20 @@ mkdir -p ${TEST_RESULTS_DIR}
 touch ${TEST_RESULTS_DIR}/cucumber-junit.xml
 
 #make sure that old containers have been stopped
-/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
+docker-compose -f docker-compose.yml -f "${FILENAME}" down -v --remove-orphans
 
 #pull all images
-/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} pull
+docker-compose -f docker-compose.yml -f "${FILENAME}" pull
 
 #run docker file
-/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} run contract_tests
+docker-compose -f docker-compose.yml -f "${FILENAME}" run contract_tests
 
 #cleaning after tests
 contract_test_result=$?
 
-/usr/local/bin/docker-compose logs --no-color --timestamps > ${TEST_RESULTS_DIR}/container-logs
-/usr/local/bin/docker-compose exec -T log cat /var/log/messages > ${TEST_RESULTS_DIR}/sys-logs
-/usr/local/bin/docker-compose exec -T nginx cat /etc/nginx/conf.d/default.conf > ${TEST_RESULTS_DIR}/nginx
+docker-compose logs --no-color --timestamps > ${TEST_RESULTS_DIR}/container-logs
+docker-compose exec -T log cat /var/log/messages > ${TEST_RESULTS_DIR}/sys-logs
+docker-compose exec -T nginx cat /etc/nginx/conf.d/default.conf > ${TEST_RESULTS_DIR}/nginx
 
 echo
 echo "=========================================================================="
@@ -50,8 +56,6 @@ echo "==========================================================================
 cat ${TEST_RESULTS_DIR}/nginx
 echo
 
-/usr/local/bin/docker-compose -f docker-compose.yml -f ${FILENAME} down -v --remove-orphans
-
 exit ${contract_test_result}
 #this line above makes sure when jenkins runs this script
-#the build success/failure result is determined by contract test run not by the clean up run
+#the build success/failure result is determined by contract test run
