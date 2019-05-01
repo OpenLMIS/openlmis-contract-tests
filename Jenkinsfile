@@ -75,11 +75,14 @@ pipeline {
                         body: """<p>${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} FAILED</p><p>Check console <a href="${env.BUILD_URL}">output</a> to view the results.</p>""",
                         recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
                 }
+                cleanup {
+                    sh "rm -rf test-results"
+                }
             }
         }
     }
     post {
-        always {
+        cleanup {
             sh '''
                 rm -Rf ./openlmis-config
                 rm -f ./settings.env
