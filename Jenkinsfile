@@ -76,7 +76,7 @@ pipeline {
                         recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
                 }
                 cleanup {
-                    sh "rm -rf test-results"
+                    sh "sudo rm -rf test-results"
                 }
             }
         }
