@@ -14,6 +14,7 @@ pipeline {
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '30'))
+        skipStagesAfterUnstable()
     }
     environment {
         PATH = "/usr/local/bin/:$PATH"
@@ -45,10 +46,9 @@ pipeline {
             }
             post {
                 failure {
-                    slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} FAILED (<${env.BUILD_URL}|Open>)"
-                    emailext subject: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} FAILED",
-                        body: """<p>${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} FAILED</p><p>Check console <a href="${env.BUILD_URL}">output</a> to view the results.</p>""",
-                        recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+                    script {
+                        notifyAfterFailure()
+                    }
                 }
             }
         }
@@ -61,19 +61,30 @@ pipeline {
             }
             steps {
                 timeout(time: 60, unit: 'MINUTES') {
-                    sh "sudo rm -rf test-results"
-                    sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml"
+                    script {
+                        try {
+                            sh "sudo rm -rf test-results"
+                            sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml"
+                        }
+                        catch (exc) {
+                            currentBuild.result = 'UNSTABLE'
+                        }
+                    }
                 }
             }
             post {
                 always {
                     junit healthScaleFactor: 1.0, testResults: 'test-results/cucumber-junit.xml'
                 }
+                unstable {
+                    script {
+                        notifyAfterFailure()
+                    }
+                }
                 failure {
-                    slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} FAILED (<${env.BUILD_URL}|Open>)"
-                    emailext subject: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} FAILED",
-                        body: """<p>${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} FAILED</p><p>Check console <a href="${env.BUILD_URL}">output</a> to view the results.</p>""",
-                        recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+                    script {
+                        notifyAfterFailure()
+                    }
                 }
                 cleanup {
                     sh "sudo rm -rf test-results"
@@ -92,4 +103,11 @@ pipeline {
             slackSend color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} Back to normal"
         }
     }
+}
+
+def notifyAfterFailure() {
+    slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} ${currentBuild.result} (<${env.BUILD_URL}|Open>)"
+    emailext subject: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}",
+        body: """<p>${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}</p><p>Check console <a href="${env.BUILD_URL}">output</a> to view the results.</p>""",
+        recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
 }
