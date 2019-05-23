@@ -86,7 +86,7 @@ public class ApiKeyStepDefs {
   public void shouldGetResponseWithNewApiKey() {
     serviceAccountResponse
         .then()
-        .statusCode(HttpStatus.SC_CREATED)
+        .statusCode(HttpStatus.SC_OK)
         .body(TOKEN_FIELD, notNullValue());
 
     token = from(serviceAccountResponse.asString()).get(TOKEN_FIELD);
