@@ -65,17 +65,18 @@ pipeline {
                         try {
                             sh "sudo rm -rf test-results"
                             sh "./run_contract_tests.sh docker-compose.${params.serviceName}.yml"
+                            currentBuild.result = processTestResults('SUCCESS')
                         }
                         catch (exc) {
-                            currentBuild.result = 'UNSTABLE'
+                            currentBuild.result = processTestResults('FAILURE')
+                            if (currentBuild.result == 'FAILURE') {
+                                error(exc.toString())
+                            }
                         }
                     }
                 }
             }
             post {
-                always {
-                    junit healthScaleFactor: 1.0, testResults: 'test-results/cucumber-junit.xml'
-                }
                 unstable {
                     script {
                         notifyAfterFailure()
@@ -106,8 +107,28 @@ pipeline {
 }
 
 def notifyAfterFailure() {
-    slackSend color: 'danger', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} ${currentBuild.result} (<${env.BUILD_URL}|Open>)"
+    messageColor = 'danger'
+    if (currentBuild.result == 'UNSTABLE') {
+        messageColor = 'warning'
+    }
+    slackSend color: "${messageColor}", message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} - ${params.serviceName} ${currentBuild.result} (<${env.BUILD_URL}|Open>)"
     emailext subject: "${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}",
         body: """<p>${env.JOB_NAME} - #${env.BUILD_NUMBER} ${env.STAGE_NAME} ${currentBuild.result}</p><p>Check console <a href="${env.BUILD_URL}">output</a> to view the results.</p>""",
         recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+}
+
+def processTestResults(status) {
+    junit healthScaleFactor: 1.0, testResults: 'test-results/cucumber-junit.xml'
+
+    AbstractTestResultAction testResultAction = currentBuild.rawBuild.getAction(AbstractTestResultAction.class)
+    if (testResultAction != null) {
+        failuresCount = testResultAction.failCount
+        echo "Failed tests count: ${failuresCount}"
+        if (failuresCount > 0) {
+            echo "Setting build unstable due to test failures"
+            status = 'UNSTABLE'
+        }
+    }
+
+    return status
 }
