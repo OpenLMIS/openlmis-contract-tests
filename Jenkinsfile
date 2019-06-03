@@ -1,3 +1,6 @@
+#!/usr/bin/env groovy
+import hudson.tasks.test.AbstractTestResultAction
+
 properties([
   [
     $class: 'ThrottleJobProperty',
