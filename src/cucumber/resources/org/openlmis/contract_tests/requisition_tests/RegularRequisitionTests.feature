@@ -226,7 +226,7 @@ Feature: Regular Requisition Tests
     And I should get updated requisition with proper total cost
     And I should get a updated requisition with:
       | maxPeriodsOfStock | averageConsumption | maximumStockQuantity |
-      | 3.0               | 11                 | 33                   |
+      | 3                 | 11                 | 33                   |
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
