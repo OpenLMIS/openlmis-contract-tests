@@ -21,7 +21,7 @@ public abstract class OlmisResourceTestHelper extends BaseTestHelper {
     return (JSONObject) new JSONParser().parse(response.extract().asString());
   }
 
-  ValidatableResponse getLocation(Object resourceId, String versionNumber) {
+  ValidatableResponse getLocation(Object resourceId, String versionId) {
     String queryParamValue = String.format(
         SEARCH_BY_IDENTIFIER_FORMAT,
         BASE_URL, resourceId
@@ -36,7 +36,7 @@ public abstract class OlmisResourceTestHelper extends BaseTestHelper {
         .body("entry", hasSize(1))
         .root("entry[0]")
         .body("resource", is(notNullValue()))
-        .body("resource.meta.versionNumber", is(versionNumber))
+        .body("resource.meta.versionId", is(versionId))
         .root("entry[0].resource");
   }
 
