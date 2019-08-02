@@ -260,7 +260,8 @@ public class FulfillmentStepDefs {
 
     for (Map map : data) {
       JSONObject json = new JSONObject();
-      json.put("orderable", createObjectReference(map.get("orderableId")));
+      json.put("orderable", createVersionObjectReference(map.get("orderableId"),
+          map.get("orderableVersionNumber")));
 
       if (map.containsKey(LOT_ID)) {
         json.put("lot", createObjectReference(map.get(LOT_ID)));
@@ -292,6 +293,13 @@ public class FulfillmentStepDefs {
   private JSONObject createObjectReference(Object id) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("id", id);
+    return jsonObject;
+  }
+
+  private JSONObject createVersionObjectReference(Object id, Object versionNumber) {
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("id", id);
+    jsonObject.put("versionNumber", versionNumber);
     return jsonObject;
   }
 }

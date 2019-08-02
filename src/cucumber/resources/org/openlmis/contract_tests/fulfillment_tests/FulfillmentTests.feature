@@ -21,10 +21,10 @@ Feature: Fulfillment Tests
     Then I should get response of proof of delivery found
 
     When I try to confirm the proof of delivery
-      | orderableId                          | lotId | quantityAccepted |
-      | 2400e410-b8dd-4954-b1c0-80d8a8e785fc |       | 62               |
-      | 6be94307-c7f4-4782-ba83-45f496c8ac42 |       | 400              |
-      | c9e65f02-f84f-4ba2-85f7-e2cb6f0989af |       | 600              |
+      | orderableId                          | orderableVersionNumber | lotId | quantityAccepted |
+      | 2400e410-b8dd-4954-b1c0-80d8a8e785fc | 1                      |       | 62               |
+      | 6be94307-c7f4-4782-ba83-45f496c8ac42 | 1                      |       | 400              |
+      | c9e65f02-f84f-4ba2-85f7-e2cb6f0989af | 1                      |       | 600              |
     Then I should get response of proof of delivery confirmation success
     And I logout
 
@@ -61,17 +61,17 @@ Feature: Fulfillment Tests
     Then I should get response of shipment not found
 
     When I try to finalize shipment
-      | orderableId                          | lotId                                | quantityShipped |
-      | 7c58f053-0ca5-46ad-8209-98cff0c79b42 |                                      | 3               |
-      | 71204042-558e-4c47-a602-7886451e5689 |                                      | 0               |
-      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | f08d3db1-9132-487c-ba58-15ea12302aee | 4               |
-      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | 9d0cd7cb-5739-491b-8d6b-890fd17ec810 | 1               |
-      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | f9f9bb7c-7636-40c1-a548-b45e918a512a | 55              |
-      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 06f86552-1aa9-47d6-8857-6b7ad824f805 | 18              |
-      | 047638fa-92ce-4adf-9bbd-3bcb3216897a |                                      | 10              |
-      | a852f785-d82e-4afe-bc6a-04f3236caf90 |                                      | 1               |
-      | 18223845-4d19-4408-b7c2-971c26014058 |                                      | 9               |
-      | b75a88c7-70fa-4bab-9785-3dd980a5ffc3 |                                      | 4               |
+      | orderableId                          | orderableVersionNumber | lotId                                | quantityShipped |
+      | 7c58f053-0ca5-46ad-8209-98cff0c79b42 | 1                      |                                      | 3               |
+      | 71204042-558e-4c47-a602-7886451e5689 | 1                      |                                      | 0               |
+      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | 1                      | f08d3db1-9132-487c-ba58-15ea12302aee | 4               |
+      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | 1                      | 9d0cd7cb-5739-491b-8d6b-890fd17ec810 | 1               |
+      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 1                      | f9f9bb7c-7636-40c1-a548-b45e918a512a | 55              |
+      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 1                      | 06f86552-1aa9-47d6-8857-6b7ad824f805 | 18              |
+      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 1                      |                                      | 10              |
+      | a852f785-d82e-4afe-bc6a-04f3236caf90 | 1                      |                                      | 1               |
+      | 18223845-4d19-4408-b7c2-971c26014058 | 1                      |                                      | 9               |
+      | b75a88c7-70fa-4bab-9785-3dd980a5ffc3 | 1                      |                                      | 4               |
     Then I should get response of shipment created
 
     When I have got stock card id for
@@ -84,16 +84,16 @@ Feature: Fulfillment Tests
     Then I should get response of proof of delivery found
 
     When I try to confirm the proof of delivery
-      | orderableId                          | lotId                                | quantityAccepted |
-      | 7c58f053-0ca5-46ad-8209-98cff0c79b42 |                                      | 3                |
-      | 71204042-558e-4c47-a602-7886451e5689 |                                      | 0                |
-      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | f08d3db1-9132-487c-ba58-15ea12302aee | 4                |
-      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | 9d0cd7cb-5739-491b-8d6b-890fd17ec810 | 1                |
-      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | f9f9bb7c-7636-40c1-a548-b45e918a512a | 55               |
-      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 06f86552-1aa9-47d6-8857-6b7ad824f805 | 18               |
-      | 047638fa-92ce-4adf-9bbd-3bcb3216897a |                                      | 10               |
-      | a852f785-d82e-4afe-bc6a-04f3236caf90 |                                      | 1                |
-      | 18223845-4d19-4408-b7c2-971c26014058 |                                      | 9                |
-      | b75a88c7-70fa-4bab-9785-3dd980a5ffc3 |                                      | 4                |
+      | orderableId                          | orderableVersionNumber | lotId                                | quantityAccepted |
+      | 7c58f053-0ca5-46ad-8209-98cff0c79b42 | 1                      |                                      | 3                |
+      | 71204042-558e-4c47-a602-7886451e5689 | 1                      |                                      | 0                |
+      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | 1                      | f08d3db1-9132-487c-ba58-15ea12302aee | 4                |
+      | 9c3bea84-487b-4e22-8759-3fe93f8201d9 | 1                      | 9d0cd7cb-5739-491b-8d6b-890fd17ec810 | 1                |
+      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 1                      | f9f9bb7c-7636-40c1-a548-b45e918a512a | 55               |
+      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 1                      | 06f86552-1aa9-47d6-8857-6b7ad824f805 | 18               |
+      | 047638fa-92ce-4adf-9bbd-3bcb3216897a | 1                      |                                      | 10               |
+      | a852f785-d82e-4afe-bc6a-04f3236caf90 | 1                      |                                      | 1                |
+      | 18223845-4d19-4408-b7c2-971c26014058 | 1                      |                                      | 9                |
+      | b75a88c7-70fa-4bab-9785-3dd980a5ffc3 | 1                      |                                      | 4                |
     Then I should get response of proof of delivery confirmation success
     And I logout
