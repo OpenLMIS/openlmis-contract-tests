@@ -15,6 +15,7 @@ Feature: Stock Cards Tests
         "occurredDate": "2017-02-06",
         "quantity": 100,
         "reasonId":"279d55bd-42e3-438c-a63d-9c021b185dae",
+        "sourceId": "835d3497-b738-4438-8e94-ece41704a86e",
         "orderableId": "23819693-0670-4c4b-b400-28e009b86b51"
       }]
     }
