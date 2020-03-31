@@ -47,6 +47,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -633,7 +634,7 @@ public class RequisitionStepDefs {
   }
 
   @Then("^I should get requisitions with facilities \"([^\"]*)\"$")
-  public void shouldGetRequisitionsWithFacilitis(String facilities) {
+  public void shouldGetRequisitionsWithFacilities(String facilities) {
     List<String> facilityList = Arrays.asList(facilities.split(","));
 
     for (int i = 0; i < numberOfElements; i++) {
@@ -832,12 +833,25 @@ public class RequisitionStepDefs {
   }
 
   private void updateRequisition() throws ParseException {
+    JSONParser parser = new JSONParser();
+    JSONObject responseObject = (JSONObject) parser.parse(requisitionResponse.asString());
     if (requisition == null || !requisition.get("id").equals(requisitionId)) {
-      JSONParser parser = new JSONParser();
-      requisition = (JSONObject) parser.parse(requisitionResponse.asString());
+      requisition = responseObject;
     }
+    updateModifiedDateIfNeeded(responseObject);
     if (supervisoryNodeId != null) {
       requisition.replace("supervisoryNode", null, supervisoryNodeId);
+    }
+  }
+
+  private void updateModifiedDateIfNeeded(JSONObject responseObject) {
+    String dateKey = "modifiedDate";
+    if (responseObject.get(dateKey) != null) {
+      ZonedDateTime responseDate = ZonedDateTime.parse(responseObject.get(dateKey).toString());
+      ZonedDateTime currentDate = ZonedDateTime.parse(requisition.get(dateKey).toString());
+      if (responseDate.isAfter(currentDate)) {
+        requisition.put(dateKey, responseObject.get(dateKey));
+      }
     }
   }
 
