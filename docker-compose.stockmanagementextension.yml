@@ -1,0 +1,57 @@
+version: "2"
+services:
+
+  example-extensions:
+    image: openlmis/openlmis-example-extensions:${OL_EXAMPLE_EXTENSIONS}
+    volumes:
+      - 'example-extensions:/extensions'
+
+  stockmanagement:
+    image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data,refresh-db
+    volumes:
+      - 'example-extensions:/extensions'
+      - 'service-config:/config'
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
+  contract_tests:
+    image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
+    env_file: settings.env
+    volumes:
+      - '.:/app'
+      - 'gradlecache:/gradle'
+    links:
+      - db
+      - redis
+      - log
+      - nginx
+      - consul
+      - auth
+      - referencedata
+      - stockmanagement
+      - example-extensions
+
+    entrypoint:
+      - 'gradle'
+      - 'clean'
+      - 'waitFor'
+      - '-Pcontainers=
+          ${BASE_URL}/auth
+          ,${BASE_URL}/stockmanagement
+          ,${BASE_URL}/referencedata'
+      - 'cucumber'
+      - '-Ptags=@ExtensionStockEventsTests'
+      - '--stacktrace'
+      - '--no-daemon'
+
+volumes:
+  gradlecache:
+    external: false
+  service-config:
+    external: false
+  example-extensions:
+    external: false
