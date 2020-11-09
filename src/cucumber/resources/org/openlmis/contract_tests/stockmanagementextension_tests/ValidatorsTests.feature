@@ -1,5 +1,5 @@
-@ExtensionStockEventsTests
-Feature: Extension Stock Events Tests
+@ExtensionValidatorsTests
+Feature: Extension Stock Validators Tests
 
   Scenario: Storeroom manager user should get error when creating stock event
     Given I have logged in as srmanager1

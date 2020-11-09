@@ -44,7 +44,7 @@ services:
           ,${BASE_URL}/stockmanagement
           ,${BASE_URL}/referencedata'
       - 'cucumber'
-      - '-Ptags=@ExtensionStockEventsTests'
+      - '-Ptags=@ExtensionValidatorsTests'
       - '--stacktrace'
       - '--no-daemon'
 
