@@ -20,14 +20,11 @@ public class ValidatorsStepDefs {
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
 
-  private static final String ERROR_EVENT_ADJUSTMENT_REASON_CATEGORY_INVALID =
-      "stockmanagement.error.event.extension.adjustment.reason.category.invalid";
-
   private static final String ERROR_EVENT_REASON_FREE_TEXT_NOT_ALLOWED =
-      "stockmanagement.error.event.extension.reasonFreeText.notAllowed";
+      "stockmanagement.error.event.reasonFreeText.notAllowed";
 
   private static final String ERROR_EVENT_CANNOT_UNPACK_REGULAR_ORDERABLE =
-      "stockmanagement.error.event.extension.cannot.unpack.orderable.not.kit";
+      "stockmanagement.error.event.cannot.unpack.orderable.not.kit";
 
   @When("^I try to create a stock event for extentions$")
   public void iTryToCreateAStockEvent(String bodyString) throws Throwable {
@@ -38,15 +35,14 @@ public class ValidatorsStepDefs {
         .post(URL_OF_STOCK_EVENT_MANAGEMENT);
   }
 
-  @Then("^I should get response of invalid adjustment reason category")
-  public void iShouldGetResponseOfInvalidAdjustmentReasonCategory() throws Throwable {
+  @Then("^I should get response that the event for extensions was created$")
+  public void iShouldGetResponseOfTheEventCreated() throws Throwable {
     createEventResponse
         .then()
-        .body("messageKey", is(ERROR_EVENT_ADJUSTMENT_REASON_CATEGORY_INVALID))
-        .statusCode(HttpStatus.SC_BAD_REQUEST);
+        .statusCode(HttpStatus.SC_CREATED);
   }
 
-  @Then("^I should get response of free text not allowed")
+  @Then("^I should get response of reason free text not allowed")
   public void iShouldGetResponseOfFreeTextNotAllowed() throws Throwable {
     createEventResponse
         .then()
