@@ -26,7 +26,7 @@ public class ValidatorsStepDefs {
   private static final String ERROR_EVENT_CANNOT_UNPACK_REGULAR_ORDERABLE =
       "stockmanagement.error.event.cannot.unpack.orderable.not.kit";
 
-  @When("^I try to create a stock event for extentions$")
+  @When("^I try to create a stock event for extensions")
   public void iTryToCreateAStockEvent(String bodyString) throws Throwable {
     createEventResponse = given()
         .contentType(ContentType.JSON)

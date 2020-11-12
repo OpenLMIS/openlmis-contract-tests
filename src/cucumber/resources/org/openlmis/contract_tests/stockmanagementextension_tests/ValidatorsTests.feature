@@ -4,7 +4,7 @@ Feature: Extension Stock Validators Tests
   Scenario: Storeroom manager user should be able to create stock event
     Given I have logged in as srmanager1
 
-    When I try to create a stock event for extentions
+    When I try to create a stock event for extensions
     """
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
@@ -23,7 +23,7 @@ Feature: Extension Stock Validators Tests
     """
     Then I should get response that the event for extensions was created
 
-    When I try to create a stock event for extentions
+    When I try to create a stock event for extensions
     """
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
@@ -43,7 +43,7 @@ Feature: Extension Stock Validators Tests
     """
     Then I should get response that the event for extensions was created
 
-    When I try to create a stock event for extentions
+    When I try to create a stock event for extensions
     """
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
@@ -64,7 +64,7 @@ Feature: Extension Stock Validators Tests
     Then I should get response that the event for extensions was created
 
   Scenario: Storeroom manager user should get error when creating stock event
-    When I try to create a stock event for extentions
+    When I try to create a stock event for extensions
     """
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
@@ -84,7 +84,7 @@ Feature: Extension Stock Validators Tests
     """
     Then I should get response of reason free text not allowed
 
-    When I try to create a stock event for extentions
+    When I try to create a stock event for extensions
     """
     {
       "programId": "dce17f2e-af3e-40ad-8e00-3496adef44c3",
