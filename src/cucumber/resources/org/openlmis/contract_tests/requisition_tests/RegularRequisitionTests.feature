@@ -620,7 +620,7 @@ Feature: Regular Requisition Tests
     And I logout
 
     When I have logged in as dsrmanager
-    And I try update fields in requisition:
+    And I try to update fields for product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | skipped |
       | true    |
 
@@ -632,7 +632,7 @@ Feature: Regular Requisition Tests
       | 10               | null                  | null                   | null              | true    |
     And I should get updated requisition with product id 32a04b36-4b4b-4591-b7fe-927d3569bd06:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity  | totalStockoutDays | skipped |
-      | 10               | 5                     | 5                      | 2                 | false   |
+      | 10               | 5                     | 5                      | 2                 | true   |
     And I logout
 
 
