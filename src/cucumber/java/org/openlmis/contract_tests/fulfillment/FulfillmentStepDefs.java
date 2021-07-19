@@ -248,9 +248,7 @@ public class FulfillmentStepDefs {
         .statusCode(SC_OK);
 
     JSONParser parser = new JSONParser();
-    JSONObject page = (JSONObject) parser.parse(proofOfDeliveryResponse.asString());
-    JSONArray content = (JSONArray) page.get("content");
-    JSONObject body = (JSONObject) content.get(0);
+    JSONObject body = (JSONObject) parser.parse(proofOfDeliveryResponse.asString());
     assertThat(body.get("id").toString(), is(proofOfDeliveryId));
     assertThat(body.get("status").toString(), is("CONFIRMED"));
   }
