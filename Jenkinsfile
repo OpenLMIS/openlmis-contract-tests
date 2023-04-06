@@ -10,11 +10,6 @@ properties([
   ]
 ])
 pipeline {
-    agent {
-        node {
-            label '!master'
-        }
-    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '30'))
         skipStagesAfterUnstable()
