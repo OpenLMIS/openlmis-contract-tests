@@ -34,9 +34,20 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  notification:
+    mem_limit: 512m
+    image: openlmis/notification:${OL_NOTIFICATION_VERSION}
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data,refresh-db
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
   ftp:
     mem_limit: 64m
-    image: hauptmedia/proftpd
+    image: driesva/proftpd
     env_file: settings.env
 
   contract_tests:
@@ -60,6 +71,7 @@ services:
     - referencedata
     - fulfillment
     - stockmanagement
+    - notification
 
     entrypoint:
       - 'gradle'
@@ -70,7 +82,8 @@ services:
         ,${BASE_URL}/requisition
         ,${BASE_URL}/referencedata
         ,${BASE_URL}/stockmanagement
-        ,${BASE_URL}/fulfillment'
+        ,${BASE_URL}/fulfillment
+        ,${BASE_URL}/notification'
       - 'cucumber'
       - '-Ptags=@RegularRequisitionTests or @EmergencyRequisitionTests or @SplitRequisitionTests'
       - '--stacktrace'

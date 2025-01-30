@@ -40,7 +40,7 @@ services:
 
   ftp:
     mem_limit: 512m
-    image: hauptmedia/proftpd
+    image: driesva/proftpd
     env_file: settings.env
 
   contract_tests:
