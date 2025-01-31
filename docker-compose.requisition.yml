@@ -85,7 +85,7 @@ services:
         ,${BASE_URL}/fulfillment
         ,${BASE_URL}/notification'
       - 'cucumber'
-      - '-Ptags=@RegularRequisitionTests'
+      - '-Ptags=@EmergencyRequisitionTests'
       - '--stacktrace'
       - '--no-daemon'
 
