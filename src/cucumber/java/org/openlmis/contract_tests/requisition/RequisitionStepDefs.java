@@ -58,6 +58,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
@@ -104,7 +105,7 @@ public class RequisitionStepDefs {
         StreamGobbler streamGobbler = new StreamGobbler(proc, System.out::println);
         Executors.newSingleThreadExecutor().submit(streamGobbler);
 
-        proc.waitFor();
+        proc.waitFor(30, TimeUnit.SECONDS);
       } catch (Exception ex) {
         System.err.println("Removing current period failed with message: " + ex);
       }
