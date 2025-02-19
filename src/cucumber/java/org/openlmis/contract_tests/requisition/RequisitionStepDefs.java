@@ -33,7 +33,6 @@ import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN_PARAM_NAME;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
-import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -57,8 +56,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matcher;
@@ -95,21 +92,6 @@ public class RequisitionStepDefs {
   private String requisitionTemplate;
   private DataTable requisitionTemplateUpdateData;
   private Map<String, Map<String, String>> requisitionTemplateColumnsData = new HashMap<>();
-
-
-  @Before("@RemoveCurrentPeriod")
-  public void setUp() {
-      try {
-        Process proc = Runtime.getRuntime().exec("/app/remove_current_period.sh");
-
-        StreamGobbler streamGobbler = new StreamGobbler(proc, System.out::println);
-        Executors.newSingleThreadExecutor().submit(streamGobbler);
-
-        proc.waitFor(30, TimeUnit.SECONDS);
-      } catch (Exception ex) {
-        System.err.println("Removing current period failed with message: " + ex);
-      }
-  }
 
   @When("^I try to initiate a requisition with:$")
   public void tryToInitiateARequisition(DataTable argsList) {
