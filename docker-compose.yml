@@ -21,9 +21,9 @@ services:
   referencedata:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
     env_file: settings.env
-    mem_limit: 3072m
+    mem_limit: 1024m
     environment:
-      JAVA_OPTS: '-Xmx3072m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx1024m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
