@@ -41,7 +41,7 @@ task cucumber(dependsOn: testClasses) {
                     '--monochrome',
                     '--glue', 'classpath:org.openlmis.contract_tests',
                     '--tags', project.getProperty('tags'),
-                    '--add-plugin', 'pretty',
+                    '--add-plugin', 'progress',
                     '--add-plugin', 'html:test-results/html',
                     '--add-plugin', 'json:test-results/cucumber.json',
                     '--add-plugin', 'junit:test-results/cucumber-junit.xml',
