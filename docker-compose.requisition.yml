@@ -88,7 +88,6 @@ services:
       - '-Ptags=@RegularRequisitionTests or @EmergencyRequisitionTests or @SplitRequisitionTests'
       - '--stacktrace'
       - '--no-daemon'
-      - '--debug'
 
 volumes:
   gradlecache:
