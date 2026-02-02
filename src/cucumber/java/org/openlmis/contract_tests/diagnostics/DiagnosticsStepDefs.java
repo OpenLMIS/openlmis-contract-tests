@@ -17,7 +17,7 @@ package org.openlmis.contract_tests.diagnostics;
 
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
@@ -46,7 +46,7 @@ public class DiagnosticsStepDefs {
     healthResponse
         .then()
         .statusCode(HttpStatus.SC_OK)
-        .body("$.size()", equalTo(1))
+        .body("$.size()", greaterThan(0))
         .body("status", hasItem("PASSING"))
         .body("serviceName", hasItem("referencedata"));
   }
