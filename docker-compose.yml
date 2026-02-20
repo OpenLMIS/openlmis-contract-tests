@@ -32,7 +32,7 @@ services:
   auth:
     image: openlmis/auth:${OL_AUTH_VERSION}
     env_file: settings.env
-    mem_limit: 512m
+    mem_limit: 384m
     environment:
       JAVA_OPTS: '-Xmx256m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
@@ -46,7 +46,7 @@ services:
     depends_on: [log]
 
   db:
-    mem_limit: 512m
+    mem_limit: 384m
     image: openlmis/postgres:${OL_POSTGRES_VERSION}
     env_file: settings.env
     depends_on: [consul]
