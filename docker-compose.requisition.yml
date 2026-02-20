@@ -3,43 +3,43 @@ services:
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
-    mem_limit: 768m
+    mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx384m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   fulfillment:
-    mem_limit: 768m
+    mem_limit: 512m
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx384m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   stockmanagement:
-    mem_limit: 768m
+    mem_limit: 512m
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx384m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   notification:
-    mem_limit: 768m
+    mem_limit: 512m
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx384m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -51,27 +51,27 @@ services:
     env_file: settings.env
 
   contract_tests:
-    mem_limit: 2048m
+    mem_limit: 1536m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
-      GRADLE_OPTS: '-Xmx1536m'
+      GRADLE_OPTS: '-Xmx1024m -XX:+UseSerialGC'
     env_file: settings.env
     volumes:
       - '.:/app'
       - 'gradlecache:/gradle'
     links:
-    - db
-    - ftp
-    - redis
-    - log
-    - nginx
-    - consul
-    - auth
-    - requisition
-    - referencedata
-    - fulfillment
-    - stockmanagement
-    - notification
+      - db
+      - ftp
+      - redis
+      - log
+      - nginx
+      - consul
+      - auth
+      - requisition
+      - referencedata
+      - fulfillment
+      - stockmanagement
+      - notification
 
     entrypoint:
       - 'gradle'
