@@ -49,6 +49,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -797,7 +798,7 @@ public class RequisitionStepDefs {
       while (!ProcessingPeriodUtils.isWithinRange(periodDate, period)) {
         UUID id = UUID.randomUUID();
         LocalDate startDate = endDate.plusDays(1);
-        endDate = startDate.plusDays(30);
+        endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
         periodId = createPeriod(period, id, startDate, endDate);
       }
     }
