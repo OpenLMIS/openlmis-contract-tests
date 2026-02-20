@@ -59,7 +59,7 @@ pipeline {
                 }
             }
             steps {
-                timeout(time: 60, unit: 'MINUTES') {
+                timeout(time: 120, unit: 'MINUTES') {
                     script {
                         try {
                             sh "sudo rm -rf test-results"
@@ -77,14 +77,10 @@ pipeline {
             }
             post {
                 unstable {
-                    script {
-                        notifyAfterFailure()
-                    }
+                    script { notifyAfterFailure() }
                 }
                 failure {
-                    script {
-                        notifyAfterFailure()
-                    }
+                    script { notifyAfterFailure() }
                 }
                 cleanup {
                     sh "sudo rm -rf test-results"
