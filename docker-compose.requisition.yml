@@ -3,10 +3,10 @@ services:
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
-    mem_limit: 448m
+    mem_limit: 512m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx320m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx384m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -51,10 +51,10 @@ services:
     env_file: settings.env
 
   contract_tests:
-    mem_limit: 1024m
+    mem_limit: 1536m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
-      GRADLE_OPTS: '-Xmx768m -XX:+UseSerialGC'
+      GRADLE_OPTS: '-Xmx1024m -XX:+UseSerialGC -Djava.security.egd=file:/dev/./urandom'
     env_file: settings.env
     volumes:
       - '.:/app'
@@ -75,19 +75,15 @@ services:
 
     entrypoint:
       - 'gradle'
-      - '--max-workers=1'
+      - '-Dsun.net.inetaddr.ttl=0'
+      - '-Dnetworkaddress.cache.ttl=0'
       - 'clean'
       - 'waitFor'
-      - '-Pcontainers=
-        ${BASE_URL}/auth
-        ,${BASE_URL}/requisition
-        ,${BASE_URL}/referencedata
-        ,${BASE_URL}/stockmanagement
-        ,${BASE_URL}/fulfillment
-        ,${BASE_URL}/notification'
+      - '-Pcontainers=http://nginx/auth,http://nginx/requisition,http://nginx/referencedata,http://nginx/stockmanagement,http://nginx/fulfillment,http://nginx/notification'
       - 'cucumber'
+      - '--info'
+      - '--console=plain'
       - '-Ptags=@RegularRequisitionTests or @EmergencyRequisitionTests or @SplitRequisitionTests'
-      - '--stacktrace'
       - '--no-daemon'
 
 volumes:

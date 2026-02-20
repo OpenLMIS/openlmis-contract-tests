@@ -32,9 +32,9 @@ services:
   auth:
     image: openlmis/auth:${OL_AUTH_VERSION}
     env_file: settings.env
-    mem_limit: 384m
+    mem_limit: 512m
     environment:
-      JAVA_OPTS: '-Xmx256m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx384m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
