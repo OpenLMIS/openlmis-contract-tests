@@ -1,60 +1,60 @@
-version: "2"
+version: "2.1"
 services:
 
   requisition:
     image: openlmis/requisition:${OL_REQUISITION_VERSION}
-    mem_limit: 512m
+    mem_limit: 768m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx384m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   fulfillment:
-    mem_limit: 448m
+    mem_limit: 768m
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx320m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   stockmanagement:
-    mem_limit: 448m
+    mem_limit: 768m
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx320m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   notification:
-    mem_limit: 448m
+    mem_limit: 768m
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx320m -XX:+UseSerialGC -Dlogging.config=/logback.xml'
+      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   ftp:
-    mem_limit: 64m
+    mem_limit: 128m
     image: driesva/proftpd
     env_file: settings.env
 
   contract_tests:
-    mem_limit: 1536m
+    mem_limit: 3g
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
-      GRADLE_OPTS: '-Xmx1024m -XX:+UseSerialGC -Djava.security.egd=file:/dev/./urandom'
+      GRADLE_OPTS: "-Xmx1536m -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Stack=true"
     env_file: settings.env
     volumes:
       - '.:/app'
@@ -72,7 +72,6 @@ services:
       - fulfillment
       - stockmanagement
       - notification
-
     entrypoint:
       - 'gradle'
       - '-Dsun.net.inetaddr.ttl=0'
