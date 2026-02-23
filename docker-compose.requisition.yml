@@ -1,4 +1,4 @@
-version: "2.1"
+version: "2"
 services:
 
   requisition:
@@ -6,7 +6,7 @@ services:
     mem_limit: 768m
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -17,7 +17,7 @@ services:
     image: openlmis/fulfillment:${OL_FULFILLMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -28,7 +28,7 @@ services:
     image: openlmis/stockmanagement:${OL_STOCKMANAGEMENT_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -39,50 +39,54 @@ services:
     image: openlmis/notification:${OL_NOTIFICATION_VERSION}
     env_file: settings.env
     environment:
-      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
+      JAVA_OPTS: '-server -Xmx512m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
   ftp:
-    mem_limit: 128m
+    mem_limit: 64m
     image: driesva/proftpd
     env_file: settings.env
 
   contract_tests:
-    mem_limit: 3g
+    mem_limit: 2048m
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     environment:
-      GRADLE_OPTS: "-Xmx1536m -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Stack=true"
+      GRADLE_OPTS: '-Xmx1536m'
     env_file: settings.env
     volumes:
       - '.:/app'
       - 'gradlecache:/gradle'
     links:
-      - db
-      - ftp
-      - redis
-      - log
-      - nginx
-      - consul
-      - auth
-      - requisition
-      - referencedata
-      - fulfillment
-      - stockmanagement
-      - notification
+    - db
+    - ftp
+    - redis
+    - log
+    - nginx
+    - consul
+    - auth
+    - requisition
+    - referencedata
+    - fulfillment
+    - stockmanagement
+    - notification
+
     entrypoint:
       - 'gradle'
-      - '-Dsun.net.inetaddr.ttl=0'
-      - '-Dnetworkaddress.cache.ttl=0'
       - 'clean'
       - 'waitFor'
-      - '-Pcontainers=http://nginx/auth,http://nginx/requisition,http://nginx/referencedata,http://nginx/stockmanagement,http://nginx/fulfillment,http://nginx/notification'
+      - '-Pcontainers=
+        ${BASE_URL}/auth
+        ,${BASE_URL}/requisition
+        ,${BASE_URL}/referencedata
+        ,${BASE_URL}/stockmanagement
+        ,${BASE_URL}/fulfillment
+        ,${BASE_URL}/notification'
       - 'cucumber'
-      - '--info'
-      - '--console=plain'
       - '-Ptags=@RegularRequisitionTests or @EmergencyRequisitionTests or @SplitRequisitionTests'
+      - '--stacktrace'
       - '--no-daemon'
 
 volumes:

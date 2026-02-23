@@ -1,10 +1,10 @@
-version: "2.1"
+version: "2"
 services:
 
   consul:
     command: -server -bootstrap
     image: gliderlabs/consul-server
-    mem_limit: 128m
+    mem_limit: 64m
     ports:
       - "8300"
       - "8400"
@@ -15,14 +15,15 @@ services:
     image: openlmis/nginx:${OL_NGINX_VERSION}
     env_file: settings.env
     links: [consul]
-    mem_limit: 256m
+    mem_limit: 64m
+    # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
     env_file: settings.env
-    mem_limit: 1536m
+    mem_limit: 1024m
     environment:
-      JAVA_OPTS: '-Xmx1g -Xms512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
+      JAVA_OPTS: '-Xmx768m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
@@ -31,34 +32,26 @@ services:
   auth:
     image: openlmis/auth:${OL_AUTH_VERSION}
     env_file: settings.env
-    mem_limit: 768m
+    mem_limit: 512m
     environment:
-      JAVA_OPTS: '-Xmx512m -XX:+UseSerialGC -Dlogging.config=/logback.xml -Djava.security.egd=file:/dev/./urandom'
+      JAVA_OPTS: '-Xmx256m -Dlogging.config=/logback.xml'
       spring_profiles_active: demo-data,refresh-db
     volumes:
       - './logback.xml:/logback.xml'
     depends_on: [log]
-
+  
   redis:
-    mem_limit: 128m
+    mem_limit: 64m
     image: redis:3.2.12
     depends_on: [log]
 
   db:
+    mem_limit: 512m
     image: openlmis/postgres:${OL_POSTGRES_VERSION}
-    command: postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=off -c max_connections=300
-    shm_size: '512mb'
-    mem_limit: 2g
     env_file: settings.env
     depends_on: [consul]
 
   log:
-    mem_limit: 512m
+    mem_limit: 64m
     image: openlmis/rsyslog:${OL_RSYSLOG_VERSION}
     depends_on: [consul]
-
-networks:
-  default:
-    driver: bridge
-    driver_opts:
-      com.docker.network.driver.mtu: "1400"
