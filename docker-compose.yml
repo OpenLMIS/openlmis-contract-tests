@@ -16,6 +16,12 @@ services:
     env_file: settings.env
     links: [consul]
     mem_limit: 64m
+    volumes:
+      - './nginx-keepalive-patch.sh:/keepalive-patch.sh:ro'
+    entrypoint:
+      - sh
+      - -c
+      - "sh /keepalive-patch.sh & exec /home/run.sh"
     # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
