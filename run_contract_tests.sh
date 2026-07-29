@@ -5,6 +5,7 @@ TEST_RESULTS_DIR="test-results"
 export PATH="/usr/local/bin:$PATH"
 
 cleanup() {
+    kill "${HEARTBEAT_PID:-}" 2>/dev/null || true
     docker-compose -f docker-compose.yml -f "${FILENAME}" down -v --remove-orphans
 }
 trap cleanup EXIT
@@ -26,10 +27,17 @@ docker-compose -f docker-compose.yml -f "${FILENAME}" down -v --remove-orphans
 docker-compose -f docker-compose.yml -f "${FILENAME}" pull
 
 #run docker file
+# The cucumber run buffers its output and stays silent for minutes; CI kills builds
+# with no console activity. Emit a heartbeat so the run is never mistaken for hung.
+( while true; do sleep 30; echo "[heartbeat] contract tests still running... $(date -u '+%Y-%m-%dT%H:%M:%SZ')"; done ) &
+HEARTBEAT_PID=$!
+
 docker-compose -f docker-compose.yml -f "${FILENAME}" run contract_tests
 
 #cleaning after tests
 contract_test_result=$?
+
+kill "${HEARTBEAT_PID}" 2>/dev/null || true
 
 docker-compose logs --no-color --timestamps > ${TEST_RESULTS_DIR}/container-logs
 docker-compose exec -T log cat /var/log/messages > ${TEST_RESULTS_DIR}/sys-logs

@@ -16,8 +16,7 @@ services:
     env_file: settings.env
     links: [consul]
     mem_limit: 64m
-    volumes:
-      - './nginx-openlmis.conf.ctmpl:/etc/consul-template/openlmis.conf:ro'
+    # Note: network_mode: host will break the build since we're using container communication
 
   referencedata:
     image: openlmis/referencedata:${OL_REFERENCEDATA_VERSION}
