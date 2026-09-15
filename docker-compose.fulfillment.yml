@@ -33,6 +33,17 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  report:
+    image: openlmis/report:${OL_REPORT_VERSION}
+    mem_limit: 768m
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data,refresh-db
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
   redis:
     mem_limit: 512m
     image: redis:3.2.12
@@ -61,6 +72,7 @@ services:
     - referencedata
     - requisition
     - stockmanagement
+    - report
 
     entrypoint:
       - 'gradle'
@@ -71,7 +83,8 @@ services:
         ,${BASE_URL}/fulfillment
         ,${BASE_URL}/referencedata
         ,${BASE_URL}/requisition
-        ,${BASE_URL}/stockmanagement'
+        ,${BASE_URL}/stockmanagement
+        ,${BASE_URL}/report'
       - 'cucumber'
       - '-Ptags=@FulfillmentTests'
       - '--stacktrace'
