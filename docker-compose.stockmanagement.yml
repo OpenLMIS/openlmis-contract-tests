@@ -11,6 +11,17 @@ services:
       - './logback.xml:/logback.xml'
     depends_on: [log]
 
+  report:
+    image: openlmis/report:${OL_REPORT_VERSION}
+    mem_limit: 768m
+    env_file: settings.env
+    environment:
+      JAVA_OPTS: '-Xmx512m -Dlogging.config=/logback.xml'
+      spring_profiles_active: demo-data,refresh-db
+    volumes:
+      - './logback.xml:/logback.xml'
+    depends_on: [log]
+
   contract_tests:
     image: openlmis/dev:${DOCKER_DEV_IMAGE_VERSION}
     env_file: settings.env
@@ -26,6 +37,7 @@ services:
     - auth
     - referencedata
     - stockmanagement
+    - report
 
     entrypoint:
       - 'gradle'
@@ -34,7 +46,8 @@ services:
       - '-Pcontainers=
         ${BASE_URL}/auth
         ,${BASE_URL}/stockmanagement
-        ,${BASE_URL}/referencedata'
+        ,${BASE_URL}/referencedata
+        ,${BASE_URL}/report'
       - 'cucumber'
       - '-Ptags=@StockCardTemplatesTests or @StockEventsTests or @StockCardsTests or @StockReasonsTests or @PhysicalInventoriesTests'
       - '--stacktrace'
