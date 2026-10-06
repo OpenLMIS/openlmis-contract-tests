@@ -49,7 +49,7 @@ services:
         ,${BASE_URL}/referencedata
         ,${BASE_URL}/report'
       - 'cucumber'
-      - '-Ptags=@StockCardTemplatesTests or @StockEventsTests or @StockCardsTests or @StockReasonsTests or @PhysicalInventoriesTests'
+      - '-Ptags=@StockCardTemplatesTests or @StockEventsTests or @StockCardsTests or @StockReasonsTests or @PhysicalInventoriesTests or @ValidSourceDestinationTests'
       - '--stacktrace'
       - '--no-daemon'
 

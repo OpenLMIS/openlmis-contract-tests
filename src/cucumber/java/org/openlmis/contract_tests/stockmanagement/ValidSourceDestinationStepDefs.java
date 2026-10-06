@@ -16,8 +16,6 @@ import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-import java.util.ArrayList;
-
 public class ValidSourceDestinationStepDefs {
   private static final String URL_OF_ORGANIZATIONS =
       baseUrlOfService("stockmanagement") + "organizations/";
@@ -27,12 +25,13 @@ public class ValidSourceDestinationStepDefs {
 
   private static final String URL_OF_VALID_DESTINATIONS =
       baseUrlOfService("stockmanagement") + "validDestinations/";
-  private static final String PROGRAM_PARAM_NAME = "program";
-  private static final String FACILITY_TYPE_PARAM_NAME = "facilityType";
+  private static final String PROGRAM_PARAM_NAME = "programId";
+  private static final String FACILITY_PARAM_NAME = "facilityId";
 
   private static final String ACCESS_TOKEN_PARAM_NAME = "access_token";
   private static final String PROGRAM = "dce17f2e-af3e-40ad-8e00-3496adef44c3";
   private static final String FACILITY_TYPE = "663b1d34-cc17-4d60-9619-e553e45aa441";
+  private static final String FACILITY = "13037147-1769-4735-90a7-b9b310d128b8";
   private Response response;
   private String organizationId;
   private String validSourceAssignmentId;
@@ -107,19 +106,18 @@ public class ValidSourceDestinationStepDefs {
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam(PROGRAM_PARAM_NAME, PROGRAM)
-        .queryParam(FACILITY_TYPE_PARAM_NAME, FACILITY_TYPE)
+        .queryParam(FACILITY_PARAM_NAME, FACILITY)
         .when()
         .get(URL_OF_VALID_SOURCES);
   }
 
   @Then("^I should get response of all valid source assignments that contains newly assignment$")
   public void iShouldGetResponseOfAllValidSourceAssignmentsThatContainsNewlyAssignment() throws Throwable {
-    ArrayList<String> assignmentIds = from(response.asString()).get("id");
-    validSourceAssignmentId = assignmentIds.get(assignmentIds.size() - 1);
-
     response.then()
         .statusCode(HttpStatus.SC_OK)
-        .body("node.referenceId", hasItem(organizationId));
+        .body("content.node.referenceId", hasItem(organizationId));
+    validSourceAssignmentId = from(response.asString())
+        .getString("content.find { it.node.referenceId == '" + organizationId + "' }.id");
   }
 
   @When("^I try to detach created organization as source to combination of program and facility type$")
@@ -136,7 +134,7 @@ public class ValidSourceDestinationStepDefs {
   public void iShouldGetResponseOfAllValidSourceAssignmentsThatNotContainsDetachedAssignment() throws Throwable {
     response.then()
         .statusCode(HttpStatus.SC_OK)
-        .body("id", not(hasItem(validSourceAssignmentId)));
+        .body("content.node.referenceId", not(hasItem(organizationId)));
   }
 
 
@@ -157,19 +155,18 @@ public class ValidSourceDestinationStepDefs {
         .contentType(ContentType.JSON)
         .queryParam(ACCESS_TOKEN_PARAM_NAME, ACCESS_TOKEN)
         .queryParam(PROGRAM_PARAM_NAME, PROGRAM)
-        .queryParam(FACILITY_TYPE_PARAM_NAME, FACILITY_TYPE)
+        .queryParam(FACILITY_PARAM_NAME, FACILITY)
         .when()
         .get(URL_OF_VALID_DESTINATIONS);
   }
 
   @Then("^I should get response of all valid destination assignments that contains newly assignment$")
   public void iShouldGetResponseOfAllValidDestinationAssignmentsThatContainsNewlyAssignment() throws Throwable {
-    ArrayList<String> assignmentIds = from(response.asString()).get("id");
-    validDestinationAssignmentId = assignmentIds.get(assignmentIds.size() - 1);
-
     response.then()
         .statusCode(HttpStatus.SC_OK)
-        .body("node.referenceId", hasItem(organizationId));
+        .body("content.node.referenceId", hasItem(organizationId));
+    validDestinationAssignmentId = from(response.asString())
+        .getString("content.find { it.node.referenceId == '" + organizationId + "' }.id");
   }
 
   @When("^I try to detach created organization as destination to combination of program and facility type$")
@@ -186,7 +183,7 @@ public class ValidSourceDestinationStepDefs {
   public void iShouldGetResponseOfAllValidDestinationAssignmentsThatNotContainsDetachedAssignment() throws Throwable {
     response.then()
         .statusCode(HttpStatus.SC_OK)
-        .body("id", not(hasItem(validDestinationAssignmentId)));
+        .body("content.node.referenceId", not(hasItem(organizationId)));
   }
 
   private JSONObject createValidSourceDestination() {

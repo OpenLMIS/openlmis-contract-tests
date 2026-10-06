@@ -17,8 +17,6 @@ import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-import java.util.ArrayList;
-
 public class StockReasonsStepDefs {
   private static final String URL_OF_STOCK_REASON_CATEGORIES =
       baseUrlOfService("stockmanagement") + "reasonCategories/";
@@ -149,11 +147,11 @@ public class StockReasonsStepDefs {
   @Then("^I should get response of all valid reason assignments that contains newly assignment$")
   public void iShouldGetResponseOfAllValidReasonAssignmentsThatContainsNewlyAssignment()
       throws Throwable {
-    ArrayList<String> assignmentIds = from(reasonResponse.asString()).get("id");
-    validReasonAssignmentId = assignmentIds.get(assignmentIds.size() - 1);
     reasonResponse.then()
         .statusCode(HttpStatus.SC_OK)
         .body("reason.id", hasItem(createdReasonId));
+    validReasonAssignmentId = from(reasonResponse.asString())
+        .getString("find { it.reason.id == '" + createdReasonId + "' }.id");
   }
 
 
@@ -171,7 +169,7 @@ public class StockReasonsStepDefs {
   public void iShouldGetResponseOfAllValidReasonAssignmentsThatNotContainsDetachedAssignment() throws Throwable {
     reasonResponse.then()
         .statusCode(HttpStatus.SC_OK)
-        .body("id", not(hasItem(validReasonAssignmentId)));
+        .body("reason.id", not(hasItem(createdReasonId)));
   }
 
   private JSONObject createValidReasonJson() {
