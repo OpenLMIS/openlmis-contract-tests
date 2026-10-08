@@ -24,6 +24,7 @@ import org.apache.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.openlmis.contract_tests.common.LoginStepDefs.ACCESS_TOKEN;
 import static org.openlmis.contract_tests.common.TestVariableReader.baseUrlOfService;
 
@@ -100,7 +101,9 @@ public class StockCardsStepDefs {
     public void iShouldGetAStockCardWithSOH() {
         getCardResponse
                 .then()
-                .statusCode(HttpStatus.SC_OK);
+                .statusCode(HttpStatus.SC_OK)
+                .contentType("application/pdf")
+                .body(startsWith("%PDF"));
     }
 
     @Then("^I should get response of incorrect user permission of view cards$")
