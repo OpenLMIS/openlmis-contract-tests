@@ -14,7 +14,7 @@ Feature: Extension Stock Validators Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06",
+        "occurredDate": "2024-02-06",
         "reasonId": "c1fc3cf3-da18-44b0-a220-77c985202e06",
         "quantity": 0,
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece"
@@ -33,7 +33,7 @@ Feature: Extension Stock Validators Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06",
+        "occurredDate": "2024-02-06",
         "reasonId": "279d55bd-42e3-438c-a63d-9c021b185dae",
         "sourceFreeText": "example",
         "quantity": 123,
@@ -53,7 +53,7 @@ Feature: Extension Stock Validators Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06",
+        "occurredDate": "2024-02-06",
         "reasonId": "279d55bd-42e3-438c-a63d-9c021b185dae",
         "destinationFreeText": "example",
         "quantity": 123,
@@ -74,7 +74,7 @@ Feature: Extension Stock Validators Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06",
+        "occurredDate": "2024-02-06",
         "reasonId": "279d55bd-42e3-438c-a63d-9c021b185dae",
         "reasonFreeText": "example",
         "quantity": 123,
@@ -94,7 +94,7 @@ Feature: Extension Stock Validators Tests
       "documentNumber":"DN.1",
 
       "lineItems":[{
-        "occurredDate": "2017-02-06",
+        "occurredDate": "2024-02-06",
         "reasonId": "9b4b653a-f319-4a1b-bb80-8d6b4dd6cc12",
         "quantity": 123,
         "orderableId": "d602d0c6-4052-456c-8ccd-61b4ad77bece"

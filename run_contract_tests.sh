@@ -49,7 +49,9 @@ cat ${TEST_RESULTS_DIR}/sys-logs | egrep -v "(Resource2Db|RightAssignmentService
 echo "=========================================================================="
 echo "  LOADED DEMO DATA"
 echo "=========================================================================="
-egrep -o "Resource2Db (.+)\.(.+): \[" test-results/sys-logs | awk '{print substr($0, 13, length($0) - 16)}' | sort | uniq -c | sort -nr
+egrep -o "Resource2Db [^ ]+: inserted [0-9]+ row" test-results/sys-logs \
+  | awk '{rows[substr($2, 1, length($2) - 1)] += $4} END {for (t in rows) printf "%7d %s\n", rows[t], t}' \
+  | sort -nr
 echo "=========================================================================="
 echo "  NGINX SETTINGS"
 echo "=========================================================================="
