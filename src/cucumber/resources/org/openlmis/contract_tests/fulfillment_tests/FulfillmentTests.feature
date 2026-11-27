@@ -11,7 +11,7 @@ Feature: Fulfillment Tests
 
     When I try to get order by:
       | supplyingFacilityId                  | requestingFacilityId                 | programId                            | periodStartDate | periodEndDate |
-      | 9318b2ea-9ae0-42b2-a7e1-353683f54000 | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | 2017-04-01      | 2017-06-30    |
+      | 9318b2ea-9ae0-42b2-a7e1-353683f54000 | 7938919f-6f61-4d1a-a4dc-923c31e9cd45 | 10845cb9-d365-4aaa-badd-b4fa39c6a26a | 2024-04-01      | 2024-06-30    |
     Then I should get response of order found
 
     When I try to get shipment by order id

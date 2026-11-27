@@ -76,7 +76,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 9                     | 20               | 0                 | 5                 | test                         | 11                    | 2018-12-15 |
+      | 9                     | 20               | 0                 | 5                 | test                         | 11                    | 2025-12-15 |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity |
@@ -165,7 +165,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 2                     | 30               | 1                 | 2                 | test                         | 5                     | 2018-12-15                      |
+      | 2                     | 30               | 1                 | 2                 | test                         | 5                     | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -173,7 +173,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 20                    | 50               | 21                | 22                | test                         | 25                    | 2018-12-15                      |
+      | 20                    | 50               | 21                | 22                | test                         | 25                    | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -181,7 +181,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 15                    | 150              | 6                 | 7                 | test                         | 30                    | 2018-12-15                      |
+      | 15                    | 150              | 6                 | 7                 | test                         | 30                    | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -189,7 +189,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 12                    | 200              | 8                 | 9                 | test                         | 32                    | 2018-12-15                      |
+      | 12                    | 200              | 8                 | 9                 | test                         | 32                    | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -197,7 +197,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 1                     | 10               | 16                | 17                | test                         | 2                     | 2018-12-15                      |
+      | 1                     | 10               | 16                | 17                | test                         | 2                     | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -205,7 +205,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 2                     | 20               | 2                 | 2                 | test                         | 4                     | 2018-12-15                      |
+      | 2                     | 20               | 2                 | 2                 | test                         | 4                     | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -213,7 +213,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 9                     | 20               | 0                 | 5                 | test                         | 11                    | 2018-12-15                      |
+      | 9                     | 20               | 0                 | 5                 | test                         | 11                    | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | total |
@@ -221,7 +221,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | totalReceivedQuantity | beginningBalance | totalStockoutDays | requestedQuantity | requestedQuantityExplanation | totalConsumedQuantity | datePhysicalStockCountCompleted |
-      | 9                     | 20               | 0                 | 432               | test                         | 11                    | 2018-12-15                      |
+      | 9                     | 20               | 0                 | 432               | test                         | 11                    | 2025-12-15                      |
     Then I try to get requisition with id
     And I should get updated requisition with proper total cost
     And I should get a updated requisition with:
@@ -311,7 +311,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted |
-      | 100              | 0                     | 10                    | 30                | we need more                 | 20                | 2018-12-15                      |
+      | 100              | 0                     | 10                    | 30                | we need more                 | 20                | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
@@ -344,7 +344,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted |
-      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 2018-12-15                      |
+      | 0                | 30                    | 20                    | 10                | we need more                 | 0                 | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
@@ -377,7 +377,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted |
-      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 2018-12-15                      |
+      | 10               | 10                    | 0                     | 20                | we need more                 | 0                 | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
@@ -410,7 +410,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted |
-      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 2018-12-15                      |
+      | 20               | 20                    | 15                    | 25                | we need more                 | 0                 | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
@@ -443,7 +443,7 @@ Feature: Regular Requisition Tests
 
     When I try update fields in requisition:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | datePhysicalStockCountCompleted |
-      | 35               | 25                    | 50                    | 50                | we need more                 | 0                 | 2018-12-15                      |
+      | 35               | 25                    | 50                    | 50                | we need more                 | 0                 | 2025-12-15                      |
     And I try to get requisition with id
     Then I should get a updated requisition with:
       | beginningBalance | totalReceivedQuantity | totalConsumedQuantity | requestedQuantity | requestedQuantityExplanation | totalStockoutDays | adjustedConsumption | averageConsumption |
